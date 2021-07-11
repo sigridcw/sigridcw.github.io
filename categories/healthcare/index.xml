@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Healthcare on Sigrid | Ching :D</title>
+    <link>https://sigridcw.github.io/categories/healthcare/</link>
+    <description>Recent content in Healthcare on Sigrid | Ching :D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Sat, 10 Jul 2021 21:07:47 +0800</lastBuildDate><atom:link href="https://sigridcw.github.io/categories/healthcare/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>今天天氣真好</title>
+      <link>https://sigridcw.github.io/blog/test/</link>
+      <pubDate>Sat, 10 Jul 2021 21:07:47 +0800</pubDate>
+      
+      <guid>https://sigridcw.github.io/blog/test/</guid>
+      <description>Hello World
+我是 Sigrid
+一級標題 二級標題 六級標題 我是 Sigrid 嘿嘿</description>
+    </item>
+    
+  </channel>
+</rss>
