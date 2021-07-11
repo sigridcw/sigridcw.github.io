@@ -6,7 +6,17 @@
     <description>Recent content in Infection on Sigrid | Ching :D</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Sat, 10 Jul 2021 21:07:47 +0800</lastBuildDate><atom:link href="https://sigridcw.github.io/tags/infection/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 10 Jul 2021 21:37:47 +0800</lastBuildDate><atom:link href="https://sigridcw.github.io/tags/infection/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>第二篇文章</title>
+      <link>https://sigridcw.github.io/blog/second-post/</link>
+      <pubDate>Sat, 10 Jul 2021 21:37:47 +0800</pubDate>
+      
+      <guid>https://sigridcw.github.io/blog/second-post/</guid>
+      <description>Hello World
+我是 Sigrid</description>
+    </item>
+    
     <item>
       <title>今天天氣真好</title>
       <link>https://sigridcw.github.io/blog/test/</link>
