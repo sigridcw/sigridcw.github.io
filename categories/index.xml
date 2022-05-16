@@ -1,10 +1,48 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Categories on 爾科有限公司</title>
-    <link>https://errkhealth.com/categories/</link>
-    <description>Recent content in Categories on 爾科有限公司</description>
+    <title>Categories on YMafia・Your Physician Friends</title>
+    <link>https://demo.gethugothemes.com/saasis/categories/</link>
+    <description>Recent content in Categories on YMafia・Your Physician Friends</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-US</language><atom:link href="https://errkhealth.com/categories/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <copyright>尊絕不凡的你，快來加入我們吧！</copyright>
+    <lastBuildDate>Wed, 03 Feb 2021 16:56:47 +0600</lastBuildDate><atom:link href="https://demo.gethugothemes.com/saasis/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LifeStyle</title>
+      <link>https://demo.gethugothemes.com/saasis/categories/lifestyle/</link>
+      <pubDate>Wed, 03 Feb 2021 16:56:47 +0600</pubDate>
+      
+      <guid>https://demo.gethugothemes.com/saasis/categories/lifestyle/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Accessories</title>
+      <link>https://demo.gethugothemes.com/saasis/categories/accessories/</link>
+      <pubDate>Tue, 02 Feb 2021 16:56:47 +0600</pubDate>
+      
+      <guid>https://demo.gethugothemes.com/saasis/categories/accessories/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Food</title>
+      <link>https://demo.gethugothemes.com/saasis/categories/food/</link>
+      <pubDate>Mon, 25 Jan 2021 16:56:47 +0600</pubDate>
+      
+      <guid>https://demo.gethugothemes.com/saasis/categories/food/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Photography</title>
+      <link>https://demo.gethugothemes.com/saasis/categories/photography/</link>
+      <pubDate>Sun, 24 Jan 2021 18:19:25 +0600</pubDate>
+      
+      <guid>https://demo.gethugothemes.com/saasis/categories/photography/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>
