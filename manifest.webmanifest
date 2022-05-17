@@ -1,7 +1,7 @@
 {
   "name": "YMafia・Your Physician Friends",
   "short_name": "YMafia・Your Physician Friends",
-  "lang": "en-us",
+  "lang": "zh-tw",
   "theme_color": "#FF4730",
   "background_color": "#fff",
   "icons": [{
@@ -10,5 +10,5 @@
     "type": "image/png"
   }],
   "display": "standalone",
-  "start_url": "/saasis?utm_source=web_app_manifest"
+  "start_url": "/?utm_source=web_app_manifest"
 }
