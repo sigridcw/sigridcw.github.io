@@ -91,6 +91,12 @@ table{width:100%;border-collapse:collapse;font-size:15px}th,td{text-align:left;p
 .ck.done span{text-decoration:line-through;color:var(--muted)}
 footer{font-size:13px;color:var(--muted);text-align:center;padding:20px}
 .cd{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.cd div{background:rgba(255,255,255,.08);border-radius:12px;padding:10px 4px;text-align:center}.cd b{display:block;font-family:var(--mono);font-size:26px;font-weight:500}.cd span{font-size:12px;color:#c9d3cf}
+.leg{border:1px solid var(--line);border-radius:16px;background:var(--white);margin-bottom:12px;overflow:hidden}
+.leg .lh{padding:12px 16px;background:var(--paper-2);font-weight:700}
+.opt{padding:12px 16px;border-top:1px solid var(--line)}.opt.rec{box-shadow:inset 3px 0 var(--copper);background:#fffaf4}
+.l2{display:inline-block;background:#00a84d;color:#fff;border-radius:6px;padding:1px 8px;font-size:13px;font-weight:700}
+.driver{margin-top:8px;border:2px solid var(--ink);border-radius:12px;padding:12px;background:#fff;cursor:pointer}
+.driver .ko{font-size:26px;font-weight:700;line-height:1.3}.driver .ad{font-size:19px;margin-top:4px}
 </style>
 </head>
 <body>
@@ -180,7 +186,31 @@ footer{font-size:13px;color:var(--muted);text-align:center;padding:20px}
   </div>
   <div class="card"><h3>換錢</h3><div class="muted">媽咪已經跟台銀換了 ₩300,000（10/19 取）。5 天以刷卡為主，現金大概夠用。不夠再換：明洞的換錢所匯率最好但離飯店遠；江南、COEX 一帶也有換錢所；機場匯率最差，只換急用的。</div></div>
 
-  <div class="eyebrow">緊急聯絡（已查證）</div>
+  <div class="eyebrow">交通教學</div><h2>怎麼叫車、怎麼搭地鐵</h2>
+  <div class="card em"><h3>飯店位置</h3><div class="muted">Ibis Styles Ambassador 江南（三成路431，POSCO 大樓後面）。最近的是 <span class="l2">2號線</span> 三成站（Samseong 219）4號出口，約 500 m、步行 7–10 分；宣陵站 1號出口約 700 m、步行約 10 分。叫計程車時跟司機說「POSCO 大樓後面」也可以。來源：<a href="https://www.ambatel.com/ibisstyles/gangnam/en/main.do" target="_blank">飯店官網</a>・<a href="https://all.accor.com/hotel/3730/index.en.shtml" target="_blank">Accor</a></div></div>
+  <div class="card scroll"><h3>Kakao T vs Uber vs k.ride</h3><table>
+    <tr><th></th><th>Kakao T</th><th>Uber</th><th>k.ride</th></tr>
+    <tr><td><b>註冊</b></td><td>要 Kakao 帳號＋簡訊驗證。<b>在台灣先註冊好</b>；落地後台灣門號要開著才收得到簡訊（eSIM 純數據收不到）</td><td>用原本的 Uber 帳號就可以，不用改設定</td><td>手機號碼＋Google／Apple／Email，給外國旅客用的 Kakao 官方 App，叫的是同一批 Kakao T 計程車</td></tr>
+    <tr><td><b>海外信用卡</b></td><td>Visa、Master、JCB、AMEX 可以綁（持卡人要跟帳號同名）</td><td>用帳號裡的卡</td><td>信用卡、Alipay+、WeChat Pay</td></tr>
+    <tr><td><b>付給司機</b></td><td>一般叫車可以選「直接付司機」（現金／卡／T-money）</td><td>可以選「當面付款」</td><td>只能自動扣款</td></tr>
+    <tr><td><b>加價</b></td><td>一般叫車我們查到沒有加價</td><td>Speed Call +₩3,000，Green +₩1,000</td><td>每單有服務費</td></tr>
+    <tr><td><b>建議</b></td><td>主力（車最多）</td><td>Kakao T 卡刷不過時的備用</td><td>不想用 Kakao 帳號時用</td></tr>
+  </table><div class="muted" style="margin-top:6px">卡被拒：先確認信用卡有開海外／網路交易，或改選付司機。來源：<a href="https://kedanto.com/en/blog/korea-taxi-apps-foreigners" target="_blank">Kedanto</a>・<a href="https://koreasorted.com/kakao-taxi-foreigners/" target="_blank">Korea Sorted</a>・<a href="https://service.kakaomobility.com/cs/faqs/content/?category=15" target="_blank">Kakao Mobility 客服</a></div></div>
+  <div class="card scroll"><h3>計程車種類與車資（首爾市府資料，2026/10 查證）</h3><table>
+    <tr><th>種類</th><th>起跳</th><th>說明</th></tr>
+    <tr><td>一般（橘、白、銀色）</td><td>₩4,800／1.6 km</td><td>之後每 131 m ₩100；時速低於 15.72 km 時每 30 秒 ₩100。22–23 點、02–04 點 +20%，23–02 點 +40%</td></tr>
+    <tr><td>模範／大型（黑色）</td><td>₩7,000／3 km</td><td>車比較大、比較舒服，三個人帶行李可以考慮</td></tr>
+    <tr><td>International Taxi（首爾市指定）</td><td>跳表 +20%</td><td>司機會說中文、英文、日文，可以用 App 或官網預約（<b>要 24 小時前預約</b>）。機場↔江南定額：中型 ₩90,000、大型 ₩130,000（含過路費）。客服 1644-2255</td></tr>
+  </table><div class="muted" style="margin-top:6px">來源：<a href="https://english.seoul.go.kr/policy/transportation/modes-of-transport/" target="_blank">首爾市政府</a>・<a href="https://seoulwindow.com/en/numbers/transit/" target="_blank">Seoul Window（2026/10）</a>・<a href="https://www.intltaxi.co.kr/" target="_blank">International Taxi</a>。本頁的計程車車資都是用這個費率算的估計值。</div></div>
+  <div class="card"><h3>地鐵與 T-money／WOWPASS</h3><div class="muted">成人用交通卡 ₩1,550（10 km 內；單程票 ₩1,650），之後每 5 km 加 ₩100。T-money 卡在便利商店買、可以用現金儲值；WOWPASS 是觀光客儲值卡＋交通卡，可以在機台用現金儲值（用 App 刷卡儲值會收約 4% 手續費）。這次我們以計程車為主，每人準備一張交通卡、放 ₩10,000 就夠。長輩搭地鐵：先在 Naver Map 看出口旁邊的電梯圖示（每站的電梯位置不一樣，這部分我沒有逐站查證）。</div></div>
+  <div class="card"><h3>小技巧</h3><ol class="steps">
+    <li><b>尖峰時段</b>：平日 07:30–09:30、17:30–19:30 計程車很難叫，也會塞；這兩個時段，短程直接走路或搭地鐵。</li>
+    <li><b>Naver Map</b>：搜尋可以打韓文或貼上本頁的地址 → 點「길찾기」路線 → 選 대중교통（大眾運輸）／자동차（開車）比較時間。設定裡可以把語言改成中文。</li>
+    <li><b>叫 Kakao T</b>：目的地直接貼上本頁複製的韓文地址最準。上車後把「給司機看」的卡片拿給司機確認。</li>
+    <li><b>電話叫車</b>：可以請飯店櫃檯幫忙打電話叫車（白天電話叫車費 ₩1,000，晚上 ₩2,000）。International Taxi 可以事先預約會說中文的司機。</li>
+    <li><b>下車前</b>：拍一張車牌和收據，東西忘在車上比較好找。</li>
+  </ol></div>
+  <div class="eyebrow">佳菁 · 重訓</div><h2>🏋️ 重訓健身房</h2><div class="card em"><div class="muted">單次入場價格都還沒查證，以現場為準；記得帶護照。地址卡點一下就能複製。</div></div><div class="card"><h3>飯店健身房（Ibis Styles B1）</h3><div class="muted">B1・06:00–01:00・只有基本器材（啞鈴最重約 11kg，沒有槓鈴）。Accor 網站寫 2025/7 起整修暫停，<b>請打 02-3454-1101 確認</b>。</div><div class="driver" data-copy="이비스 스타일 앰배서더 서울 강남 서울 강남구 삼성로 431"><div class="mlabel">點一下複製地址</div><div class="ko">이비스 스타일 앰배서더 서울 강남</div><div class="ad">서울 강남구 삼성로 431</div></div><div class="row" style="margin-top:8px"><a href="https://map.naver.com/p/search/이비스 스타일 앰배서더 서울 강남" target="_blank">Naver Map ↗</a></div></div><div class="card"><h3>Healthboy Gym 선릉점</h3><div class="muted">4 座深蹲架＋舉重台・單次 ₩20,000 現金／₩22,000 刷卡・平日 06–24、週末 10–19・步行約 15 分</div><div class="driver" data-copy="헬스보이짐 선릉점 서울 강남구 테헤란로 317 B1"><div class="mlabel">點一下複製地址</div><div class="ko">헬스보이짐 선릉점</div><div class="ad">서울 강남구 테헤란로 317 B1</div></div><div class="row" style="margin-top:8px"><a href="https://map.naver.com/p/search/헬스보이짐 선릉점" target="_blank">Naver Map ↗</a><a href='https://lonely0701.tistory.com/58' target='_blank'>資料來源 ↗</a></div></div><div class="card"><h3>Buffet Ground 삼성</h3><div class="muted">單次 ₩20,000・步行約 7–10 分・要帶室內鞋，衣服租借 ₩3,000</div><div class="driver" data-copy="버핏그라운드 삼성 서울 강남구 삼성로 512 B1-B2"><div class="mlabel">點一下複製地址</div><div class="ko">버핏그라운드 삼성</div><div class="ad">서울 강남구 삼성로 512 B1-B2</div></div><div class="row" style="margin-top:8px"><a href="https://map.naver.com/p/search/버핏그라운드 삼성" target="_blank">Naver Map ↗</a><a href='https://m.blog.naver.com/yeonju3310/223657636414' target='_blank'>資料來源 ↗</a></div></div><div class="card"><h3>Spoany 선릉역점</h3><div class="muted">單次 ₩20,000（含運動服）・平日 06–24、週六 06–23、週日 10–18</div><div class="driver" data-copy="스포애니 선릉역점 서울 강남구 선릉로 513 B1"><div class="mlabel">點一下複製地址</div><div class="ko">스포애니 선릉역점</div><div class="ad">서울 강남구 선릉로 513 B1</div></div><div class="row" style="margin-top:8px"><a href="https://map.naver.com/p/search/스포애니 선릉역점" target="_blank">Naver Map ↗</a><a href='https://www.spoany.co.kr/branch_view.php?idx=120' target='_blank'>資料來源 ↗</a></div></div><div class="card"><h3>White Gym 선릉</h3><div class="muted">24 小時・價格待確認</div><div class="driver" data-copy="화이트짐 선릉"><div class="mlabel">點一下複製地址</div><div class="ko">화이트짐 선릉</div><div class="ad">（地址請看官網）</div></div><div class="row" style="margin-top:8px"><a href="https://map.naver.com/p/search/화이트짐 선릉" target="_blank">Naver Map ↗</a><a href='https://whitegym24.co.kr/seolleung' target='_blank'>資料來源 ↗</a></div></div><div class="card"><h3>LIKE GYM 삼성</h3><div class="muted">24 小時・單日 ₩22,000、一週 ₩67,000</div><div class="driver" data-copy="라이크짐 삼성 서울 강남구 삼성로95길 6 B1"><div class="mlabel">點一下複製地址</div><div class="ko">라이크짐 삼성</div><div class="ad">서울 강남구 삼성로95길 6 B1</div></div><div class="row" style="margin-top:8px"><a href="https://map.naver.com/p/search/라이크짐 삼성" target="_blank">Naver Map ↗</a><a href='https://workoutfrom.com/seoul' target='_blank'>資料來源 ↗</a></div></div><div class="eyebrow">緊急聯絡（已查證）</div>
   <div class="card scroll"><table>
     <tr><th>對象</th><th>電話</th></tr>
     <tr><td>駐韓國台北代表部（上班時間）</td><td><a href="tel:+82263296000">+82-2-6329-6000</a>（簽證護照按分機 1）</td></tr>
@@ -279,6 +309,38 @@ b:[["海報其實不是今天","改回原本的聖水行程，或者整天待在
 ["14:25","TW669 台灣虎航 → 16:30 台中清泉崗","飛機","","R3LXS3・座位 17A/B/C・每人託運 15kg。"],
 ["16:30","聯合國派車回大全街70號","接送車","","落地後副駕的人手機開機，司機會主動聯絡。"]],
 b:[["如果海報還是在 11/1","請看「總覽」頁的備案（方案A/B/C）。"]]}];
+
+const DEST={hotel:["이비스 스타일 앰배서더 서울 강남","서울 강남구 삼성로 431"],coex:["코엑스","서울 강남구 영동대로 513"],hyundai:["현대백화점 무역센터점","서울 강남구 테헤란로 517"],samwon:["삼원가든","서울 강남구 언주로 835"],thehyundai:["더현대 서울","서울 영등포구 여의대로 108"],oy:["올리브영 N성수","서울 성동구 연무장7길 13"],gebang:["게방식당","서울 강남구 선릉로131길 17"],samgye:["3대삼계장인","서울 서초구 반포대로28길 56-3"],amore:["아모레 성수","서울 성동구 아차산로11길 7"],icn:["인천국제공항 제1여객터미널","인천 중구 공항로 272"]};
+// [from,to,destKey,rec(sub|taxi|uber|van),subway,taxiMin,taxiFare,note]
+const SUBWAY_COEX="走到 <span class='l2'>2號線</span> 三成站（Samseong 219）約 10 分鐘（飯店官網：4號出口往 POSCO 大樓）；COEX 跟三成站地下相連，不用再搭車。免費。";
+const LEGS=[
+[["仁川 T1 → 飯店","hotel","van","不適合：機場線＋轉乘、拖行李，長輩不推薦。","70–90","機場→江南 International Taxi 定額 ₩90,000（中型）","已訂 ezTravel 7人座接機（ORD0032176330），照原訂最輕鬆。"],
+ ["飯店 → COEX（爸爸可選：開幕典禮）","coex","taxi",SUBWAY_COEX,"5–8","₩4,800–6,500",""]],
+[["飯店 → COEX／星空圖書館","coex","taxi",SUBWAY_COEX,"5–8","₩4,800–6,500","走路去也可以，但 10/29 早上只有 4°C。"],
+ ["COEX → 現代百貨貿易中心","hyundai","sub","地下街步行約 5 分鐘，跟 COEX 相連，不用出去外面。","—","—","不用搭車。"],
+ ["現代百貨 → 飯店（午睡）","hotel","taxi","步行約 12 分鐘到飯店，或從三成站4號出口出去再走 10 分鐘。","5–8","₩4,800–6,500",""],
+ ["飯店 → 三元花園（晚餐）","samwon","taxi","<span class='l2'>2號線</span> 三成→江南方向，換乘 <span style='background:#d6a000;color:#fff;border-radius:6px;padding:1px 8px;font-size:13px'>新盆唐線</span> 等，要轉車、走路多。不推薦。","15–25","₩9,000–13,000","晚上 18:00 下班車潮，抓 25 分鐘。"],
+ ["三元花園 → 飯店","hotel","taxi","同上，不推薦。","15–25","₩9,000–13,000","餐廳門口叫 Kakao T 最快。"]],
+[["爸爸：飯店 → COEX","coex","taxi",SUBWAY_COEX,"5–8","₩4,800–6,500","08:00 上班尖峰，計程車可能慢一點，走路也只要 10 分鐘。"],
+ ["媽咪＋我：飯店 → Olive Young N 聖水","oy","taxi","<span class='l2'>2號線</span> 三成站（走10分）→ 往蠶室方向直達聖水站，約 7 站、15 分鐘，不用轉車；聖水站 <b>4號出口</b> 步行約 100 m 到 Olive Young N。車資 ₩1,550。","20–30","₩12,000–17,000","雨天推薦計程車；地鐵直達也可以，但要先走 10 分鐘到三成站。"],
+ ["Olive Young → Amore 聖水","amore","sub","步行約 5 分鐘（Amore 在聖水站 2號出口往南約 4 分鐘）。","—","—","走路就好。"],
+ ["聖水 → 飯店","hotel","taxi","聖水站 <span class='l2'>2號線</span> 往三成方向直達，約 15 分鐘＋三成站走 10 分鐘。₩1,550。","20–30","₩12,000–17,000","拿了戰利品，搭計程車比較輕鬆。"],
+ ["飯店 → Gebang Sikdang（晚餐）","gebang","taxi","需要轉車，走路多，不推薦。","10–15","₩6,000–9,000",""],
+ ["Gebang Sikdang → 飯店","hotel","taxi","不推薦。","10–15","₩6,000–9,000",""]],
+[["爸爸：飯店 → COEX（貼海報）","coex","taxi",SUBWAY_COEX,"5–8","₩4,800–6,500","帶 A0 海報筒，搭計程車比較好拿。"],
+ ["媽咪＋我：飯店 → COEX","coex","taxi",SUBWAY_COEX,"5–8","₩4,800–6,500",""],
+ ["COEX／現代百貨 → 飯店（午睡）","hotel","taxi","步行約 12 分鐘。","5–8","₩4,800–6,500",""],
+ ["飯店 → 3rd Samgyetang（瑞草區）","samgye","taxi","要轉車（2號線＋9號線），走路多，不推薦。","20–30","₩11,000–16,000","週六晚上可能塞車。"],
+ ["3rd Samgyetang → 飯店","hotel","taxi","不推薦。","20–30","₩11,000–16,000",""]],
+[["飯店 → 仁川 T1","icn","van","不推薦（拖行李、轉乘）。","70–90","International Taxi 定額 ₩90,000（中型）","已訂 ezTravel 10:20 送機（ORD0032176215）。"]]];
+function legHTML(L,di){return `<div class="eyebrow">今天的交通 · 每一段</div>`+L.map((l,k)=>{const [name,dk,rec,sub,tm,tf,note]=l;const d=DEST[dk];const R=x=>rec==x?' rec':'';const star=x=>rec==x?' <span class="badge cop">推薦</span>':'';
+const uberFare=tf.startsWith("₩")&&!tf.includes("定額")?tf+"（跳表，另可能有叫車費）":"依跳表";
+return `<div class="leg"><div class="lh">${name}</div>
+${rec=="van"?`<div class="opt rec"><b>🚐 已訂接送車</b> <span class="badge cop">推薦</span><div class="muted">${note}</div></div>`:""}
+<div class="opt${R("sub")}"><b>🚇 地鐵／步行</b>${star("sub")}<div class="muted">${sub}</div></div>
+<div class="opt${R("taxi")}"><b>🚕 計程車（Kakao T／路邊攔車）</b>${star("taxi")}<div class="muted">約 ${tm} 分鐘・${tf}（估計，白天跳表；塞車會更多）${rec=="taxi"&&note?"・"+note:""}</div>
+<div class="driver" data-copy="${d[1]}" title="點一下複製地址"><div class="mlabel">給司機看 · 點一下複製地址</div><div class="ko">${d[0]}</div><div class="ad">${d[1]}</div></div></div>
+<div class="opt${R("uber")}"><b>🚖 Uber（Uber Taxi）</b>${star("uber")}<div class="muted">叫的也是一般計程車：約 ${tm} 分鐘・${uberFare}。可以選「當面付款」付現或刷卡；Speed Call 另加 ₩3,000。</div></div></div>`}).join("")}
 const SAILY=[["1GB / 7天",3.99],["3GB / 30天",8.99],["5GB / 30天",10.99],["10GB / 30天",18.99],["20GB / 30天",29.99],["吃到飽（5天起）",48.99]];
 const CARDS=[["中信 uniopen",11,"加碼上限 500點/月（約刷 NT$6,250）；實體店"],["富邦 J卡",6,"3% 無上限＋登錄後單筆滿 NT$1,000 加碼 3%（1,000元/季）"],["星展 eco 永續卡",5,"加碼上限 600點/期（約 NT$15,000）"],["永豐 幣倍卡",6,"需資產門檻；上限 800元/期"],["第一銀行 一卡通聯名卡",3.5,"無上限；需電子帳單＋自扣"],["上海 簡單卡",3,"日韓實體，無上限"],["國泰 CUBE（趣旅行）",3.3,"無上限，Level 3 才有 3.3%"],["台新 Richart（玩旅刷）",3.3,"無上限"]];
 const PAY=[["百貨／餐廳／Olive Young","✔ 首選","部分","部分（現代百貨）","○","✔"],["超商 CU/GS25/7-11/emart24","✔","✔ CU、7-11","✔","✔ TWQR","✔"],["大創 Daiso、連鎖咖啡","✔","—","✔","✔ TWQR","✔"],["傳統市場、小吃攤","有時不行","—","✔ 有 ZeroPay 立牌的","—","✔ 首選"],["樂天／新羅免稅店","✔","✔","✔ 新羅","✔ TWQR","✔"],["計程車／Kakao T","✔ 綁卡","—","—","—","✔"],["扣款方式","信用卡","綁信用卡","只扣帳戶／餘額","只扣帳戶／餘額","—"]];
@@ -313,7 +375,8 @@ function renderDays(){$("days").innerHTML=DAYS.map((x,i)=>`<button class="${i==d
 const x=DAYS[dayIdx];$("dayBody").innerHTML=`<div class="card em" style="margin-top:12px"><div class="row" style="justify-content:space-between"><span class="mlabel">DAY ${dayIdx+1} · ${x.d}（${x.w}）</span><span class="badge sand">${x.wx}</span></div><h2 style="margin:6px 0 2px">${x.t}</h2><div class="muted">住：江南 Ibis Styles Ambassador（三成路431）・左右滑動可以換日</div></div>`+
 (x.warn?`<div class="card" style="background:var(--critical-soft);border-color:#e5c3ba"><b class="no">⚠ 待確認：</b>爸爸的海報應該是今天上午，請先跟 APLAR 確認。週六規定上午、下午茶敘都要站在海報旁。</div>`:"")+
 `<div class="tl">`+x.s.map(s=>`<div class="stop"><div class="card"><div class="row"><span class="time">${s[0]}</span><span class="tag ${TAGS[s[2]]}">${s[2]}</span>${s[3]?`<span class="muted">⏱ ${s[3]}</span>`:""}</div><h3 style="margin-top:6px">${s[1]}</h3>${s[4]?`<div class="muted">${s[4]}</div>`:""}<div class="row" style="margin-top:8px">${s[6]?`<span class="badge sage">長輩友善・${s[6]}</span>`:""}${s[5]?`<a href="${s[5]}" target="_blank">Naver Map ↗</a>`:""}</div></div></div>`).join("")+`</div>`+
-`<details><summary>備案：下雨／累了／爸爸行程變動</summary>${x.b.map(b=>`<div class="plan"><b>${b[0]}</b>　${b[1]}</div>`).join("")}</details>`;}
+legHTML(LEGS[dayIdx],dayIdx)+`<details><summary>備案：下雨／累了／爸爸行程變動</summary>${x.b.map(b=>`<div class="plan"><b>${b[0]}</b>　${b[1]}</div>`).join("")}</details>`;}
+document.addEventListener("click",e=>{const c=e.target.closest(".driver");if(!c)return;const t=c.dataset.copy;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>{c.querySelector(".mlabel").textContent="已複製 ✓ 可以貼到 Kakao T / Uber"}).catch(()=>{c.querySelector(".mlabel").textContent="請直接把這張給司機看"})});
 $("days").onclick=e=>{const b=e.target.closest("button");if(b){dayIdx=+b.dataset.i;renderDays()}};
 let tx=null;$("t-plan").addEventListener("touchstart",e=>tx=e.touches[0].clientX,{passive:true});$("t-plan").addEventListener("touchend",e=>{if(tx==null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>60){dayIdx=Math.min(4,Math.max(0,dayIdx+(dx<0?1:-1)));renderDays()}tx=null});
 // static content
