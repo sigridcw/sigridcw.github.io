@@ -1,0 +1,265 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>我們現在在哪裡？・首爾 2026</title>
+<style>
+:root{--bg:#fff6ee;--card:#fffdf9;--ink:#4a3a35;--muted:#9a857c;--pink:#ff9eb0;--orange:#ff9a5a;--maple:#e8643c;--gold:#f6c35b;--mint:#9fd8c2;--lav:#c9b8ef}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;background:linear-gradient(180deg,#ffe9dc 0%,#fff6ee 40%,#fdf1e6 100%);color:var(--ink);font-size:19px;line-height:1.55;min-height:100vh;overflow-x:hidden}
+.wrap{max-width:520px;margin:0 auto;padding:14px 14px 90px;position:relative;z-index:2}
+header{text-align:center;padding:6px 0 4px}
+h1{font-size:28px;margin:4px 0;letter-spacing:1px}
+h1 .hb{display:inline-block;animation:beat 1.2s infinite;color:#ff6f8e}
+.clock{font-size:18px;color:var(--muted)}
+.clock b{color:var(--maple);font-size:22px}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:10px 2px;scrollbar-width:none}
+.tab{flex:1 0 auto;border:0;background:#fff;border-radius:18px;padding:8px 12px;font-size:18px;color:var(--ink);box-shadow:0 2px 6px #e9c9b655;font-family:inherit;min-width:62px}
+.tab.on{background:linear-gradient(135deg,#ffb38a,#ff8fa8);color:#fff;font-weight:700;transform:translateY(-2px)}
+.tab small{display:block;font-size:14px;opacity:.85}
+.card{background:var(--card);border-radius:24px;padding:16px;margin:10px 0;box-shadow:0 6px 18px #e9b9a133}
+.daytitle{font-size:21px;font-weight:700;margin:0 0 4px}
+.wx{color:var(--muted);font-size:17px}
+.bar{height:22px;background:#ffe6dc;border-radius:12px;overflow:hidden;margin:10px 0 4px;position:relative}
+.bar i{display:block;height:100%;background:repeating-linear-gradient(45deg,#ffb07c 0 12px,#ff9aa9 12px 24px);border-radius:12px;transition:width 1s;animation:slide 2s linear infinite;background-size:34px 34px}
+.barlbl{font-size:16px;color:var(--muted);display:flex;justify-content:space-between}
+.now{display:flex;gap:12px;align-items:center}
+.now .big{font-size:44px;animation:bob 1.6s ease-in-out infinite}
+.now .lbl{font-size:15px;color:var(--muted)}
+.now .ttl{font-size:21px;font-weight:700}
+.next{margin-top:10px;background:#fff3e8;border-radius:16px;padding:10px 12px;font-size:19px}
+.next b{color:var(--maple);font-size:24px}
+.state{text-align:center;font-size:22px;padding:18px 8px}
+.state .em{font-size:60px;display:block;animation:bob 1.6s infinite}
+#route{position:relative;margin-top:8px}
+#route svg.path{position:absolute;left:0;top:0;width:100%;height:100%;z-index:0;overflow:visible}
+.stop{position:relative;z-index:1;display:flex;align-items:center;gap:10px;width:78%;margin:0 0 26px;cursor:pointer}
+.stop.r{margin-left:22%;flex-direction:row-reverse;text-align:right}
+.dot{flex:0 0 64px;height:64px;border-radius:50%;background:#fff;border:4px solid #f3d5c6;display:flex;align-items:center;justify-content:center;font-size:30px;position:relative;transition:.3s}
+.stop.done .dot{background:#f4fbf6;border-color:var(--mint)}
+.stop.done .dot::after{content:"✔";position:absolute;right:-8px;top:-8px;background:#4fb98a;color:#fff;font-size:16px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;transform:rotate(-12deg);border:2px solid #fff;animation:stamp .5s}
+.stop.cur .dot{border-color:var(--orange);background:#fff4e0;animation:glow 1.6s infinite}
+.stop.nxt .dot{border-style:dashed;border-color:var(--pink)}
+.sinfo{flex:1;background:#fff;border-radius:16px;padding:8px 12px;box-shadow:0 2px 8px #ecc8b444}
+.stop.cur .sinfo{background:#fff1df;outline:3px solid #ffc999}
+.stop.done .sinfo{opacity:.7}
+.st{font-size:17px;color:var(--maple);font-weight:700}
+.sn{font-size:18px;font-weight:600;line-height:1.35}
+.family{position:absolute;z-index:3;transition:top 1.2s ease,left 1.2s ease;pointer-events:none;width:120px;margin-left:-60px;margin-top:-100px;text-align:center}
+.family .ppl{display:flex;justify-content:center;gap:0}
+.p{display:flex;flex-direction:column;align-items:center;animation:walk .6s ease-in-out infinite alternate}
+.p:nth-child(2){animation-delay:.2s}.p:nth-child(3){animation-delay:.4s}
+.p span{font-size:32px;line-height:1}
+.p em{font-style:normal;font-size:12px;background:#fff;border-radius:8px;padding:0 4px;margin-top:1px;box-shadow:0 1px 3px #0002}
+.bubble{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);width:max-content;max-width:200px;white-space:normal!important;text-align:center;background:#fff;border-radius:14px;padding:5px 10px;font-size:15px;white-space:nowrap;box-shadow:0 3px 10px #e2a58e55;margin-bottom:6px;animation:pop .5s}
+.bubble::after{content:"";position:absolute;top:100%;left:50%;margin-left:-7px;border:7px solid transparent;border-top-color:#fff}
+.modal{position:fixed;inset:0;background:#0005;display:none;align-items:flex-end;justify-content:center;z-index:20}
+.modal.on{display:flex}
+.sheet{background:#fffaf5;border-radius:26px 26px 0 0;max-width:520px;width:100%;padding:20px 18px 34px;animation:up .3s;max-height:80vh;overflow:auto}
+.sheet h3{margin:4px 0 8px;font-size:23px}
+.sheet .meta{font-size:18px;color:var(--maple);font-weight:700}
+.sheet p{font-size:19px}
+.sheet .chip{display:inline-block;background:#e9f6ef;border-radius:10px;padding:2px 8px;margin:2px 4px 2px 0;font-size:16px}
+.sheet button{width:100%;font-size:20px;padding:12px;border:0;border-radius:16px;background:linear-gradient(135deg,#ffb38a,#ff8fa8);color:#fff;font-family:inherit;margin-top:10px}
+.links{display:flex;gap:8px;margin-top:14px}
+.links a{flex:1;text-align:center;background:#fff;border-radius:16px;padding:12px 6px;color:var(--ink);text-decoration:none;font-size:18px;box-shadow:0 2px 8px #ecc8b444}
+.dbg{position:fixed;top:0;left:0;right:0;background:#7a5cd6;color:#fff;font-size:14px;text-align:center;z-index:30;padding:2px}
+.leaf{position:fixed;top:-40px;z-index:1;pointer-events:none;animation:fall linear infinite;opacity:.85}
+.foot{text-align:center;color:var(--muted);font-size:15px;margin-top:14px}
+@keyframes fall{0%{transform:translate(0,-40px) rotate(0)}50%{transform:translate(40px,50vh) rotate(180deg)}100%{transform:translate(-20px,105vh) rotate(360deg)}}
+@keyframes walk{0%{transform:translateY(0) rotate(-6deg)}100%{transform:translateY(-8px) rotate(6deg)}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes beat{0%,100%{transform:scale(1)}30%{transform:scale(1.25)}}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 #ffa86b99}50%{box-shadow:0 0 0 16px #ffa86b00}}
+@keyframes stamp{0%{transform:scale(2.4) rotate(-30deg);opacity:0}100%{transform:scale(1) rotate(-12deg);opacity:1}}
+@keyframes pop{0%{transform:translateX(-50%) scale(.3)}100%{transform:translateX(-50%) scale(1)}}
+@keyframes up{from{transform:translateY(100%)}to{transform:none}}
+@keyframes slide{to{background-position:34px 0}}
+</style></head><body>
+<div class="wrap">
+<header><h1>我們現在在哪裡 <span class="hb">❤</span></h1>
+<div class="clock">首爾時間 <b id="clk">--:--</b> <span id="dte"></span></div></header>
+<div class="tabs" id="tabs"></div>
+<div id="main"></div>
+<div class="links"><a href="./#plan">📋 完整行程</a><a href="./#food">🍽️ 吃什麼</a><a href="./">🏠 回首頁</a></div>
+<div class="foot">每分鐘自動更新・點一下站點看詳細</div>
+</div>
+<div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
+<script>
+function nmap(q){return q}
+const FALLBACK_DAYS=[
+{d:"10/28",w:"三",i:"✈",t:"抵達首爾・狎鷗亭／新沙晚餐散步",wx:"晴 12° / 2°",s:[
+["06:00","聯合國派車到大全街70號接人","接送車","台中→桃園約2小時","朱小姐 04-22079189。護照、手機、行動電源放隨身包。"],
+["08:15","桃園 T1 易斯達航空 Eastar Jet 報到","步行","約1小時","ZE882・訂位代號 G1935L・座位 19A/B/C・每人託運 15kg。","","可申請輪椅／優先通關"],
+["10:45","ZE882 起飛 → 14:20 抵仁川 T1","飛機","約2.5小時","確認電子入境卡 QR 截圖在手機裡。"],
+["14:20","入境、領行李","步行","40–60分","落地後開 Saily eSIM＋數據漫遊。"],
+["15:00","ezTravel 接機：司機舉牌在入境大廳","接送車","70–90分","ORD0032176330・7人座。","","不用轉乘"],
+["16:30","入住 Ibis Styles Ambassador 江南，放行李就出門","步行","20分","三成路431・+82-2-3011-8888。",nmap("Ibis Styles Ambassador Seoul Gangnam"),"有電梯"],
+["17:15","計程車到新沙林蔭道（가로수길）散步、逛街","計程車","約15–20分（估計）","平路好走，咖啡店多可坐。",nmap("가로수길"),"平路"],
+["18:30","全家晚餐：韓一館 狎鷗亭店（已選定，尚未訂位）","用餐","1.5小時","1939 年老字號，烤牛肉、牛骨湯，全熟。訂位電話 1577-9963。爸爸當晚不參加任何晚宴。",nmap("한일관 압구정점")],
+["20:15","計程車回飯店","計程車","約15–20分（估計）","晚上 2°C，帽子圍巾要戴。"],
+["20:45","🍜 宵夜：飯店 B1 便利商店「泡麵圖書館」挑泡麵（媽咪想去）","步行","30分","下樓就到，整面牆的韓國泡麵可以挑；之後幾晚想再去也很方便。","","有電梯"]],
+b:[["班機延誤","直接在飯店附近吃晚餐，林蔭道取消。"]]},
+{d:"10/29",w:"四",i:"🍁",t:"賞楓銀杏日：景福宮・西村午餐・北村・三清洞・益善洞・仁寺洞・首爾林",wx:"晴 14° / 4°",s:[
+["08:30","飯店早餐後計程車到景福宮（光化門）","計程車","約35–45分（估計）","週二休館，週四有開。",nmap("경복궁")],
+["09:15","🍁 景福宮賞楓（10/29–11/15 Korea Grand Festival 期間全民免費入場）","步行","2小時15分","開放 09:00–18:00（10 月最後入場 17:00）。10:00 光化門守門將換崗。重點：香遠亭紅楓、慈慶殿北側沿北牆的銀杏。有免費中文／英文導覽，不用預約，依現場時刻。",nmap("경복궁"),"宮內平地為主"],
+["11:35","🍲 午餐：西村／光化門（候選見 10/29 午餐）","計程車","1小時","建議 土俗村蔘雞湯（媽咪指定，景福宮西側，計程車約 5 分）。不收預約，週四平日 11:45 前到可避開上班族；備案 光化門國飯（可電話預約）。",nmap("토속촌 삼계탕")],
+["12:45","北村韓屋村（只走平緩段，拍照）","計程車","50分","計程車約 10 分（估計）。北村有坡，累了就搭計程車跳過。",nmap("북촌한옥마을"),"有坡"],
+["13:35","三清洞街道散步、咖啡","步行","50分","下坡走到三清洞，平路為主。",nmap("삼청동")],
+["14:35","🏠 益善洞韓屋巷弄散步（媽咪想去）","計程車","40分","計程車約 10 分（估計）；百年韓屋改成的咖啡、甜點小店，巷子窄、平路。",nmap("익선동 한옥거리"),"平路"],
+["15:15","仁寺洞、Ssamziegil 傳統工藝街","步行","35分","益善洞走過去約 5 分（估計）。",nmap("인사동")],
+["15:50","計程車到首爾林（서울숲）","計程車","約30–40分（估計）","下午車多抓寬一點。下車點：首爾林遊客中心（盆唐線首爾林站附近）。",nmap("서울숲 방문자센터")],
+["16:30","🌳 首爾林銀杏林＋風之丘蘆葦（免費、24 小時開放）","步行","1小時15分","約 600 棵銀杏的 0.5 公里步道，慢走 40–60 分；傍晚斜光最美（日落約 17:35）。遊客中心 09:00–18:00 可免費借輪椅，17:50 前歸還。",nmap("서울숲"),"平路・可借輪椅"],
+["18:00","晚餐：聖水洞（候選見 10/29 晚餐）","計程車","1.5小時","建議 孝子洞목고기 聖水店（店員幫忙烤、全熟，Naver／CatchTable 可預約），首爾林計程車約 5 分。",nmap("효자동목고기 성수점")],
+["19:40","計程車回飯店","計程車","約20–30分（估計）","經永東大橋／清潭大橋回三成。"]],
+b:[["下雨","北村、三清洞縮短，多留在仁寺洞室內商店；首爾林改看遊客中心周邊短步道。"],["腳累","北村跳過，直接三清洞；首爾林先借輪椅。"]]},
+{d:"10/30",w:"五",i:"✦",t:"爸爸肌炎 SIG・下午聖水・DDP・廣藏・明洞・南山塔",wx:"小雨 18° / 9°",s:[
+["09:45","爸爸：計程車到 COEX","計程車","約5–8分（估計）","",nmap("COEX")],
+["10:30","⭐ 爸爸：肌炎專題小組會議 Myositis SIG（COEX 2F 209A）","會議","10:30–12:00","爸爸今天只有這一場，其他場次都不排。",nmap("COEX")],
+["10:00","媽咪＋我：現代百貨貿易中心＋現代免稅店","購物","2小時","跟 COEX 地下相連。",nmap("현대백화점 무역센터점"),"室內・電梯"],
+["12:00","全家午餐：COEX／貿易中心（候選見 10/30 午餐）","用餐","1小時","建議 西館麵屋 三成店（Naver 預約）。",nmap("서관면옥 삼성점")],
+["13:15","計程車到聖水洞：Olive Young N 聖水、Amore 聖水、街區咖啡","計程車","2小時","Amore 週一休，週五有開。",nmap("올리브영 N성수"),"有電梯"],
+["15:30","計程車到東大門 DDP（設計廣場）","計程車","45分","建築外觀＋室內展區，雨天也行。",nmap("동대문디자인플라자")],
+["16:15","廣藏市場（只吃熟食：綠豆煎餅、麻藥紫菜包飯）","步行","40分","不點生拌牛肉、生章魚。人多，抓緊包包。",nmap("광장시장")],
+["17:10","🍁 賞楓・德壽宮石牆路（덕수궁 돌담길）散步","步行","30分","平路、銀杏大道；預測首都圈銀杏 10/31 前後最盛，10/30 應已轉黃。計程車從廣藏市場約 15 分（估計）。",nmap("덕수궁 돌담길"),"平路"],
+["18:00","晚餐：明洞（候選見 10/30 晚餐）","用餐","1小時","建議 多兒炭火燒烤 明洞店（CatchTable）。",nmap("다올숯불구이 명동점")],
+["19:00","🛍️ 明洞逛街：大創 明洞站店＋Olive Young 明洞旗艦店（媽咪想去）","購物","1小時","大創有好幾層樓，生活小物、文具、零食都便宜；Olive Young 美妝保養。",nmap("다이소 명동역점"),"有電梯"],
+["20:00","計程車上南山 N 首爾塔夜景","計程車","1.5小時","計程車可到南山纜車站附近，或搭南山循環巴士上塔（估計）。",nmap("N서울타워"),"塔內電梯"],
+["21:30","計程車回飯店","計程車","約30–40分（估計）",""]],
+b:[["雨很大","DDP＋明洞地下街為主，南山塔改晴天或取消。"]]},
+{d:"10/31",w:"六",i:"◆",t:"爸爸海報（上午）・下午蠶室・晚上漢江",wx:"多雲 17° / 8°",s:[
+["08:30","飯店早餐","用餐","","爸爸帶海報筒、A4 摘要、名片。"],
+["09:15","⭐ 爸爸：計程車到 COEX 貼海報","會議","約5–8分（估計）","09:30 前貼好；10:00–10:25 茶敘站在海報旁。午餐後撤海報。",nmap("COEX Convention")],
+["09:30","🍁 賞楓・媽咪＋我：奉恩寺（COEX 對面）","步行","1小時","寺內銀杏、楓樹；預測首都圈銀杏 10/31 前後最盛。",nmap("봉은사")],
+["10:45","媽咪＋我：星空圖書館（COEX 內）","步行","45分","",nmap("별마당 도서관"),"室內"],
+["12:00","全家午餐：三成（候選見 10/31 午餐）","用餐","1小時","建議 모도우 三成店（全熟韓牛，CatchTable）。",nmap("모도우 삼성점")],
+["13:15","爸爸撤海報，計程車到蠶室樂天世界塔 Seoul Sky","計程車","約15分＋1.5小時","117–123 樓觀景台。",nmap("서울스카이"),"電梯"],
+["15:15","石村湖散步（平路環湖）","步行","45分","",nmap("석촌호수"),"平路・有長椅"],
+["16:15","樂天超市 Lotte Mart 世界塔店買伴手禮","購物","1小時","海苔、零食、泡麵。液體放託運。",nmap("롯데마트 월드타워점")],
+["17:45","晚餐：蠶室（候選見 10/31 晚餐）","用餐","1小時","建議 東華古屋 樂天世界購物中心店（CatchTable／Naver）。",nmap("동화고옥 롯데월드몰점")],
+["19:15","🌉 盤浦漢江公園：先在公園便利商店用泡麵機煮漢江泡麵（媽咪想吃），再看月光彩虹噴泉（目標 20:00 或 20:30 場）","計程車","1小時","晚餐可以吃少一點留點胃。2026 年運轉期 3/16～10 月底，10/31 是最後幾天；因節能縮減為每天 3 場 19:30、20:00、20:30（各 20 分）。下雨或風大會停，詢問 02-3780-0578。",nmap("반포한강공원")],
+["20:15","計程車回飯店","計程車","約20分（估計）","晚上先辦德威航空線上報到（10/31 14:25 起開放）。"]],
+b:[["下雨","石村湖取消，改樂天世界購物中心室內。"]]},
+{d:"11/1",w:"日",i:"✈",t:"回台中",wx:"晴 15° / 7°",s:[
+["08:00","飯店早餐","用餐","","前一晚已辦好線上報到。"],
+["09:45","退房，行李在大廳集合","步行","","退稅商品不要拆封。"],
+["10:20","ezTravel 送機：飯店 → 仁川 T1","接送車","約70–90分","ORD0032176215。","","不用轉乘"],
+["11:40","德威航空 T'way 報到（T1 3樓 B 區，13:35 截止）、退稅；機場簡單午餐","步行","","時間緊，市區不排午餐。","","可申請輪椅"],
+["14:25","TW669 德威航空 → 16:30 台中清泉崗","飛機","","R3LXS3・座位 17A/B/C・每人託運 15kg。"],
+["16:30","聯合國派車回大全街70號","接送車","",""]],
+b:[]}];
+const YEAR=2026;
+function seoulNow(){
+  const q=new URLSearchParams(location.search).get('t');
+  if(q){const m=q.match(/(\d{4})-(\d\d)-(\d\d)[T ](\d\d):(\d\d)/);if(m)return{y:+m[1],mo:+m[2],d:+m[3],h:+m[4],mi:+m[5],dbg:q}}
+  const p={};new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Seoul',year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric',hourCycle:'h23'}).formatToParts(new Date()).forEach(x=>p[x.type]=x.value);
+  return{y:+p.year,mo:+p.month,d:+p.day,h:+p.hour%24,mi:+p.minute};
+}
+const toMin=t=>{const[a,b]=t.split(':');return +a*60+ +b};
+const fmt=m=>String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');
+// 無咖啡因、不提付款：過濾句子
+const BAD=/咖啡|茶|付款|刷卡|現金|綁卡|₩|NT\$|費用|定額/;
+function clean(s){if(!s)return'';return s.replace(/、?街區咖啡|、咖啡|咖啡、/g,'').replace(/茶敘/g,'交流時間').split(/(?<=[。；])/).filter(x=>!BAD.test(x)).join('').trim()}
+function icon(name,mode){
+  const n=name;
+  if(/✈|起飛|飛機|TW669|ZE882/.test(n)||mode=='飛機')return'✈️';
+  if(/早餐/.test(n))return'🍳';
+  if(/宵夜|泡麵/.test(n))return'🍜';
+  if(/午餐|晚餐|用餐/.test(n)||mode=='用餐')return'🍲';
+  if(/入住|回飯店|退房|飯店/.test(n))return'🏨';
+  if(/會議|海報|SIG/.test(n))return'🔬';
+  if(/楓|銀杏|首爾林/.test(n))return'🍁';
+  if(/景福宮|宮|寺/.test(n))return'🏯';
+  if(/塔|Sky/.test(n))return'🗼';
+  if(/漢江|噴泉|湖/.test(n))return'🌈';
+  if(/韓屋|北村|益善|三清|仁寺/.test(n))return'🏡';
+  if(/購物|逛|超市|百貨|Olive|大創|市場/.test(n)||mode=='購物')return'🛍️';
+  if(/報到|入境|機場|接機|送機/.test(n))return'🧳';
+  if(mode=='計程車')return'🚕';if(mode=='接送車')return'🚐';
+  return'📍';
+}
+const LINES=[[/起飛|飛機/,'飛高高～首爾我們來了！'],[/早餐/,'飯店早餐吃飽飽才有力氣 💪'],[/泡麵|宵夜/,'整面牆的泡麵，好難選喔！'],[/選擇中/,'今天晚上吃什麼呢？好期待～'],[/晚餐|午餐/,'肚子咕嚕咕嚕，開飯囉！🍚'],[/楓|銀杏/,'哇～葉子好漂亮，來拍照！📸'],[/景福宮/,'穿越回朝鮮時代～'],[/林蔭道|散步/,'慢慢走，手牽手 ❤'],[/會議|海報/,'爸爸加油！最棒了！👏'],[/塔|Sky/,'好高喔～看得到我們家嗎？'],[/噴泉|漢江/,'彩虹噴泉亮起來囉 🌈'],[/購物|逛|超市|大創|Olive/,'買伴手禮給大家～🎁'],[/計程車/,'坐車車，休息一下～'],[/接送|接機|送機/,'司機叔叔來接我們囉 🚐'],[/入住|飯店/,'放下行李，出發！'],[/報到|入境/,'護照拿好喔！'],[/回台中|聯合國/,'回家囉，好好玩！🏠']];
+const line=n=>{for(const[r,s]of LINES)if(r.test(n))return s;return'一起去冒險吧！✨'};
+
+function normalize(DAYS){
+  return DAYS.map(D=>{
+    let s=D.s.map(x=>({t:x[0],n:x[1],mode:x[2],dur:x[3],note:x[4],acc:x[6]||''}));
+    if(D.d=='10/28'){
+      s=s.filter(x=>!/新沙林蔭道/.test(x.n));
+      s.forEach(x=>{if(/晚餐/.test(x.n)&&/韓一館/.test(x.n)){x.t='18:30';x.n='晚餐（選擇中）';x.note='全家正在從 4 家餐廳裡挑選，選好再告訴大家！';x.dur='約1.5小時'}});
+      s.push({t:'17:00',n:'計程車到新沙站 8 號出口（신사역 8번출구）',mode:'計程車',dur:'約15–20分',note:'從飯店出發，下車就在出口旁。',acc:''});
+      s.push({t:'17:20',n:'散步新沙林蔭道（가로수길）約 1.8 公里',mode:'步行',dur:'約1小時',note:'平路好走，慢慢逛、拍拍照。晚上會冷，圍巾戴好。',acc:'平路'});
+    }
+    s.forEach(x=>{x.m=toMin(x.t);x.n=clean(x.n).replace(/^[\u{1F300}-\u{1FAFF}\u2600-\u27BF\u2B50\uFE0F\s]+/u,'').replace(/（候選見[^）]*）/g,'').replace(/（10\/29–11\/15[^）]*）/,'');x.note=clean(x.note);x.ic=icon(x.n,x.mode)});
+    s.sort((a,b)=>a.m-b.m);
+    return{d:D.d,w:D.w,t:clean(D.t),wx:D.wx,s};
+  });
+}
+let DAYS=normalize(FALLBACK_DAYS),sel=null,userSel=false;
+
+async function loadLive(){
+  try{const r=await fetch('./index.html?_='+Date.now(),{cache:'no-store'});const h=await r.text();
+    const a=h.indexOf('const DAYS=['),b=h.indexOf('const DEST=');if(a<0||b<0)return;
+    const D=new Function('nmap',h.slice(a,b).replace('const DAYS=','return ')) (q=>q);
+    if(Array.isArray(D)&&D.length)DAYS=normalize(D);render();
+  }catch(e){}
+}
+function state(){
+  const N=seoulNow();const key=N.mo+'/'+N.d, now=N.h*60+N.mi;
+  const idx=DAYS.findIndex(D=>{const[m,d]=D.d.split('/');return +m==N.mo&&+d==N.d});
+  const start=new Date(Date.UTC(YEAR,9,28)),today=new Date(Date.UTC(N.y,N.mo-1,N.d));
+  const phase=N.y<YEAR||today<start?'before':(idx<0?'after':'during');
+  return{N,now,idx,phase,daysLeft:Math.round((start-today)/864e5)};
+}
+function cur(D,now){let c=-1;D.s.forEach((x,i)=>{if(x.m<=now)c=i});return c}
+function render(){
+  const S=state();const{N,now}=S;
+  clk.textContent=fmt(now);dte.textContent=N.mo+'月'+N.d+'日';
+  if(N.dbg&&!document.querySelector('.dbg')){const b=document.createElement('div');b.className='dbg';b.textContent='🧪 模擬時間 '+N.dbg;document.body.appendChild(b)}
+  if(!userSel)sel=S.phase=='during'?S.idx:(S.phase=='before'?0:DAYS.length-1);
+  tabs.innerHTML=DAYS.map((D,i)=>`<button class="tab${i==sel?' on':''}" onclick="pick(${i})">${D.d}<small>週${D.w}${i==S.idx?' ・今天':''}</small></button>`).join('');
+  const D=DAYS[sel];const isToday=S.phase=='during'&&sel==S.idx;
+  const dayPast=S.phase=='after'||(S.phase=='during'&&sel<S.idx);
+  const c=isToday?cur(D,now):(dayPast?D.s.length-1:-1);
+  let top='';
+  if(S.phase=='before'&&!userSel||S.phase=='before'&&sel==0&&!isToday){
+    top=`<div class="card state"><span class="em">🧳</span>${S.daysLeft>0?`再 <b style="color:var(--maple);font-size:34px">${S.daysLeft}</b> 天就要出發去首爾囉！`:'今天就要出發囉！'}<div class="wx">行李整理好了嗎？❤</div></div>`;
+  }else if(S.phase=='after'&&!userSel){
+    top=`<div class="card state"><span class="em">🏠</span>我們平安回家囉！<div class="wx">首爾好好玩，謝謝爸爸媽媽 ❤ 下次再一起去！</div></div>`;
+  }
+  let prog=0;
+  if(isToday){const f=D.s[0].m,l=D.s[D.s.length-1].m+60;prog=Math.max(0,Math.min(100,(now-f)/(l-f)*100))}else if(dayPast)prog=100;
+  let nowcard='';
+  if(isToday){
+    const x=c>=0?D.s[c]:null,n=D.s[c+1];
+    nowcard=`<div class="now"><div class="big">${x?x.ic:'🌅'}</div><div><div class="lbl">我們現在</div><div class="ttl">${x?x.n:'還沒出門，準備中～'}</div></div></div>`;
+    if(n){const dm=n.m-now;const h=Math.floor(dm/60),m=dm%60;
+      nowcard+=`<div class="next">⏰ 再 <b>${h?h+' 小時 ':''}${m} 分鐘</b>到下一站：<br>${n.ic} ${n.n}</div>`}
+    else nowcard+=`<div class="next">🌙 今天的行程都完成囉！好好休息～</div>`;
+  }
+  main.innerHTML=top+`<div class="card"><div class="daytitle">${D.d}（${D.w}）${D.t}</div><div class="wx">☀️ ${D.wx}</div>
+  <div class="bar"><i style="width:${prog}%"></i></div><div class="barlbl"><span>今天進度</span><span>${Math.round(prog)}%</span></div>${nowcard}</div>
+  <div class="card"><div id="route"><svg class="path" id="svg"></svg>${D.s.map((x,i)=>`<div class="stop${i%2?' r':''}${i<c||(dayPast&&i<=c)?' done':''}${i==c&&isToday?' cur':''}${i==c+1&&isToday?' nxt':''}" onclick="show(${i})"><div class="dot">${x.ic}</div><div class="sinfo"><div class="st">${x.t}</div><div class="sn">${x.n}</div></div></div>`).join('')}
+  <div class="family" id="fam"><div class="bubble" id="bub"></div><div class="ppl"><div class="p"><span>👨</span><em>爸爸</em></div><div class="p"><span>👩</span><em>媽媽</em></div><div class="p"><span>👧</span><em>佳菁</em></div></div></div></div></div>`;
+  requestAnimationFrame(()=>{drawRoute(D,isToday?c:(dayPast?D.s.length-1:0),isToday||dayPast);if(isToday&&!window._sc){window._sc=1;const f=document.getElementById('fam');f&&f.scrollIntoView({block:'center'})}});
+}
+function drawRoute(D,c,active){
+  const R=document.getElementById('route');if(!R)return;const rb=R.getBoundingClientRect();
+  const pts=[...R.querySelectorAll('.dot')].map(d=>{const b=d.getBoundingClientRect();return[b.left-rb.left+b.width/2,b.top-rb.top+b.height/2]});
+  let p=`M${pts[0][0]},${pts[0][1]}`;for(let i=1;i<pts.length;i++){const[a,b]=pts[i-1],[x,y]=pts[i];const my=(b+y)/2;p+=` C${a},${my} ${x},${my} ${x},${y}`}
+  svg.innerHTML=`<path d="${p}" fill="none" stroke="#f2bfa8" stroke-width="6" stroke-dasharray="2 14" stroke-linecap="round"/>`;
+  const i=Math.max(0,c);const f=document.getElementById('fam');
+  f.style.left=Math.min(Math.max(pts[i][0],62),rb.width-62)+'px';f.style.top=pts[i][1]+'px';
+  bub.textContent=active&&c>=0?line(D.s[c].n):'準備出發囉～ ❤';
+}
+function pick(i){sel=i;userSel=true;render()}
+function show(i){const x=DAYS[sel].s[i];
+  sheet.innerHTML=`<div style="font-size:48px">${x.ic}</div><div class="meta">${x.t}${x.dur?'・'+clean(x.dur):''}</div><h3>${x.n}</h3>${x.note?`<p>${x.note}</p>`:''}${x.mode?`<span class="chip">${x.mode}</span>`:''}${x.acc?`<span class="chip">♿ ${x.acc}</span>`:''}<p style="color:var(--muted)">💬 ${line(x.n)}</p><button onclick="modal.classList.remove('on')">好的 ❤</button>`;
+  modal.classList.add('on')}
+modal.onclick=e=>{if(e.target==modal)modal.classList.remove('on')};
+// 滑動切換日期
+let sx=null;document.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+document.addEventListener('touchend',e=>{if(sx==null)return;const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>70){const n=sel+(dx<0?1:-1);if(n>=0&&n<DAYS.length)pick(n)}sx=null});
+// 楓葉
+for(let i=0;i<14;i++){const l=document.createElement('div');l.className='leaf';l.textContent=['🍁','🍂','🍁','❤'][i%4];l.style.left=Math.random()*100+'vw';l.style.fontSize=(16+Math.random()*16)+'px';l.style.animationDuration=(9+Math.random()*10)+'s';l.style.animationDelay=(-Math.random()*15)+'s';document.body.appendChild(l)}
+window.addEventListener('resize',render);
+render();loadLive();setInterval(render,60000);
+</script></body></html>
