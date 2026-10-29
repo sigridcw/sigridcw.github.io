@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>🐻 景福宮賞楓散步地圖</title>
+<title>🐻 10/29 今天的散步地圖</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@500;700&family=Noto+Serif+TC:wght@600;900&display=swap" rel="stylesheet">
 <style>
@@ -48,7 +48,7 @@
 .leaflet-tooltip.itip{pointer-events:auto;cursor:pointer}.ipin{cursor:pointer}</style></head><body>
 <div id="map"></div>
 <div class="top"><a class="home" href="./">← 行程</a><div id="chip">📡 定位中…</div></div>
-<div class="layers"><button class="lchip on" data-l="route">主要路線</button><button class="lchip on" data-l="p">🏯 宮殿與門</button><button class="lchip on" data-l="s">🏮 西村景點</button><button class="lchip on" data-l="r">🍲 備案餐廳</button></div>
+<div class="layers"><button class="lchip day" data-d="am">🌅 上午 景福宮</button><button class="lchip day" data-d="pm">🍁 下午 三清洞→首爾林</button><button class="lchip day" data-d="all">🗺️ 全天</button><button class="lchip on" data-l="route">主要路線</button><button class="lchip on" data-l="p">🏯 宮殿與門</button><button class="lchip on" data-l="s">🏮 西村景點</button><button class="lchip on" data-l="r">🍲 備案餐廳</button></div>
 <button id="start">📍 開始定位</button>
 <div class="fab"><button id="follow" class="on" title="跟隨我">🎯</button><button id="compass" title="指南針">🧭</button><button id="fit" title="看全部">🗺️</button></div>
 <div id="sheet"><div class="grab"></div>
@@ -70,8 +70,17 @@ const S=[
 [37.58238,126.97705,"香遠亭","경복궁 향원정","池中小亭＋拱橋，全宮秋色最美🍁🍁",1],
 [37.58083,126.97904,"國立民俗博物館前楓葉","국립민속박물관","前庭紅楓步道🍁，拍完回香遠亭往西走。",1],
 [37.57876,126.97407,"迎秋門（西側出口）","경복궁 영추문","從西門出去最近土俗村。⚠ 沒開的話改從光化門那側出去，沿宮牆往西走。"],
-[37.57768,126.97153,"土俗村蔘雞湯","토속촌삼계탕","서울 종로구 자하문로5길 5・每天 10:00–22:00 不休息。景福宮站2號出口走約200m，GS25 左邊小巷。"]];
-const R=[[37.5763,126.9737],[37.57645,126.9744],[37.57657,126.97497],[37.5767,126.9760],[37.57695,126.9769],[37.5777,126.9769],[37.57854,126.97699],[37.5791,126.9770],[37.5792,126.9764],[37.57975,126.9764],[37.57975,126.97597],[37.57975,126.9764],[37.57953,126.97702],[37.5803,126.9770],[37.5815,126.9770],[37.58238,126.97705],[37.5821,126.9780],[37.58083,126.97904],[37.5821,126.9780],[37.58238,126.97705],[37.5820,126.9762],[37.5808,126.9752],[37.5795,126.9745],[37.57876,126.9743],[37.57876,126.97407],[37.5787,126.9728],[37.5778,126.9722],[37.57768,126.97153]];
+[37.576553,126.97149,"午餐・체부동잔치집","체부동잔치집","午餐在這裡吃清湯麵、煎餅。吃飽往東走，沿景福宮東牆去三清洞。"],
+[37.58050,126.98070,"三清洞銀杏大道","삼청동길","沿景福宮東牆的三清路，秋天整排銀杏金黃🍁",1],
+[37.58260,126.98580,"北村韓屋村","북촌한옥마을","數百棟傳統韓屋的住宅區，請小聲。"],
+[37.57426,126.98482,"仁寺洞","인사동","古董、筆墨、傳統工藝老街。"],
+[37.57436,126.98977,"益善洞韓屋巷","익선동","1920年代的都市型韓屋巷弄。"],
+[37.57180,126.99170,"鍾路3街站（5號線）","종로3가역","搭地鐵去首爾林。"],
+[37.54440,127.03990,"首爾林","서울숲","日落 17:35，賞楓散步🍁",1],
+[37.543688,127.055425,"晚餐・효자동목고기 성수점","효자동목고기 성수점","店員幫忙烤的全熟濟州豬頸肉。"],
+[37.50579,127.048348,"宣陵站 → 回飯店","선릉역","1號出口出來走約10分鐘回飯店。"]]
+const R=[[37.5763,126.9737],[37.57645,126.9744],[37.57657,126.97497],[37.5767,126.9760],[37.57695,126.9769],[37.5777,126.9769],[37.57854,126.97699],[37.5791,126.9770],[37.5792,126.9764],[37.57975,126.9764],[37.57975,126.97597],[37.57975,126.9764],[37.57953,126.97702],[37.5803,126.9770],[37.5815,126.9770],[37.58238,126.97705],[37.5821,126.9780],[37.58083,126.97904],[37.5821,126.9780],[37.58238,126.97705],[37.5820,126.9762],[37.5808,126.9752],[37.5795,126.9745],[37.57876,126.9743],[37.57876,126.97407],[37.5787,126.9728],[37.5778,126.9722],[37.57768,126.97153],[37.5766,126.9720],[37.5762,126.9745],[37.5758,126.9770],[37.5760,126.9794],[37.5775,126.9800],[37.5790,126.9804],[37.58050,126.98070],[37.5815,126.9815],[37.5820,126.9830],[37.5822,126.9845],[37.58260,126.98580],[37.5810,126.9862],[37.5790,126.9862],[37.5770,126.9860],[37.5755,126.9855],[37.57426,126.98482],[37.5735,126.9862],[37.5740,126.9880],[37.57436,126.98977],[37.5728,126.9905],[37.57180,126.99170]];
+const RAIL1=[[37.57180,126.99170],[37.5614,127.0377],[37.54373,127.045188]],RAIL2=[[37.54373,127.045188],[37.5273,127.0405],[37.50579,127.048348]],WALK2=[[37.54373,127.045188],[37.54440,127.03990],[37.5441,127.0460],[37.5440,127.0510],[37.543688,127.055425]],WALK3=[[37.50579,127.048348],[37.5064,127.0520],[37.5073,127.0559]];
 const ST=[
 ["景福宮是朝鮮王朝第一座、也是最大的正宮，今天我們就從這裡開始！",
 "1395年朝鮮開國君主太祖李成桂遷都漢陽後建造景福宮。宮名由開國功臣鄭道傳取自《詩經・大雅・既醉》：「既醉以酒，既飽以德，君子萬年，介爾景福」，意思是祝君王萬年享大福。1592年壬辰倭亂時宮殿全部燒毀，荒廢了將近270年。1867年高宗的父親興宣大院君才把它重建起來，規模達數百棟建築。日本殖民時期大部分建築被拆除，1990年代起韓國政府展開長期復原工程，到今天仍在進行中。",
@@ -109,10 +118,42 @@ const ST=[
 "景福宮有四座城門：南邊光化門、東邊建春門、北邊神武門、西邊迎秋門。按照五行，西方對應秋天，所以叫「迎秋」——迎接秋天；東門「建春」則對應春天。迎秋門以前是文武官員上朝出入的門。1926年因為電車路線被拆除，1975年重建，但一直沒開放，直到2018年才重新對一般民眾開放。",
 "跟爸媽說：我們正好在秋天走迎秋門出宮，名字完全應景🍁！而且這道門關了將近半世紀，現在才能走，算是很幸運。",
 "出門前回頭看一下城門上的匾額「迎秋門」。⚠ 若沒開放，請改從光化門出去，沿宮牆往西走。"],
-["首爾最有名的蔘雞湯老店之一，全熟熱湯，爸媽最愛。",
-"土俗村從1983年營業至今，在西村的傳統韓屋群中佔了好幾棟韓屋，是排隊名店。招牌蔘雞湯用未滿50天的童子雞，肚子裡塞糯米、紅棗、栗子、大蒜、人蔘，加上用堅果和穀物熬的濃稠白湯。地址：서울 종로구 자하문로5길 5，每天10:00–22:00不休息。",
-"已故韓國總統盧武鉉據說是這裡的常客，所以這家店名氣更大。韓國人有「以熱治熱」的習慣，三伏天最熱的時候吃蔘雞湯補身體；我們秋天吃剛好暖胃。附的小杯人蔘酒可以倒進湯裡或直接喝（爸媽可以喝喝看）。",
-"招牌蔘雞湯（全熟）；先把雞肉沾鹽胡椒，最後把糯米飯和湯拌在一起吃。可以從景福宮站2號出口走約200m，GS25左邊小巷。"]];
+["西村在地排隊名店的平價麵食，今天的午餐站🍜",
+"體府洞一帶是朝鮮時代中人（翻譯官、醫官等技術官僚）聚居的地方，西村也因在景福宮西邊而得名。這家店以便宜大碗的잔치국수（宴會麵）出名，是附近上班族和在地人的愛店。",
+"「잔치국수」字面意思是「宴會麵」——以前韓國辦婚禮會請客人吃這碗麵，象徵長長久久，所以韓國人問「什麼時候請吃麵？」就是在問「什麼時候結婚？」，可以拿來逗爸媽😆。",
+"吃飽往東走：沿景福宮南側經光化門、東十字閣，再沿東牆往北上三清路看銀杏。"],
+["沿著景福宮東牆延伸的三清路，秋天一整排銀杏金黃，是首爾最美的賞銀杏散步道之一🍁。",
+"三清洞的名字來自道教的「三清」（玉清、上清、太清），朝鮮時代這裡有祭祀道教三清星辰的昭格署。另一個說法是這裡「山清、水清、人心清」所以叫三清。路的起點是東十字閣——原本是景福宮宮牆東南角的望樓，日本時期因拓寬馬路而和宮牆分開，現在孤零零站在路中間。",
+"跟爸媽說：路中間那座孤立的小樓（東十字閣）以前是連在宮牆上的瞭望塔，被馬路硬生生切開了。三清路兩旁的銀杏都是公的或經過挑選，比較少有銀杏果的臭味——不過踩到黃色果實還是會很臭，走路小心！",
+"東十字閣、宮牆＋銀杏的經典照、國立現代美術館前的庭院。"],
+["數百棟傳統韓屋聚集的住宅區，位在景福宮和昌德宮之間，能看到首爾最經典的屋瓦巷弄。",
+"「北村」是指清溪川和鍾路的北邊，朝鮮時代住的是王族和高官兩班。現在看到的大部分韓屋其實是1920–30年代由建築商鄭世權等人把大宅分割、蓋成的中小型都市韓屋。2024年起部分區域實施觀光管制：北村路11街一帶每天 17:00 以後到隔天 10:00 禁止觀光客進入。",
+"這裡是真的有人住的社區！路邊常看到「請安靜」的標語，拍照要小聲。北村路11街斜坡上可以看到屋頂層層疊疊、遠方是首爾塔的經典畫面（北村八景之一）。",
+"北村路11街的屋瓦斜坡（17:00 前要離開）、嘉會洞的韓屋巷弄；走平緩的路段就好，陡坡別硬爬。"],
+["首爾最有名的傳統文化街，古董、筆墨紙硯、傳統工藝聚集的老街。",
+"朝鮮時代這一帶住著畫員（宮廷畫師）的「圖畫署」和許多兩班，日本殖民時期沒落的兩班家族把家中古董拿出來賣，逐漸形成古董街。韓戰後成為首爾的古書畫、筆墨紙硯中心，1988年起週末成為步行街。街上連星巴克都必須掛韓文招牌，是唯一的例外規定。",
+"有趣冷知識：仁寺洞的名字是從朝鮮時代的「寬仁坊」和「大寺洞」各取一個字組成的。巷子裡藏著很多傳統茶院和老畫廊，有些已經開了半世紀以上。",
+"主街仁寺洞街的老招牌、韓文招牌的連鎖店、往巷子裡看看傳統工藝的老店面（當作街景欣賞就好）。"],
+["1920年代蓋的都市韓屋巷弄，現在是首爾最有氛圍的老巷之一。",
+"益善洞韓屋群是1920年代由「建陽社」的鄭世權建造的，他被稱為「建築王」，為了阻止日本人買下首爾北村一帶土地，大量蓋出平價的小型韓屋賣給朝鮮人。這是首爾最早的韓屋集合住宅區之一，2010年代後老屋改造成小店，巷子非常窄。",
+"跟爸媽說：這些小韓屋是100年前的「國民住宅」，鄭世權蓋房子是為了守護民族的土地，後來還資助朝鮮語學會的韓文辭典工作，結果被日本當局盯上而破產。",
+"彎彎曲曲的窄巷、屋瓦和老木門（人多請注意長輩腳步）。"],
+["在這裡搭地鐵去首爾林🚇。",
+"鍾路3街站是1、3、5號線的交會站，5號線月台在比較深的南側。路線：5號線往「마천 馬川」方向坐6站到「왕십리 往十里」，轉水仁盆唐線（黃色）往「인천 仁川」方向坐1站到「서울숲 首爾林」，3號出口出來就是公園。全程約35分鐘，每人約 ₩1,550（約 NT$38）。",
+"往十里的名字有個傳說：朝鮮開國時無學大師找首都位置，走到這裡遇到老人說「再往前走十里」，所以叫往十里，往前十里就是景福宮的位置！",
+"注意找 5 號線（紫色）的指標；轉乘水仁盆唐線看黃色指標。長輩可以搭電梯。"],
+["首爾的大型城市公園，有森林、鹿園、湖泊，秋天楓葉和銀杏很美🍁，今天日落 17:35。",
+"這裡在朝鮮時代是國王狩獵、閱兵的東郊（纛島 뚝섬），王會在這裡檢閱軍隊。之後變成自來水廠、賽馬場、高爾夫球場，2005年才改建成首爾林，面積約35萬坪的森林公園，靠近漢江。",
+"公園裡有梅花鹿園，可以從橋上看鹿（不能餵）。纛島的「纛」是指軍隊的大旗，因為國王在這裡立大旗閱兵而得名——跟爸媽說這裡以前是國王的狩獵場！",
+"銀杏林、鹿園、湖邊步道看日落；天黑前往晚餐方向走。"],
+["今天的晚餐：店員幫忙烤的全熟濟州豬頸肉。",
+"位於聖水洞的烤肉店，招牌是濟州豬頸肉（목살），店員會在桌邊幫忙烤到全熟並剪好。聖水洞以前是工廠和製鞋區，現在老工廠改造成很熱門的街區。平日約 10:00–22:00（15:00–17:00 休息，以 Naver 為準）。",
+"聖水洞被稱作「首爾的布魯克林」，紅磚老工廠就是它的特色；吃飯前可以讓爸媽看看紅磚建築。",
+"讓店員烤到全熟；從首爾林走過來約15–20分，或搭計程車約5分。"],
+["回飯店：首爾林站搭水仁盆唐線直達宣陵站🚇。",
+"從서울숲 首爾林站搭水仁盆唐線（黃色）往「수원 水原」方向，坐4站到「선릉 宣陵」，1號出口出來走約10分鐘到飯店 Ibis Styles Ambassador Seoul Gangnam（서울 강남구 삼성로 431）。宣陵站名來自旁邊的朝鮮王陵「宣陵」（成宗的陵墓），是世界遺產。",
+"跟爸媽說：飯店旁邊就有世界遺產的王陵，首爾市中心有古墓公園真的很特別。",
+"上車前確認方向是「수원」；計程車可以直接給司機看飯店地址。"]];
 let seen=JSON.parse(localStorage.gbSeen||'[]');
 function showStory(i){const s=S[i],t=ST[i],el=document.getElementById('story');
 el.innerHTML=`<button class="x" onclick="document.getElementById('story').classList.remove('show')">✕</button><div class="ko">第 ${i} 站 ${s[5]?'🍁':'🐻'}</div><h2>${s[2]}</h2><div class="ko" style="font-size:16px">${s[3]}</div>
@@ -123,6 +164,12 @@ var osmTiles=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZo
 var tileErr=0;osmTiles.on('tileerror',function(){if(++tileErr===4){map.removeLayer(osmTiles);L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);}});
 // info layers: [lat,lng,icon,zh,ko,layer,[一句話,歷史,故事,必看]]  coords: OSM Nominatim 2026-10-29 (≈ = approximate)
 const INFO=[
+[37.57768,126.97153,"🍲","土俗村蔘雞湯（備案）","토속촌삼계탕","r",["首爾最有名的蔘雞湯老店之一。","1983年開業，童子雞塞糯米、紅棗、人蔘，全熟濃湯。每天10:00–22:00。","據說已故總統盧武鉉是常客。","若想晚點再來，排隊通常 15:00 後較短（以現場為準）。"]],
+[37.5073,127.0559,"🏨","飯店 Ibis Styles Ambassador Gangnam≈","서울 강남구 삼성로 431","p",["今晚的家🏨","地址：서울 강남구 삼성로 431。宣陵站1號出口走約10分鐘。","計程車直接給司機看韓文地址。","複製韓文地址給司機。"]],
+[37.581365,126.982985,"🏛️","正讀圖書館","정독도서관","p",["北村裡的公共圖書館，原本是京畿高中舊址。","1900年創立的京畿高中是韓國第一所公立中學，1976年學校搬到江南後改為圖書館。庭院一帶原是金玉均等開化派人士的宅邸舊址。","秋天庭院銀杏和櫻樹步道很美，可以免費進去坐坐、上廁所休息。","庭院的大樹與紅磚校舍。"]],
+[37.579553,126.980435,"🏛️","國立現代美術館 首爾館","국립현대미술관 서울","p",["三清路口的現代美術館。","2013年開館，基地原本是朝鮮時代的宗親府與國軍機務司令部。","館前的宗親府舊建築就是朝鮮王族事務機構，和現代建築並存。","庭院和銀杏（展覽可能收費）。"]],
+[37.574143,126.981912,"🛕","曹溪寺","조계사","p",["韓國佛教最大宗派曹溪宗的總本山，就在仁寺洞旁。","1910年建立，大雄殿是首爾最大的木造佛殿之一。寺前有樹齡約500年的白松與槐樹。","秋天會擺滿菊花展🌼，很適合帶爸媽看。","大雄殿、菊花、老樹。"]],
+[37.576207,126.987091,"🏯","雲峴宮","운현궁","p",["高宗的父親興宣大院君的宅邸，高宗在這裡出生長大。","高宗12歲即位後，大院君在這裡攝政十年，重建景福宮的命令就是從這裡發出的。1866年高宗和明成皇后的婚禮也在這裡舉行。","今天看完景福宮再來，剛好接上「是誰重建景福宮」的故事！","老安廳、二老堂（週一休，小額門票）。"]],
 [37.575925,126.976816,"🏯","光化門","경복궁 광화문","p",["景福宮的正門，也是首爾最具代表性的城門。","1395年建成，名字意思是「光照四方、德化天下」。壬辰倭亂燒毀，1867年重建；日本殖民時期被移到建春門北側，韓戰時木造門樓又被炸毀。1968年用鋼筋水泥重建但位置歪了，2010年才按原位、原材料重新復原。","門前兩隻石獸叫「獬豸（해태）」，傳說能分辨善惡、還能防火——首爾市的吉祥物就是牠！門洞天花板畫著朱雀等瑞獸。","10:00–15:00 每整點的守門將換崗儀式；看門洞上的畫和兩隻獬豸。"]],
 [37.57728,126.976918,"🌉","永濟橋","경복궁 영제교","p",["興禮門和勤政門之間、跨過禁川的石橋。","禁川是宮殿內象徵隔開俗世與王宮的人工水道，官員過橋就代表進入神聖的王的空間。永濟橋曾被日本移走，2001年興禮門復原時歸回原位。","橋邊石岸上有四隻石獸「天祿」趴著往下看水，據說在監視有沒有邪氣從水裡進來；其中一隻像在吐舌頭，超可愛，可以跟爸媽比賽找。","找吐舌頭的天祿石獸。"]],
 [37.577738,126.976946,"🏯","勤政門","경복궁 근정문","p",["勤政殿正前方的門，穿過就是朝會的大廣場。","勤政門是寶物第812號，屬於1867年重建的原建築。門分三個門洞，中間只有國王能走，文官走東、武官走西。國王即位典禮有時就在勤政門舉行。","跟爸媽說：中間那條稍高的路叫「御道」，只有國王能走——我們現在可以隨便走，算是當一天國王！","三個門洞、腳下的三道（御道）。"]],
@@ -174,7 +221,7 @@ INFO.forEach(f=>{L.marker([f[0],f[1]],{icon:L.divIcon({className:'',html:`<div c
 const _m=LAYERS[f[5]].getLayers().slice(-1)[0];const _t=_m.getTooltip();if(_t)_t.on('click',()=>showCard(TAGS[f[5]],f[3].replace('≈',''),f[4],f[6]))});
 function zoomCls(){document.getElementById('map').classList.toggle('lowz',map.getZoom()<17)}map.on('zoomend',zoomCls);zoomCls();
 document.querySelectorAll('.lchip').forEach(b=>b.onclick=()=>{const g=LAYERS[b.dataset.l];if(map.hasLayer(g)){map.removeLayer(g);b.classList.remove('on')}else{map.addLayer(g);b.classList.add('on')}});
-L.polyline(R,{color:'#fff',weight:9,opacity:.9}).addTo(LAYERS.route);L.polyline(R,{color:'#c56f45',weight:5,dashArray:'10 8'}).addTo(LAYERS.route);
+L.polyline(R,{color:'#fff',weight:9,opacity:.9}).addTo(LAYERS.route);L.polyline(RAIL1,{color:'#8b50a4',weight:5,dashArray:'2 9',lineCap:'round'}).addTo(LAYERS.route).bindTooltip('🚇 5號線→往十里→水仁盆唐線',{sticky:true});L.polyline(RAIL2,{color:'#f5a200',weight:5,dashArray:'2 9',lineCap:'round'}).addTo(LAYERS.route).bindTooltip('🚇 水仁盆唐線 往水原 4站',{sticky:true});[WALK2,WALK3].forEach(w=>L.polyline(w,{color:'#c56f45',weight:4,dashArray:'10 8'}).addTo(LAYERS.route));L.marker([37.5614,127.0377],{icon:L.divIcon({className:'',html:'<div class="ipin">🚇</div>',iconSize:[26,26]})}).addTo(LAYERS.route).bindTooltip('往十里 轉乘');;L.polyline(R,{color:'#c56f45',weight:5,dashArray:'10 8'}).addTo(LAYERS.route);
 let done=JSON.parse(localStorage.gbDone||'[]'),me=null,acc=0,heading=null,follow=true,next=0;const mk=[];
 const dist=(a,b,c,d)=>{const r=6371e3,p=Math.PI/180,x=Math.sin((c-a)*p/2)**2+Math.cos(a*p)*Math.cos(c*p)*Math.sin((d-b)*p/2)**2;return 2*r*Math.asin(Math.sqrt(x))};
 const brg=(a,b,c,d)=>{const p=Math.PI/180,y=Math.sin((d-b)*p)*Math.cos(c*p),x=Math.cos(a*p)*Math.sin(c*p)-Math.sin(a*p)*Math.cos(c*p)*Math.cos((d-b)*p);return(Math.atan2(y,x)/p+360)%360};
@@ -184,7 +231,7 @@ S.forEach((s,i)=>{mk[i]=L.marker([s[0],s[1]],{icon:pinIcon(i)}).addTo(LAYERS.rou
 if(s[5])L.marker([s[0]+.00022,s[1]+.00028],{icon:L.divIcon({className:'',html:'<div class="leaf">🍁</div>',iconSize:[24,24]}),interactive:false}).addTo(LAYERS.route)});
 // next stop: nearest stop to me => all before it done; if within 40m of it, it's done too
 function computeNext(){if(me){let n=0,bd=1e9;S.forEach((s,i)=>{const d=dist(me[0],me[1],s[0],s[1]);if(d<bd){bd=d;n=i}});
-for(let i=0;i<n;i++)if(!done.includes(i))done.push(i);if(bd<40&&!done.includes(n))done.push(n);if(bd<40&&!seen.includes(n)){seen.push(n);localStorage.gbSeen=JSON.stringify(seen);showStory(n)}localStorage.gbDone=JSON.stringify(done)}
+for(let i=0;i<n;i++)if(!done.includes(i))done.push(i);if(bd<60&&!done.includes(n))done.push(n);if(bd<40&&!seen.includes(n)){seen.push(n);localStorage.gbSeen=JSON.stringify(seen);showStory(n)}localStorage.gbDone=JSON.stringify(done)}
 next=S.findIndex((s,i)=>!done.includes(i));}
 function render(){computeNext();S.forEach((s,i)=>mk[i].setIcon(pinIcon(i)));
 document.getElementById('list').innerHTML=S.map((s,i)=>`<div class="card ${done.includes(i)?'done':''} ${i===next?'nx':''}" data-i="${i}"><div class="num">${done.includes(i)?'✓':i}</div><div><b>${s[2]}${s[5]?' 🍁':''}</b><div class="ko">${s[3]}</div><div class="st">${s[4]}</div></div><div class="d">${me?fm(dist(me[0],me[1],s[0],s[1])):''}</div><button class="copy" data-c="${s[3]}">📋</button></div>`).join('');
@@ -213,10 +260,11 @@ let wid=null;function startWatch(){if(!('geolocation' in navigator)){onErr({code
 if(wid!=null)navigator.geolocation.clearWatch(wid);wid=navigator.geolocation.watchPosition(onPos,onErr,{enableHighAccuracy:true,maximumAge:0,timeout:15000})}
 startB.onclick=()=>{chip.textContent='📡 定位中…';navigator.geolocation.getCurrentPosition(p=>{onPos(p);startWatch()},onErr,{enableHighAccuracy:true,maximumAge:0,timeout:15000})};
 document.getElementById('follow').onclick=()=>{setFollow(true);if(me)map.flyTo(me,18);else startB.click()};
-document.getElementById('fit').onclick=()=>{setFollow(false);map.fitBounds(L.latLngBounds(R),{padding:[40,40]})};
+document.getElementById('fit').onclick=()=>{setFollow(false);map.fitBounds(L.latLngBounds(R.concat(RAIL2,WALK2)),{padding:[40,40]})};
 function onOri(e){let h=e.webkitCompassHeading??(e.absolute&&e.alpha!=null?360-e.alpha:null);if(h==null)return;heading=h;const c=document.getElementById('cone');if(c){c.style.display='block';c.style.transform=`rotate(${h}deg)`}render()}
 document.getElementById('compass').onclick=async()=>{try{if(window.DeviceOrientationEvent&&DeviceOrientationEvent.requestPermission){const r=await DeviceOrientationEvent.requestPermission();if(r!=='granted'){alert('未允許指南針');return}}
 window.addEventListener('deviceorientationabsolute',onOri);window.addEventListener('deviceorientation',onOri);document.getElementById('compass').style.background='var(--copper-soft)'}catch(x){alert('此裝置不支援指南針')}};
 document.getElementById('clr').onclick=()=>{if(confirm('清除足跡和打勾紀錄？')){trail=[];done=[];localStorage.gbTrail='[]';localStorage.gbDone='[]';seen=[];localStorage.gbSeen='[]';tl.setLatLngs([]);render()}};
+document.querySelectorAll('.day').forEach(b=>b.onclick=()=>{setFollow(false);const d=b.dataset.d,pts=d==='am'?S.slice(0,10):d==='pm'?S.slice(9):S;map.fitBounds(L.latLngBounds(pts.map(x=>[x[0],x[1]])),{padding:[50,50]})});
 render();startWatch();setTimeout(()=>{if(!gotFix)startB.style.display='block'},4000);
 </script></body></html>
