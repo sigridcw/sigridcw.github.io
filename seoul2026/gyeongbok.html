@@ -71,9 +71,11 @@
 <div id="bar"><div id="arrow">⬆</div><div id="nt">找位置中…</div><div id="nd"></div></div>
 <div id="more"><div id="list"></div>
 <div class="hotel">🏨 飯店：Ibis Styles Ambassador Seoul Gangnam<br><span class="ko">서울 강남구 삼성로 431</span> <button class="copy" data-c="서울 강남구 삼성로 431">複製地址</button></div>
+<a id="histA" class="copy" href="history.html" style="display:block;margin-top:8px;min-height:52px;font-size:19px;text-align:center;text-decoration:none;line-height:52px;background:#c56f45;color:#fff;border-radius:16px">📜 每天走過的路</a>
+<button class="copy" id="bfill" style="display:block;width:100%;margin-top:8px;min-height:52px;font-size:18px">⬆️ 上傳這支手機之前的路線</button><div id="bfmsg" style="font-size:15px;margin-top:4px"></div>
 <button class="copy" id="clr" style="margin-top:4px">🧹 清除足跡</button></div></div>
 <div id="story"></div>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script src="family.js"></script><script src="nearby.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script src="family.js"></script><script src="nearby.js"></script><script src="tracks.js"></script>
 <script>
 // coords verified vs OSM Nominatim 2026-10-29
 const S=[
@@ -335,4 +337,11 @@ document.querySelectorAll('.day').forEach(b=>b.onclick=()=>{setFollow(false);con
 render();startWatch();setTimeout(()=>{if(!gotFix)startB.style.display='block'},4000);
 
 try{FamilyMap.init(map);Nearby.init(map,{pre:[]});}catch(e){console.error(e)}
+try{Tracks.start();document.getElementById('histA').href='history.html?room='+encodeURIComponent(FamilyMap.room);}catch(e){console.error(e)}
+document.getElementById('bfill').onclick=async e=>{e.stopPropagation();const msg=document.getElementById('bfmsg');
+ if(!FamilyMap.id||!FamilyMap.emoji()){FamilyMap.setup(false);msg.textContent='請先選「我是誰」，再按一次上傳。';return}
+ const n=JSON.parse(localStorage.gbTrail||'[]').length;let d=null;
+ if(n){d=prompt(`這支手機有 ${n} 個舊足跡點（沒有時間）。是哪一天走的？`,Tracks.sdate());if(d===null)return;d=d.trim();if(/^\d{1,2}\/\d{1,2}$/.test(d)){const[a,b]=d.split('/');d=`2026-${a.padStart(2,'0')}-${b.padStart(2,'0')}`}
+  if(!/^2026-\d\d-\d\d$/.test(d)){alert('日期格式：2026-10-29 或 10/29');return}}
+ msg.textContent='⏳ 上傳中…';try{const k=await Tracks.backfill(d);msg.textContent=k?`✅ 已上傳 ${k} 個點（${FamilyMap.emoji()} ${FamilyMap.name()}）。到「📜 每天走過的路」看。`:'這支手機沒有可上傳的路線。'}catch(x){msg.textContent='❌ 上傳失敗，請連上網路再試一次。'}};
 </script></body></html>

@@ -1,0 +1,116 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>📜 每天走過的路・首爾 2026</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{--copper:#c56f45;--ink:#10272c;--line:#d9ddd5;--muted:#5d6e6e;--paper:#f6f3ec;--white:#fffef9;--sans:"PingFang TC","Noto Sans TC",system-ui,sans-serif;--serif:"Noto Serif TC",serif;--shadow:0 6px 18px rgba(21,43,45,.15)}
+*{box-sizing:border-box}html,body{margin:0;height:100%}body{background:var(--paper);color:var(--ink);font:20px/1.55 var(--sans);display:flex;flex-direction:column}
+header{padding:calc(10px + env(safe-area-inset-top)) 12px 6px;background:var(--paper)}
+header .top{display:flex;align-items:center;gap:8px}header h1{font-family:var(--serif);font-size:26px;margin:0;flex:1}
+header a{color:var(--copper);font-size:17px;text-decoration:none;white-space:nowrap}
+.days{display:flex;gap:8px;overflow-x:auto;padding:8px 0 4px;-webkit-overflow-scrolling:touch}
+.days button{flex:none;min-height:54px;min-width:74px;border-radius:16px;border:2px solid var(--line);background:var(--white);font:700 20px var(--sans);color:var(--ink);padding:0 10px}
+.days button.on{background:var(--copper);border-color:var(--copper);color:#fff}.days button small{display:block;font-size:13px;font-weight:400;line-height:1}
+#mapw{position:relative;flex:1;min-height:300px}#map{position:absolute;inset:0}
+.mb{position:absolute;right:10px;top:10px;z-index:640;display:flex;flex-direction:column;gap:8px}
+.mb button{border:0;border-radius:24px;min-height:52px;padding:0 16px;font:700 18px var(--sans);background:var(--white);color:var(--ink);box-shadow:var(--shadow)}
+#panel{background:var(--white);border-radius:22px 22px 0 0;box-shadow:0 -6px 18px rgba(0,0,0,.12);padding:8px 14px calc(12px + env(safe-area-inset-bottom));max-height:46dvh;overflow:auto;transition:max-height .25s}
+#panel.min{max-height:64px;overflow:hidden}
+#ph{display:flex;align-items:center;gap:8px;min-height:48px}#ph b{flex:1;font-size:21px}#ph button{min-height:46px;border:0;border-radius:14px;background:#efe6d3;font:700 17px var(--sans);padding:0 14px}
+.mem{display:flex;align-items:center;gap:10px;border:2px solid var(--line);border-radius:18px;padding:10px 12px;margin:8px 0;cursor:pointer}
+.mem.off{opacity:.45}.mem .e{font-size:34px;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;border:4px solid}
+.mem .t{flex:1}.mem .t b{font-size:22px}.mem .t div{font-size:18px}.mem .sw{font:700 17px var(--sans);border-radius:12px;padding:6px 10px;background:#dfe9df}
+.mem.off .sw{background:#eee}
+.msg{background:#fff4e0;border:2px solid #e8c48f;border-radius:16px;padding:12px 14px;margin:8px 0;font-size:19px}
+.hotel{margin:12px 0 4px;border:3px solid var(--ink);border-radius:18px;background:#fff8e6;padding:12px;text-align:center}
+.hotel .k{font:900 24px/1.3 var(--sans)}.hotel button{margin-top:8px;min-height:50px;border:0;border-radius:14px;background:var(--copper);color:#fff;font:700 18px var(--sans);padding:0 18px}
+.fm{display:flex;flex-direction:column;align-items:center}.fm .e{width:44px;height:44px;border-radius:50%;background:#fff;border:4px solid;display:grid;place-items:center;font-size:26px;box-shadow:0 3px 8px rgba(0,0,0,.3)}
+.fm .n{margin-top:2px;background:rgba(16,39,44,.88);color:#fff;border-radius:10px;padding:1px 8px;font:700 14px var(--sans);white-space:nowrap}
+.hr{background:#fff;border:3px solid;border-radius:12px;padding:0 6px;font:700 14px var(--sans);white-space:nowrap;box-shadow:0 2px 5px rgba(0,0,0,.25)}
+.sp{width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;border:2px solid #fff;display:grid;place-items:center;font:700 14px var(--sans);box-shadow:0 2px 5px rgba(0,0,0,.3)}
+.lbl{background:rgba(255,254,249,.92);color:var(--ink);border:1px solid var(--line);font:700 13px var(--sans);border-radius:8px;padding:1px 6px;box-shadow:none}.lbl:before{display:none}.far .lbl{display:none}
+#story{position:fixed;left:0;right:0;bottom:0;z-index:1500;background:var(--white);border-radius:24px 24px 0 0;box-shadow:0 -8px 24px rgba(0,0,0,.25);padding:16px 18px calc(18px + env(safe-area-inset-bottom));max-height:75dvh;overflow:auto;transform:translateY(105%);transition:transform .25s}
+#story.show{transform:none}#story h2{font-family:var(--serif);margin:4px 0;font-size:26px}#story h4{margin:12px 0 2px;color:var(--copper);font-size:19px}#story p{margin:0}
+#story .x{position:sticky;top:0;float:right;width:52px;height:52px;border-radius:50%;border:0;background:#efe6d3;font-size:24px}
+#story .ko{color:var(--muted);font-size:17px}#story .close{width:100%;min-height:54px;border:0;border-radius:16px;background:#efe6d3;font:700 19px var(--sans);margin-top:14px}
+</style></head><body>
+<header><div class="top"><h1>📜 每天走過的路</h1><a href="index.html">← 行程</a></div>
+<div class="days" id="days"></div></header>
+<div id="mapw"><div id="map"></div><div class="mb"><button id="bFit">🗺️ 看全部</button><button id="bRe">🔄 更新</button></div></div>
+<div id="panel"><div id="ph"><b id="ptitle">載入中…</b><button id="pmin">收起 ▼</button></div><div id="body"></div>
+<div class="hotel"><div style="font-size:16px;color:var(--muted)">🏨 飯店（給司機看、點一下複製）</div><div class="k">서울 강남구 삼성로 431</div><div style="font-size:17px">Ibis Styles Ambassador Seoul Gangnam</div><button id="cpH">📋 複製地址</button></div></div>
+<div id="story"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script src="tracks.js"></script>
+<script>
+const DAYS=['2026-10-28','2026-10-29','2026-10-30','2026-10-31','2026-11-01'],WK=['三','四','五','六','日'];
+const KNOWN={dad:['爸爸','🍎','#d6332a'],mom:['媽媽','🌸','#b04fc2'],ching:['Ching','🐻','#2f6fd6']},EXTRA=['#1f9a6a','#e08a00','#555'];
+const q=new URLSearchParams(location.search);let room=q.get('room')||localStorage.getItem('fam_room');
+const today=Tracks.sdate();let day=q.get('d')||(DAYS.includes(today)?today:DAYS[1]);
+const $=id=>document.getElementById(id);const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const map=L.map('map',{zoomControl:false}).setView([37.53,127.01],12);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
+L.control.zoom({position:'bottomleft'}).addTo(map);const zc=()=>map.getContainer().classList.toggle('far',map.getZoom()<15);map.on('zoomend',zc);zc();
+const HOTEL=[37.50511,127.057067];L.marker(HOTEL,{icon:L.divIcon({className:'',html:'<div class="sp" style="background:#c56f45;width:34px;height:34px;font-size:18px">🏨</div>',iconSize:[34,34],iconAnchor:[17,17]})}).addTo(map).bindTooltip('飯店',{permanent:true,direction:'bottom',offset:[0,14],className:'lbl'});
+const panel=$('panel');const setMin=v=>{panel.classList.toggle('min',v);$('pmin').textContent=v?'展開 ▲':'收起 ▼'};
+$('pmin').onclick=e=>{e.stopPropagation();setMin(!panel.classList.contains('min'))};$('ph').onclick=()=>setMin(!panel.classList.contains('min'));
+const story=$('story');const closeStory=()=>story.classList.remove('show');
+map.on('click',()=>{closeStory();setMin(true)});
+let y0=null;story.addEventListener('touchstart',e=>{y0=e.touches[0].clientY},{passive:true});story.addEventListener('touchend',e=>{if(y0!=null&&e.changedTouches[0].clientY-y0>50&&story.scrollTop<=0)closeStory();y0=null},{passive:true});
+$('cpH').onclick=()=>{const t='서울 강남구 삼성로 431';(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>{$('cpH').textContent='✅ 已複製'}).catch(()=>prompt('複製這個地址',t))};
+$('days').innerHTML=DAYS.map((d,i)=>`<button data-d="${d}">${+d.slice(5,7)}/${+d.slice(8)}<small>週${WK[i]}</small></button>`).join('');
+$('days').onclick=e=>{const b=e.target.closest('button');if(!b)return;day=b.dataset.d;load()};
+// ---------- 計畫的景點（從 gyeongbok.html / coex.html 讀） ----------
+const PLAN={};const planLayer=L.layerGroup().addTo(map);
+async function grab(url,a,b){const t=await (await fetch(url,{cache:'no-cache'})).text();const i=t.indexOf(a),j=t.indexOf(b,i);if(i<0||j<0)throw 0;return Function('return '+t.slice(i+a.length-1,j).replace(/;\s*$/,''))()}
+async function loadPlans(){try{const S=await grab('gyeongbok.html','const S=[','\nconst R=');let ST=[];try{ST=await grab('gyeongbok.html','const ST=[','\nlet seen')}catch(e){}
+  PLAN['2026-10-29']=S.map((s,i)=>({la:s[0],ln:s[1],zh:s[2],ko:s[3],sub:s[4],st:ST[i]}))}catch(e){console.warn('gb plan',e)}
+ try{const S=await grab('coex.html','const STEPS=[','\ndocument.getElementById');PLAN['2026-10-30']=S.map(s=>({la:s[0],ln:s[1],zh:s[3],ko:s[6],sub:s[4]+(s[5]?'（'+s[5]+'）':'')}))}catch(e){console.warn('coex plan',e)}}
+function showStop(p,i){const t=p.st;story.innerHTML=`<button class="x" onclick="closeStory()">✕</button><div class="ko">計畫第 ${i+1} 站</div><h2>${p.zh}</h2><div class="ko">${p.ko||''}</div>
+ <p style="margin-top:8px">${p.sub||''}</p>${t?`<h4>💬 一句話介紹</h4><p>${t[0]}</p><h4>📜 歷史背景</h4><p>${t[1]}</p><h4>😆 好玩故事</h4><p>${t[2]}</p><h4>👀 必看重點</h4><p>${t[3]}</p>`:''}
+ <button class="close" onclick="closeStory()">關閉</button>`;story.scrollTop=0;story.classList.add('show')}
+function drawPlan(){planLayer.clearLayers();(PLAN[day]||[]).forEach((p,i)=>{const m=L.marker([p.la,p.ln],{icon:L.divIcon({className:'',html:`<div class="sp">${i+1}</div>`,iconSize:[28,28],iconAnchor:[14,14]}),zIndexOffset:100}).addTo(planLayer)
+  .bindTooltip(p.zh.replace(/<[^>]+>/g,'').slice(0,12),{permanent:true,direction:'right',offset:[12,0],className:'lbl'});m.on('click',e=>{L.DomEvent.stopPropagation(e);showStop(p,i)})})}
+// ---------- 路線 ----------
+let data={},vis=JSON.parse(localStorage.hist_vis||'{}'),trk=L.layerGroup().addTo(map);
+const hm=t=>{const d=new Date(t*1000+9*3600e3);return String(d.getUTCHours()).padStart(2,'0')+':'+String(d.getUTCMinutes()).padStart(2,'0')};
+function stats(v){let km=0,sec=0;const p=v.p||[];for(let i=1;i<p.length;i++){const d=Tracks.dist(p[i-1][0],p[i-1][1],p[i][0],p[i][1]),dt=p[i][2]-p[i-1][2];
+  if(dt>0&&dt<=600&&d/dt<3.5){km+=d;sec+=dt}}
+ const r=v.raw||[];for(let i=1;i<r.length;i++){const d=Tracks.dist(r[i-1][0],r[i-1][1],r[i][0],r[i][1]);if(d<300)km+=d}return {km:km/1000,sec,raw:r.length>1}}
+function color(id,i){return (KNOWN[id]||[])[2]||EXTRA[i%EXTRA.length]}
+function badge(e,c,txt){return L.divIcon({className:'',html:`<div class="fm"><div class="e" style="border-color:${c}">${e}</div><div class="n">${txt}</div></div>`,iconSize:[110,70],iconAnchor:[55,22]})}
+function draw(){trk.clearLayers();const ids=Object.keys(data);
+ ids.forEach((id,i)=>{const v=data[id],c=color(id,i);if(vis[id]===false)return;
+  if((v.raw||[]).length>1)L.polyline(v.raw,{color:c,weight:6,opacity:.55,dashArray:'2 10'}).addTo(trk);
+  const p=v.p||[];if(!p.length)return;const segs=[[p[0]]];
+  for(let k=1;k<p.length;k++){const d=Tracks.dist(p[k-1][0],p[k-1][1],p[k][0],p[k][1]),dt=p[k][2]-p[k-1][2];if(dt>900&&d>500)segs.push([]);segs[segs.length-1].push(p[k])}
+  segs.forEach(s=>{const ll=s.map(x=>[x[0],x[1]]);L.polyline(ll,{color:'#fff',weight:11,opacity:.85}).addTo(trk);L.polyline(ll,{color:c,weight:6,opacity:.95}).addTo(trk)});
+  let lastH=Math.floor((p[0][2]+9*3600)/3600);
+  for(const x of p){const hh=Math.floor((x[2]+9*3600)/3600);if(hh!==lastH&&x!==p[p.length-1]){lastH=hh;L.marker([x[0],x[1]],{icon:L.divIcon({className:'',html:`<div class="hr" style="border-color:${c}">${hm(x[2])}</div>`,iconSize:[54,22],iconAnchor:[27,11]})}).addTo(trk)}}
+  const a=p[0],b=p[p.length-1];L.marker([a[0],a[1]],{icon:badge(v.e,c,'出發 '+hm(a[2])),zIndexOffset:700}).addTo(trk);
+  if(p.length>1)L.marker([b[0],b[1]],{icon:badge(v.e,c,'最後 '+hm(b[2])),zIndexOffset:800}).addTo(trk)});
+ drawList()}
+function drawList(){const ids=Object.keys(data);let h='';
+ if(!ids.length)h=`<div class="msg">這天還沒有路線。<br>打開「景福宮」或「COEX」地圖、按右上「📡 分享」打開，網頁開著就會自動記錄。</div>`;
+ ids.forEach((id,i)=>{const v=data[id],c=color(id,i),s=stats(v),p=v.p||[];const tm=s.sec?`${Math.floor(s.sec/3600)?Math.floor(s.sec/3600)+' 小時 ':''}${Math.round(s.sec%3600/60)} 分`:'—';
+  h+=`<div class="mem ${vis[id]===false?'off':''}" data-id="${esc(id)}"><div class="e" style="border-color:${c}">${esc(v.e||'📍')}</div><div class="t"><b>${esc(v.n||id)}</b>
+  <div>🚶 ${s.km.toFixed(1)} 公里 ・ ⏱️ ${tm}</div><div style="font-size:16px;color:var(--muted)">${p.length?hm(p[0][2])+' → '+hm(p[p.length-1][2]):''}${s.raw?(p.length?'・':'')+'虛線＝補傳的舊足跡（沒有時間）':''}</div></div><span class="sw">${vis[id]===false?'顯示':'隱藏'}</span></div>`});
+ $('body').innerHTML=h;$('body').querySelectorAll('.mem').forEach(el=>el.onclick=e=>{e.stopPropagation();const id=el.dataset.id;vis[id]=vis[id]===false;localStorage.hist_vis=JSON.stringify(vis);draw()});
+ $('ptitle').textContent=`${+day.slice(5,7)}/${+day.slice(8)} ・ ${ids.length} 人的路線`}
+function fit(){const b=L.latLngBounds([]);Object.keys(data).forEach(id=>{if(vis[id]===false)return;(data[id].p||[]).forEach(x=>b.extend([x[0],x[1]]));(data[id].raw||[]).forEach(x=>b.extend(x))});
+ if(!b.isValid())(PLAN[day]||[]).forEach(p=>b.extend([p.la,p.ln]));if(b.isValid())map.fitBounds(b,{padding:[50,50],maxZoom:17});else map.setView(HOTEL,14)}
+$('bFit').onclick=fit;$('bRe').onclick=()=>load();
+let seq=0;
+async function load(){const my=++seq;document.querySelectorAll('#days button').forEach(b=>b.classList.toggle('on',b.dataset.d===day));
+ history.replaceState(null,'','?room='+encodeURIComponent(room)+'&d='+day);
+ data={};drawPlan();$('ptitle').textContent='載入中…';
+ let ix=null;try{ix=await Tracks.get(await Tracks.idxKey(room))}catch(e){}
+ const ids=new Set(['dad','mom','ching',...((ix&&ix.days&&ix.days[day])||[])]);const meta=(ix&&ix.m)||{};
+ const res=await Promise.all([...ids].map(async id=>{let v=null;try{v=await Tracks.get(await Tracks.dayKey(room,day,id))}catch(e){}
+   const loc=Tracks.loadLocal(id,day);if(loc&&localStorage.fam_room===room)v=Tracks.merge(v,loc);return [id,v]}));
+ if(my!==seq)return;
+ res.forEach(([id,v])=>{if(v&&((v.p||[]).length||(v.raw||[]).length)){v.n=v.n||(meta[id]||{}).n||(KNOWN[id]||[])[0]||id;v.e=v.e||(meta[id]||{}).e||(KNOWN[id]||[])[1]||'📍';data[id]=v}});
+ const order=['ching','dad','mom'];const oi=k=>{const i=order.indexOf(k);return i<0?99:i};data=Object.fromEntries(Object.entries(data).sort((a,b)=>oi(a[0])-oi(b[0])));
+ draw();fit()}
+if(!room){$('ptitle').textContent='需要家人專屬連結';$('body').innerHTML='<div class="msg">⚠️ 請從<b>自己的家人連結</b>打開（Ching 傳給你的那個連結，網址裡有 <code>room=</code>）。<br>或先打開景福宮／COEX 地圖的家人連結一次，再回來這頁。</div>';
+ document.querySelectorAll('#days button').forEach(b=>b.disabled=true)}
+else loadPlans().then(load);
+</script></body></html>

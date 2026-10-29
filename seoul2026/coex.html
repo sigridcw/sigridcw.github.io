@@ -42,7 +42,7 @@ h2{font-family:var(--serif);font-size:24px;margin:22px 16px 6px}
 -->
 <header><a href="./#plan">← 回行程</a><h1>🍎 爸爸去 COEX 開會<br>走路路線</h1><div class="sub">10/30（五）· 飯店 → COEX 北門 → 2 樓 209A</div></header>
 <div class="big"><div class="t">09:20 出發</div><b>走路約 20 分鐘（1.3 公里），09:40 左右到北門</b><div>10:00 開會。進門先到 1 樓報到櫃檯印名牌（約 10 分），再上 2 樓。</div></div>
-<div id="mapw"><div id="map"></div><div class="mb"><button id="bRoute">🗺️ 全路線</button><button id="bMe">📍 我在哪</button></div></div>
+<div id="mapw"><div id="map"></div><div class="mb"><button id="bRoute">🗺️ 全路線</button><button id="bMe">📍 我在哪</button><a id="histA" href="history.html" style="border-radius:24px;min-height:46px;padding:0 14px;font:700 16px var(--sans);background:#c56f45;color:#fff;display:flex;align-items:center;text-decoration:none;box-shadow:var(--shadow)">📜 每天走過的路</a></div></div>
 <div class="ok">🧭 地圖上 <b>藍線</b> 就是路線；🐻／🍎 是自己和家人的位置。全程平路、都是人行道，要過 <b>1 次大馬路（테헤란로）</b>，有紅綠燈。</div>
 <h2>👣 一步一步走</h2>
 <div id="steps"></div>
@@ -62,7 +62,7 @@ h2{font-family:var(--serif);font-size:24px;margin:22px 16px 6px}
 <div class="warn">☔ 下雨備案：飯店官網說最近的是 2 號線 삼성역（三成站）4 號出口（往 POSCO 大樓方向約 500m），三成站地下跟 COEX 相連；但地下商場很大容易迷路，爸媽<b>建議走上面這條地面路線或直接搭計程車</b>（給司機看「코엑스 북문」）。</div>
 <div class="src">資料來源：<a href="https://aplarcongress.com/venue/" target="_blank">APLAR 2026 場地</a>・<a href="https://aplarcongress.com/program/" target="_blank">APLAR 議程</a>・<a href="https://www.coex.co.kr/en/meeting-room/conference-room-north-asem-ballroom/" target="_blank">COEX 官網 Conference Room (North)</a>・APLAR 給爸爸的報到信・路線 OSRM（OpenStreetMap）・地圖 © OpenStreetMap。</div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="family.js"></script><script src="nearby.js"></script>
+<script src="family.js"></script><script src="nearby.js"></script><script src="tracks.js"></script>
 <script>
 const HOTEL=[37.50511,127.057067],GATE=[37.513685,127.058424];
 const ROUTE=[[37.505312,127.056959],[37.5054,127.05722],[37.505558,127.057132],[37.505756,127.057023],[37.506318,127.056743],[37.506476,127.056567],[37.506533,127.056426],[37.506563,127.056532],[37.506618,127.056715],[37.506723,127.056661],[37.50694,127.056536],[37.507059,127.056472],[37.507104,127.056606],[37.507517,127.056395],[37.507778,127.056241],[37.508459,127.055837],[37.508502,127.055945],[37.50853,127.05592],[37.508537,127.055892],[37.509373,127.055456],[37.509632,127.056196],[37.509838,127.05687],[37.509995,127.057377],[37.510191,127.057986],[37.510215,127.057973],[37.510256,127.058101],[37.510969,127.057711],[37.511483,127.05743],[37.511773,127.057272],[37.512194,127.057042],[37.512523,127.056863],[37.512917,127.056642],[37.513031,127.056868],[37.513164,127.056873],[37.513245,127.057077],[37.513345,127.057728],[37.513399,127.057975],[37.513465,127.058161],[37.513512,127.058282],[37.513536,127.058363],[37.513561,127.058462],[37.513685,127.058424]];
@@ -96,5 +96,6 @@ const PRE=[
 [37.508984,127.048942,"👑","宣陵・靖陵（世界遺產）","선릉과 정릉","朝鮮成宗、貞顯王后與中宗的王陵，2009 年列入世界文化遺產「朝鮮王陵」。","江南高樓中間一大片松林；2 號線「宣陵站」就是以它命名。","OSM relation 5493161"],
 [37.507756,127.05328,"⛩️","靖陵 紅箭門","정릉 홍살문","進入王陵神聖區域的紅色大門。","上面一根根尖尖的紅木是辟邪用的。","OSM node 2477254479"]];
 FamilyMap.init(map);Nearby.init(map,{pre:PRE});
+try{Tracks.start();document.getElementById('histA').href='history.html?room='+encodeURIComponent(FamilyMap.room);}catch(e){console.error(e)}
 const w=document.getElementById('mapw');w.appendChild(document.querySelector('.fam-bar'));w.appendChild(document.getElementById('nbBtn'));
 </script></body></html>
