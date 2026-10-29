@@ -45,13 +45,29 @@
 .itip{background:rgba(255,254,249,.9);border:0;box-shadow:none;font:600 11px var(--sans);padding:1px 5px;color:var(--ink)}.itip:before{display:none}.lowz .itip{display:none}
 .layers{position:fixed;top:calc(40px + env(safe-area-inset-top));left:8px;right:8px;z-index:600;display:flex;gap:5px;overflow-x:auto}
 .lchip{flex:none;border:1px solid var(--line);border-radius:99px;padding:4px 9px;font-size:12px;background:rgba(255,254,249,.75);color:var(--muted)}.lchip.on{background:var(--copper);color:#fff;border-color:var(--copper)}
-.leaflet-tooltip.itip{pointer-events:auto;cursor:pointer}.ipin{cursor:pointer}</style></head><body>
+.leaflet-tooltip.itip{pointer-events:auto;cursor:pointer}.ipin{cursor:pointer}
+/* v2 UI */
+#shd{position:relative;display:flex;align-items:center;justify-content:center;min-height:30px;touch-action:none;cursor:pointer}
+#shx{position:absolute;right:-4px;top:-2px;min-width:88px;min-height:44px;border:0;border-radius:22px;background:var(--copper-soft);color:var(--copper);font:700 16px var(--sans)}
+#sheet{max-height:62dvh}#sheet:not(.open){padding-top:6px}#sheet:not(.open) #shd{position:absolute;right:10px;top:8px;min-height:0}#sheet:not(.open) .grab{display:none}#sheet:not(.open) #shx{position:static}#sheet:not(.open) #bar{padding-right:96px}#sheet:not(.open) #nd{font-size:16px}.fab.hide{display:none}#sheet:not(.open) #arrow{width:44px;height:44px;font-size:26px}
+#sheet:not(.open) #nt b{font-size:16px}#sheet:not(.open) #nt .ko{font-size:12px}
+.card{flex-wrap:wrap}.card .nav{flex-basis:100%;margin-top:4px}
+.nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.nav a{flex:1 1 auto;min-height:44px;display:flex;align-items:center;justify-content:center;border-radius:14px;padding:8px 12px;font:700 15px var(--sans);text-decoration:none;color:#fff;background:#03c75a}.nav a.ap{background:var(--ink)}
+.dist{font:700 15px var(--mono);color:var(--copper);margin-top:8px}
+.sign{margin-top:12px;border:3px solid var(--ink);border-radius:16px;background:#fff8e6;padding:10px 12px;text-align:center}.sign .sl{font-size:13px;color:var(--muted)}.sign .sk{font:900 34px/1.25 var(--sans);color:var(--ink);letter-spacing:1px;word-break:keep-all}.sign .sh{font-size:15px;margin-top:4px;color:var(--critical);text-align:left}.sign .sa{font-size:13px;color:var(--muted)}
+#story .x{width:48px;height:48px;font-size:24px;z-index:2}
+.pin{width:36px;height:36px;font-size:16px;border-width:3px}.pin.food{background:#d6332a}.pin.food.done{background:#c98a84}
+.pin.near{animation:pulse 1.2s ease-out infinite}@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(214,51,42,.7)}100%{box-shadow:0 0 0 22px rgba(214,51,42,0)}}
+.stip{background:rgba(255,254,249,.97);border:1.5px solid var(--ink);border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,.25);font:700 13px/1.25 var(--sans);padding:2px 6px;color:var(--ink);text-align:center;pointer-events:auto;cursor:pointer}.stip:before{display:none}.stip small{display:block;font-weight:500;font-size:12px;color:#334}.stip.food{border-color:#d6332a;color:#a3221b}.lowz2 .stip{display:none}
+#near{display:none;position:fixed;left:10px;right:10px;top:calc(76px + env(safe-area-inset-top));z-index:640;background:#d6332a;color:#fff;border-radius:16px;padding:10px 14px;font:700 17px var(--sans);box-shadow:var(--shadow);text-align:center}#near big{display:block;font-size:26px}
+.fab{bottom:auto}.fab button{width:auto;height:48px;min-width:48px;border-radius:24px;padding:0 14px;font:700 15px var(--sans);color:var(--ink)}
+</style></head><body>
 <div id="map"></div>
 <div class="top"><a class="home" href="./">← 行程</a><div id="chip">📡 定位中…</div></div>
 <div class="layers"><button class="lchip day" data-d="am">🌅 上午 景福宮</button><button class="lchip day" data-d="pm">🍁 下午 三清洞→首爾林</button><button class="lchip day" data-d="all">🗺️ 全天</button><button class="lchip on" data-l="route">主要路線</button><button class="lchip on" data-l="p">🏯 宮殿與門</button><button class="lchip on" data-l="s">🏮 西村景點</button><button class="lchip on" data-l="r">🍲 備案餐廳</button></div>
 <button id="start">📍 開始定位</button>
-<div class="fab"><button id="follow" class="on" title="跟隨我">🎯</button><button id="compass" title="指南針">🧭</button><button id="fit" title="看全部">🗺️</button></div>
-<div id="sheet"><div class="grab"></div>
+<div class="fab"><button id="follow" class="on" title="跟隨我">📍 我的位置</button><button id="compass" title="指南針">🧭</button><button id="fit" title="看全部路線">🗺️ 看路線</button></div>
+<div id="near"></div><div id="sheet"><div id="shd"><div class="grab"></div><button id="shx">展開 ▲</button></div>
 <div id="bar"><div id="arrow">⬆</div><div id="nt">找位置中…</div><div id="nd"></div></div>
 <div id="more"><div id="list"></div>
 <div class="hotel">🏨 飯店：Ibis Styles Ambassador Seoul Gangnam<br><span class="ko">서울 강남구 삼성로 431</span> <button class="copy" data-c="서울 강남구 삼성로 431">複製地址</button></div>
@@ -186,9 +202,17 @@ const ST=[
 "跟爸媽說：飯店旁邊就有世界遺產的王陵，首爾市中心有古墓公園真的很特別。",
 "上車前確認方向是「수원」；計程車可以直接給司機看飯店地址。"]];
 let seen=JSON.parse(localStorage.gbSeen||'[]');
+// v2 helpers: food detection, signboards, nav buttons
+const isFood=s=>/餐|甜湯/.test(s[2]);
+const SIGN={'할머니의 레시피 성수':['할머니의 레시피','서울 성동구 서울숲2길 44-12','門牌「44-12」在樓梯入口，街上沒有明顯大招牌——看到 44-12 就往樓上走。'],'체부동잔치집':['체부동잔치집'],'서울서둘째로잘하는집':['서울서둘째로잘하는집'],'담록 성수':['담록','서울 성동구 서울숲4길 28 B1（地下 1 樓）'],'민정식당 서울숲직영점':['민정식당','서울 성동구 상원길 51']};
+function signBox(ko){const v=SIGN[ko]||[ko.replace(/ 성수$/,'')];return `<div class="sign"><div class="sl">🪧 看招牌找這個字</div><div class="sk">${v[0]}</div>${v[1]?`<div class="sa">${v[1]}</div>`:''}${v[2]?`<div class="sh">👀 ${v[2]}</div>`:''}</div>`}
+function navBtns(ko,la,ln){return `<div class="nav"><a href="https://map.naver.com/p/search/${encodeURIComponent(ko)}" target="_blank">🧭 Naver 導航</a><a class="ap" href="https://maps.apple.com/?daddr=${la},${ln}&dirflg=w" target="_blank"> Apple 地圖</a></div>`}
+const DIRS=['北','東北','東','東南','南','西南','西','西北'];
+function distTxt(la,ln){if(!me)return '📏 距離：等待定位…';const d=dist(me[0],me[1],la,ln);return `📏 往${DIRS[Math.round(brg(me[0],me[1],la,ln)/45)%8]} ${fm(d)}`}
+function extra(ko,la,ln,food){return (food?signBox(ko):'')+`<div class="dist" data-la="${la}" data-ln="${ln}">${distTxt(la,ln)}</div>`+navBtns(ko,la,ln)}
 function showStory(i){const s=S[i],t=ST[i],el=document.getElementById('story');
 el.innerHTML=`<button class="x" onclick="document.getElementById('story').classList.remove('show')">✕</button><div class="ko">第 ${i+1} 站 ${s[5]?'🍁':'🐻'}</div><h2>${s[2]}</h2><div class="ko" style="font-size:16px">${s[3]}</div>
-<h4>💬 一句話介紹</h4><p>${t[0]}</p><h4>📜 歷史背景</h4><p>${t[1]}</p><h4>😆 好玩故事（講給爸媽聽）</h4><p>${t[2]}</p><h4>👀 必看重點</h4><p>${t[3]}</p>
+${extra(s[3],s[0],s[1],isFood(s))}<h4>💬 一句話介紹</h4><p>${t[0]}</p><h4>📜 歷史背景</h4><p>${t[1]}</p><h4>😆 好玩故事（講給爸媽聽）</h4><p>${t[2]}</p><h4>👀 必看重點</h4><p>${t[3]}</p>
 <div class="acts"><button class="copy" data-c="${s[3]}">📋 複製韓文</button><a href="https://map.naver.com/p/search/${encodeURIComponent(s[3])}" target="_blank">Naver 地圖 ↗</a></div>`;el.scrollTop=0;el.classList.add('show')}
 const map=L.map('map',{zoomControl:false}).setView([37.5785,126.9755],17);
 var osmTiles=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,maxNativeZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
@@ -244,37 +268,46 @@ const INFO=[
 [37.580755,126.97006,"🍲","通仁市場 기름떡볶이","통인시장 기름떡볶이","r",["市場裡的油炒年糕，搭葉錢便當最划算。","推薦點：간장 기름떡볶이（醬油口味，不辣，全熟）、各攤的煎餅、雜菜、熱湯。葉錢 10 枚 ₩5,000（約 NT$122），每道菜約1–2枚。","可以和爸媽一起挑菜，邊逛邊吃很有趣。","約 11:00–16:00，週一休（以 Naver 為準）。"]]
 ];
 const LAYERS={route:L.layerGroup().addTo(map),p:L.layerGroup().addTo(map),s:L.layerGroup().addTo(map),r:L.layerGroup().addTo(map)};
-function showCard(tag,zh,ko,t){const el=document.getElementById('story');
-el.innerHTML=`<button class="x" onclick="document.getElementById('story').classList.remove('show')">✕</button><div class="ko">${tag}</div><h2>${zh}</h2><div class="ko" style="font-size:16px">${ko}</div>
+function showCard(tag,zh,ko,t,la,ln){const el=document.getElementById('story');
+el.innerHTML=`<button class="x" onclick="document.getElementById('story').classList.remove('show')">✕</button><div class="ko">${tag}</div><h2>${zh}</h2><div class="ko" style="font-size:16px">${ko}</div>${la?extra(ko,la,ln,tag.includes('餐廳')):''}
 <h4>💬 一句話介紹</h4><p>${t[0]}</p><h4>📜 ${tag.includes('餐廳')?'推薦點什麼・價格':'歷史背景'}</h4><p>${t[1]}</p><h4>😆 ${tag.includes('餐廳')?'為什麼推薦':'好玩故事（講給爸媽聽）'}</h4><p>${t[2]}</p><h4>👀 ${tag.includes('餐廳')?'營業時間・提醒':'必看重點'}</h4><p>${t[3]}</p>
 <div class="acts"><button class="copy" data-c="${ko}">📋 複製韓文</button><a href="https://map.naver.com/p/search/${encodeURIComponent(ko)}" target="_blank">Naver 地圖 ↗</a></div>`;el.scrollTop=0;el.classList.add('show')}
 const TAGS={p:'🏯 宮殿與門',s:'🏮 西村景點',r:'🍲 備案餐廳'};
 INFO.forEach(f=>{L.marker([f[0],f[1]],{icon:L.divIcon({className:'',html:`<div class="ipin ${f[5]}">${f[2]}</div>`,iconSize:[26,26],iconAnchor:[13,13]})})
-.bindTooltip(f[3].replace('≈',''),{permanent:true,interactive:true,direction:'bottom',offset:[0,10],className:'itip'}).on('click',()=>showCard(TAGS[f[5]],f[3].replace('≈',''),f[4],f[6])).addTo(LAYERS[f[5]]);
-const _m=LAYERS[f[5]].getLayers().slice(-1)[0];const _t=_m.getTooltip();if(_t)_t.on('click',()=>showCard(TAGS[f[5]],f[3].replace('≈',''),f[4],f[6]))});
-function zoomCls(){document.getElementById('map').classList.toggle('lowz',map.getZoom()<17)}map.on('zoomend',zoomCls);zoomCls();
+.bindTooltip(f[3].replace('≈',''),{permanent:true,interactive:true,direction:'bottom',offset:[0,10],className:'itip'}).on('click',()=>showCard(TAGS[f[5]],f[3].replace('≈',''),f[4],f[6],f[0],f[1])).addTo(LAYERS[f[5]]);
+const _m=LAYERS[f[5]].getLayers().slice(-1)[0];const _t=_m.getTooltip();if(_t)_t.on('click',()=>showCard(TAGS[f[5]],f[3].replace('≈',''),f[4],f[6],f[0],f[1]))});
+function zoomCls(){const m=document.getElementById('map');m.classList.toggle('lowz',map.getZoom()<17);m.classList.toggle('lowz2',map.getZoom()<15)}map.on('zoomend',zoomCls);zoomCls();
 document.querySelectorAll('.lchip').forEach(b=>b.onclick=()=>{const g=LAYERS[b.dataset.l];if(map.hasLayer(g)){map.removeLayer(g);b.classList.remove('on')}else{map.addLayer(g);b.classList.add('on')}});
 L.polyline(R,{color:'#fff',weight:9,opacity:.9}).addTo(LAYERS.route);L.polyline(RAIL1,{color:'#8b50a4',weight:5,dashArray:'2 9',lineCap:'round'}).addTo(LAYERS.route).bindTooltip('🚇 5號線→往十里→水仁盆唐線',{sticky:true});L.polyline(RAIL2,{color:'#f5a200',weight:5,dashArray:'2 9',lineCap:'round'}).addTo(LAYERS.route).bindTooltip('🚇 水仁盆唐線 往水原 4站',{sticky:true});[WALK2,WALK3].forEach(w=>L.polyline(w,{color:'#c56f45',weight:4,dashArray:'10 8'}).addTo(LAYERS.route));const HOME=[[37.54616,127.04310],[37.54602,127.04332],[37.5458,127.0437],[37.5455,127.0442],[37.54461,127.04498],[37.5445,127.04506],[37.5439,127.04489],[37.5438,127.04523]];L.polyline(HOME,{color:'#fff',weight:10,opacity:.95}).addTo(LAYERS.route);L.polyline(HOME,{color:'#2e8b57',weight:6}).addTo(LAYERS.route).bindTooltip('🚶 晚餐 → 首爾林站 約400m・6分',{permanent:true,direction:'right',className:'itip'});L.marker([37.5438,127.04523],{icon:L.divIcon({className:'',html:'<div class="ipin p">🚇</div>',iconSize:[26,26],iconAnchor:[13,13]})}).addTo(LAYERS.route).bindTooltip('首爾林站（水仁盆唐線）往수원→선릉',{permanent:true,direction:'bottom',offset:[0,10],className:'itip'});L.marker([37.5614,127.0377],{icon:L.divIcon({className:'',html:'<div class="ipin">🚇</div>',iconSize:[26,26]})}).addTo(LAYERS.route).bindTooltip('往十里 轉乘');;L.polyline(R,{color:'#c56f45',weight:5,dashArray:'10 8'}).addTo(LAYERS.route);
-let done=JSON.parse(localStorage.gbDone||'[]'),me=null,acc=0,heading=null,follow=true,next=0;const mk=[];
+let nearI=-1,done=JSON.parse(localStorage.gbDone||'[]'),me=null,acc=0,heading=null,follow=true,next=0;const mk=[];
 const dist=(a,b,c,d)=>{const r=6371e3,p=Math.PI/180,x=Math.sin((c-a)*p/2)**2+Math.cos(a*p)*Math.cos(c*p)*Math.sin((d-b)*p/2)**2;return 2*r*Math.asin(Math.sqrt(x))};
 const brg=(a,b,c,d)=>{const p=Math.PI/180,y=Math.sin((d-b)*p)*Math.cos(c*p),x=Math.cos(a*p)*Math.sin(c*p)-Math.sin(a*p)*Math.cos(c*p)*Math.cos((d-b)*p);return(Math.atan2(y,x)/p+360)%360};
 const fm=m=>m<1000?Math.round(m)+' m':(m/1000).toFixed(1)+' km';
-function pinIcon(i){const c=done.includes(i)?'done':i===next?'nx':'';return L.divIcon({className:'',html:`<div class="pin ${c}">${done.includes(i)?'✓':i+1}</div>`,iconSize:[30,30],iconAnchor:[15,15]})}
-S.forEach((s,i)=>{mk[i]=L.marker([s[0],s[1]],{icon:pinIcon(i)}).addTo(LAYERS.route).on('click',()=>showStory(i));
+function pinIcon(i){const c=(done.includes(i)?'done':i===next?'nx':'')+(isFood(S[i])?' food':'')+(i===nearI?' near':'');return L.divIcon({className:'',html:`<div class="pin ${c}">${done.includes(i)?'✓':i+1}</div>`,iconSize:[36,36],iconAnchor:[18,18]})}
+S.forEach((s,i)=>{mk[i]=L.marker([s[0],s[1]],{icon:pinIcon(i)}).addTo(LAYERS.route).on('click',()=>showStory(i));mk[i].bindTooltip(`${isFood(s)?'🍽️ ':''}${s[2]}<small>${s[3]}</small>`,{permanent:true,interactive:true,direction:'bottom',offset:[0,16],className:'stip'+(isFood(s)?' food':'')});mk[i].getTooltip().on('click',()=>showStory(i));
 if(s[5])L.marker([s[0]+.00022,s[1]+.00028],{icon:L.divIcon({className:'',html:'<div class="leaf">🍁</div>',iconSize:[24,24]}),interactive:false}).addTo(LAYERS.route)});
 // next stop: nearest stop to me => all before it done; if within 40m of it, it's done too
 function computeNext(){if(me){let n=0,bd=1e9;S.forEach((s,i)=>{const d=dist(me[0],me[1],s[0],s[1]);if(d<bd){bd=d;n=i}});
 for(let i=0;i<n;i++)if(!done.includes(i))done.push(i);if(bd<60&&!done.includes(n))done.push(n);if(bd<40&&!seen.includes(n)){seen.push(n);localStorage.gbSeen=JSON.stringify(seen);showStory(n)}localStorage.gbDone=JSON.stringify(done)}
 next=S.findIndex((s,i)=>!done.includes(i));}
-function render(){computeNext();S.forEach((s,i)=>mk[i].setIcon(pinIcon(i)));
-document.getElementById('list').innerHTML=S.map((s,i)=>`<div class="card ${done.includes(i)?'done':''} ${i===next?'nx':''}" data-i="${i}"><div class="num">${done.includes(i)?'✓':i+1}</div><div><b>${s[2]}${s[5]?' 🍁':''}</b><div class="ko">${s[3]}</div><div class="st">${s[4]}</div></div><div class="d">${me?fm(dist(me[0],me[1],s[0],s[1])):''}</div><button class="copy" data-c="${s[3]}">📋</button></div>`).join('');
+function render(){computeNext();nearI=-1;if(me){let bd=60;S.forEach((s,i)=>{const d=dist(me[0],me[1],s[0],s[1]);if(d<bd){bd=d;nearI=i}})}const nb=document.getElementById('near');if(nearI>=0){const v=SIGN[S[nearI][3]];nb.innerHTML=`就在附近！找招牌：<big>${v?v[0]:S[nearI][3]}</big>`;nb.style.display='block'}else nb.style.display='none';document.querySelectorAll('.dist[data-la]').forEach(x=>x.textContent=distTxt(+x.dataset.la,+x.dataset.ln));S.forEach((s,i)=>mk[i].setIcon(pinIcon(i)));
+document.getElementById('list').innerHTML=S.map((s,i)=>`<div class="card ${done.includes(i)?'done':''} ${i===next?'nx':''}" data-i="${i}"><div class="num">${done.includes(i)?'✓':i+1}</div><div><b>${s[2]}${s[5]?' 🍁':''}</b><div class="ko">${s[3]}</div><div class="st">${s[4]}</div></div><div class="d">${me?fm(dist(me[0],me[1],s[0],s[1])):''}</div>${navBtns(s[3],s[0],s[1])}<button class="copy" data-c="${s[3]}">📋</button></div>`).join('');
 const nt=document.getElementById('nt'),nd=document.getElementById('nd'),ar=document.getElementById('arrow');
 if(next<0){nt.innerHTML='<b>🎉 全部走完！</b><div class="ko">好好吃蔘雞湯吧～</div>';nd.textContent='';ar.style.transform='';return}
 const s=S[next];nt.innerHTML=`<div class="ko">下一站 ${next+1} ・點我看全部 ▲</div><b>${s[2]}</b><div class="ko">${s[3]}</div>`;
 if(me){nd.textContent=fm(dist(me[0],me[1],s[0],s[1]));const b=brg(me[0],me[1],s[0],s[1]);ar.style.transform=`rotate(${b-(heading??0)}deg)`;ar.title=heading==null?'箭頭以地圖北方為準':'箭頭以手機方向為準'}else nd.textContent=''}
 document.addEventListener('click',e=>{const c=e.target.closest('.copy[data-c]');if(c){e.stopPropagation();const t=c.dataset.c;const fb=()=>{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove()};navigator.clipboard?navigator.clipboard.writeText(t).catch(fb):fb();const o=c.textContent;c.textContent='✅';setTimeout(()=>c.textContent=o,1000);return}
-const k=e.target.closest('.card');if(k){const i=+k.dataset.i;setFollow(false);document.getElementById('sheet').classList.remove('open');map.flyTo([S[i][0],S[i][1]],18);showStory(i)}});
-document.getElementById('bar').onclick=()=>document.getElementById('sheet').classList.toggle('open');
+const k=e.target.closest('a')?null:e.target.closest('.card');if(k){const i=+k.dataset.i;setFollow(false);document.getElementById('sheet').classList.remove('open');map.flyTo([S[i][0],S[i][1]],18);showStory(i)}});
+const sheet=document.getElementById('sheet'),shx=document.getElementById('shx'),storyEl=document.getElementById('story');
+function setSheet(o){sheet.classList.toggle('open',o);shx.textContent=o?'收起 ▼':'展開 ▲';document.querySelector('.fab').classList.toggle('hide',o);placeFab()}
+function placeFab(){document.querySelector('.fab').style.bottom=(sheet.offsetHeight+12)+'px'}
+document.getElementById('bar').onclick=()=>setSheet(!sheet.classList.contains('open'));
+document.getElementById('shd').onclick=e=>{e.stopPropagation();setSheet(!sheet.classList.contains('open'))};
+function swipeDown(el,fn,cond){let y0=null;el.addEventListener('touchstart',e=>{y0=e.touches[0].clientY},{passive:true});el.addEventListener('touchend',e=>{if(y0!=null&&e.changedTouches[0].clientY-y0>40&&(!cond||cond()))fn();y0=null},{passive:true})}
+swipeDown(document.getElementById('shd'),()=>setSheet(false));swipeDown(document.getElementById('bar'),()=>setSheet(false));
+swipeDown(storyEl,()=>storyEl.classList.remove('show'),()=>storyEl.scrollTop<=0);
+map.on('click',()=>{setSheet(false);storyEl.classList.remove('show')});
+window.addEventListener('resize',placeFab);new ResizeObserver(placeFab).observe(sheet);placeFab();
 let trail=JSON.parse(localStorage.gbTrail||'[]');const tl=L.polyline(trail,{color:'#789681',weight:6,opacity:.9}).addTo(map);
 const bear=L.marker([0,0],{icon:L.divIcon({className:'',html:'<div class="bearw"><div class="cone" id="cone"></div><div class="bear"><span id="b">🐻</span></div></div>',iconSize:[60,60],iconAnchor:[30,30]}),zIndexOffset:1000});
 const circ=L.circle([0,0],{radius:1,color:'#c56f45',weight:1,fillOpacity:.12});
