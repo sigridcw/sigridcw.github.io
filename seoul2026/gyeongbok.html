@@ -187,7 +187,7 @@ const ST=[
 "上車前確認方向是「수원」；計程車可以直接給司機看飯店地址。"]];
 let seen=JSON.parse(localStorage.gbSeen||'[]');
 function showStory(i){const s=S[i],t=ST[i],el=document.getElementById('story');
-el.innerHTML=`<button class="x" onclick="document.getElementById('story').classList.remove('show')">✕</button><div class="ko">第 ${i} 站 ${s[5]?'🍁':'🐻'}</div><h2>${s[2]}</h2><div class="ko" style="font-size:16px">${s[3]}</div>
+el.innerHTML=`<button class="x" onclick="document.getElementById('story').classList.remove('show')">✕</button><div class="ko">第 ${i+1} 站 ${s[5]?'🍁':'🐻'}</div><h2>${s[2]}</h2><div class="ko" style="font-size:16px">${s[3]}</div>
 <h4>💬 一句話介紹</h4><p>${t[0]}</p><h4>📜 歷史背景</h4><p>${t[1]}</p><h4>😆 好玩故事（講給爸媽聽）</h4><p>${t[2]}</p><h4>👀 必看重點</h4><p>${t[3]}</p>
 <div class="acts"><button class="copy" data-c="${s[3]}">📋 複製韓文</button><a href="https://map.naver.com/p/search/${encodeURIComponent(s[3])}" target="_blank">Naver 地圖 ↗</a></div>`;el.scrollTop=0;el.classList.add('show')}
 const map=L.map('map',{zoomControl:false}).setView([37.5785,126.9755],17);
@@ -259,7 +259,7 @@ let done=JSON.parse(localStorage.gbDone||'[]'),me=null,acc=0,heading=null,follow
 const dist=(a,b,c,d)=>{const r=6371e3,p=Math.PI/180,x=Math.sin((c-a)*p/2)**2+Math.cos(a*p)*Math.cos(c*p)*Math.sin((d-b)*p/2)**2;return 2*r*Math.asin(Math.sqrt(x))};
 const brg=(a,b,c,d)=>{const p=Math.PI/180,y=Math.sin((d-b)*p)*Math.cos(c*p),x=Math.cos(a*p)*Math.sin(c*p)-Math.sin(a*p)*Math.cos(c*p)*Math.cos((d-b)*p);return(Math.atan2(y,x)/p+360)%360};
 const fm=m=>m<1000?Math.round(m)+' m':(m/1000).toFixed(1)+' km';
-function pinIcon(i){const c=done.includes(i)?'done':i===next?'nx':'';return L.divIcon({className:'',html:`<div class="pin ${c}">${done.includes(i)?'✓':i}</div>`,iconSize:[30,30],iconAnchor:[15,15]})}
+function pinIcon(i){const c=done.includes(i)?'done':i===next?'nx':'';return L.divIcon({className:'',html:`<div class="pin ${c}">${done.includes(i)?'✓':i+1}</div>`,iconSize:[30,30],iconAnchor:[15,15]})}
 S.forEach((s,i)=>{mk[i]=L.marker([s[0],s[1]],{icon:pinIcon(i)}).addTo(LAYERS.route).on('click',()=>showStory(i));
 if(s[5])L.marker([s[0]+.00022,s[1]+.00028],{icon:L.divIcon({className:'',html:'<div class="leaf">🍁</div>',iconSize:[24,24]}),interactive:false}).addTo(LAYERS.route)});
 // next stop: nearest stop to me => all before it done; if within 40m of it, it's done too
@@ -267,10 +267,10 @@ function computeNext(){if(me){let n=0,bd=1e9;S.forEach((s,i)=>{const d=dist(me[0
 for(let i=0;i<n;i++)if(!done.includes(i))done.push(i);if(bd<60&&!done.includes(n))done.push(n);if(bd<40&&!seen.includes(n)){seen.push(n);localStorage.gbSeen=JSON.stringify(seen);showStory(n)}localStorage.gbDone=JSON.stringify(done)}
 next=S.findIndex((s,i)=>!done.includes(i));}
 function render(){computeNext();S.forEach((s,i)=>mk[i].setIcon(pinIcon(i)));
-document.getElementById('list').innerHTML=S.map((s,i)=>`<div class="card ${done.includes(i)?'done':''} ${i===next?'nx':''}" data-i="${i}"><div class="num">${done.includes(i)?'✓':i}</div><div><b>${s[2]}${s[5]?' 🍁':''}</b><div class="ko">${s[3]}</div><div class="st">${s[4]}</div></div><div class="d">${me?fm(dist(me[0],me[1],s[0],s[1])):''}</div><button class="copy" data-c="${s[3]}">📋</button></div>`).join('');
+document.getElementById('list').innerHTML=S.map((s,i)=>`<div class="card ${done.includes(i)?'done':''} ${i===next?'nx':''}" data-i="${i}"><div class="num">${done.includes(i)?'✓':i+1}</div><div><b>${s[2]}${s[5]?' 🍁':''}</b><div class="ko">${s[3]}</div><div class="st">${s[4]}</div></div><div class="d">${me?fm(dist(me[0],me[1],s[0],s[1])):''}</div><button class="copy" data-c="${s[3]}">📋</button></div>`).join('');
 const nt=document.getElementById('nt'),nd=document.getElementById('nd'),ar=document.getElementById('arrow');
 if(next<0){nt.innerHTML='<b>🎉 全部走完！</b><div class="ko">好好吃蔘雞湯吧～</div>';nd.textContent='';ar.style.transform='';return}
-const s=S[next];nt.innerHTML=`<div class="ko">下一站 ${next} ・點我看全部 ▲</div><b>${s[2]}</b><div class="ko">${s[3]}</div>`;
+const s=S[next];nt.innerHTML=`<div class="ko">下一站 ${next+1} ・點我看全部 ▲</div><b>${s[2]}</b><div class="ko">${s[3]}</div>`;
 if(me){nd.textContent=fm(dist(me[0],me[1],s[0],s[1]));const b=brg(me[0],me[1],s[0],s[1]);ar.style.transform=`rotate(${b-(heading??0)}deg)`;ar.title=heading==null?'箭頭以地圖北方為準':'箭頭以手機方向為準'}else nd.textContent=''}
 document.addEventListener('click',e=>{const c=e.target.closest('.copy[data-c]');if(c){e.stopPropagation();const t=c.dataset.c;const fb=()=>{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove()};navigator.clipboard?navigator.clipboard.writeText(t).catch(fb):fb();const o=c.textContent;c.textContent='✅';setTimeout(()=>c.textContent=o,1000);return}
 const k=e.target.closest('.card');if(k){const i=+k.dataset.i;setFollow(false);document.getElementById('sheet').classList.remove('open');map.flyTo([S[i][0],S[i][1]],18);showStory(i)}});
