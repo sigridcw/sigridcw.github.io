@@ -114,7 +114,8 @@ el.innerHTML=`<button class="x" onclick="document.getElementById('story').classL
 <h4>💬 一句話介紹</h4><p>${t[0]}</p><h4>📜 歷史背景</h4><p>${t[1]}</p><h4>😆 好玩故事（講給爸媽聽）</h4><p>${t[2]}</p><h4>👀 必看重點</h4><p>${t[3]}</p>
 <div class="acts"><button class="copy" data-c="${s[3]}">📋 複製韓文</button><a href="https://map.naver.com/p/search/${encodeURIComponent(s[3])}" target="_blank">Naver 地圖 ↗</a></div>`;el.scrollTop=0;el.classList.add('show')}
 const map=L.map('map',{zoomControl:false}).setView([37.5785,126.9755],17);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:20,subdomains:'abcd',attribution:'© OpenStreetMap © CARTO'}).addTo(map);
+var osmTiles=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,maxNativeZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
+var tileErr=0;osmTiles.on('tileerror',function(){if(++tileErr===4){map.removeLayer(osmTiles);L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);}});
 L.polyline(R,{color:'#fff',weight:9,opacity:.9}).addTo(map);L.polyline(R,{color:'#c56f45',weight:5,dashArray:'10 8'}).addTo(map);
 let done=JSON.parse(localStorage.gbDone||'[]'),me=null,acc=0,heading=null,follow=true,next=0;const mk=[];
 const dist=(a,b,c,d)=>{const r=6371e3,p=Math.PI/180,x=Math.sin((c-a)*p/2)**2+Math.cos(a*p)*Math.cos(c*p)*Math.sin((d-b)*p/2)**2;return 2*r*Math.asin(Math.sqrt(x))};
