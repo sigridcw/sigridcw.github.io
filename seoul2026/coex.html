@@ -1,0 +1,100 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>🍎 10/30 爸爸去 COEX 開會：走路路線</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@500;700&family=Noto+Serif+TC:wght@600;900&display=swap" rel="stylesheet">
+<style>
+:root{--copper:#c56f45;--copper-soft:#f3dfd1;--ink:#10272c;--line:#d9ddd5;--muted:#6c7d7d;--paper:#f6f3ec;--sage:#789681;--sage-soft:#dfe9df;--sand-soft:#efe6d3;--white:#fffef9;--critical:#a84f40;--sans:"Geist","PingFang TC","Noto Sans TC",system-ui,sans-serif;--serif:"Noto Serif TC",serif;--mono:"Geist Mono",ui-monospace,monospace;--shadow:0 6px 18px rgba(21,43,45,.12)}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:19px/1.6 var(--sans)}
+header{padding:calc(14px + env(safe-area-inset-top)) 16px 6px}header a{color:var(--copper);text-decoration:none;font-size:15px}
+h1{font-family:var(--serif);font-size:28px;line-height:1.3;margin:6px 0 2px}.sub{color:var(--muted);font-size:16px}
+.big{margin:10px 12px;background:var(--white);border:2px solid var(--copper);border-radius:20px;padding:14px 16px;box-shadow:var(--shadow)}
+.big .t{font:700 30px var(--mono);color:var(--copper)}.big b{font-size:21px}
+#mapw{position:relative;margin:10px 12px;height:62vh;min-height:380px;border-radius:20px;overflow:hidden;box-shadow:var(--shadow)}#map{position:absolute;inset:0}
+#mapw .fam-bar{position:absolute;top:10px;right:10px}#mapw #nbBtn{position:absolute;top:10px;left:10px}
+#mapw .mb{position:absolute;left:10px;bottom:10px;z-index:640;display:flex;gap:8px}#mapw .mb button{border:0;border-radius:24px;min-height:46px;padding:0 14px;font:700 16px var(--sans);background:var(--white);box-shadow:var(--shadow)}
+h2{font-family:var(--serif);font-size:24px;margin:22px 16px 6px}
+.step{margin:10px 12px;background:var(--white);border:1px solid var(--line);border-radius:20px;padding:14px 16px;display:flex;gap:14px}
+.step .n{flex:none;width:46px;height:46px;border-radius:50%;background:var(--copper);color:#fff;display:grid;place-items:center;font:700 22px var(--mono)}
+.step .i{font-size:40px;line-height:1}.step b{font-size:21px;display:block}.step strong{font-weight:800;color:var(--copper)}.step .m{font:700 16px var(--mono);color:var(--copper)}.step .lm{margin-top:6px;background:var(--sand-soft);border-radius:12px;padding:6px 10px;font-size:17px}
+.warn{margin:10px 12px;background:#f2dcd6;color:var(--critical);border-radius:16px;padding:10px 14px;font-size:17px}
+.ok{margin:10px 12px;background:var(--sage-soft);border-radius:16px;padding:10px 14px;font-size:17px}
+.copyb{margin:10px 12px;border:3px solid var(--ink);border-radius:18px;background:#fff8e6;padding:12px 14px;text-align:center;cursor:pointer}
+.copyb .l{font-size:15px;color:var(--muted)}.copyb .k{font:900 30px/1.3 var(--sans);word-break:keep-all}.copyb .a{font-size:17px;margin-top:2px}.copyb .c{display:inline-block;margin-top:8px;background:var(--copper);color:#fff;border-radius:12px;padding:6px 14px;font-weight:700;font-size:16px}
+.nav{display:flex;gap:10px;margin:10px 12px}.nav a{flex:1;min-height:56px;display:flex;align-items:center;justify-content:center;border-radius:16px;font:700 18px var(--sans);text-decoration:none;color:#fff;background:#03c75a}.nav a.ap{background:var(--ink)}
+.src{margin:18px 16px 40px;font-size:13px;color:var(--muted)}.src a{color:var(--copper)}
+.pin{width:44px;height:44px;border-radius:50%;background:var(--copper);color:#fff;border:3px solid #fff;display:grid;place-items:center;font-size:22px;box-shadow:0 3px 8px rgba(0,0,0,.35)}
+.cp{width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;border:2px solid #fff;display:grid;place-items:center;font:700 15px var(--mono)}
+.lbl{background:rgba(16,39,44,.88);color:#fff;border:0;font:700 13px var(--sans);border-radius:8px;padding:2px 7px}.lbl:before{display:none}
+.me{font-size:36px;filter:drop-shadow(0 3px 3px rgba(0,0,0,.35))}
+</style></head><body>
+<!--
+  座標來源（2026-10-29 查證；不准用估計座標）
+  飯店 Ibis Styles Ambassador Seoul Gangnam 서울 강남구 삼성로 431：37.50511,127.057067（Nominatim：431 삼성로 대치4동）
+  COEX 北門（북문）：37.513685,127.058424 = OSM 步行路網在 COEX 建築（OSM way 74013220）北面的入口點（routing.openstreetmap.de foot），
+     旁邊公車站「봉은사.코엑스북문」OSM node 357889603（37.513614,127.057557，站號 23191）佐證。門的精確位置誤差約 ±30m。
+  報到櫃檯：APLAR 寄給爸爸的信（/workspace/line/img/638205120714113659.jpg）：1 樓 exhibition concourse foyer，從 North Gate 進。
+  209A：COEX 官網 Conference Room (North) 2F（https://www.coex.co.kr/en/meeting-room/conference-room-north-asem-ballroom/）。
+     「爸爸在 209A」來自之前網站記錄的大會通知；APLAR 公開議程（aplarcongress.com/program）沒有列房間 → 標示「請看名牌/大會 App 再確認」。
+  POSCO 사거리：OSRM 삼성로 snapped 37.507778,127.056241；POSCO센터 OSM way 466291216（37.505713,127.055902）
+  Oakwood Premier COEX：OSM way 74056398（37.510986,127.058106）；그랜드 인터컨티넨탈 파르나스 봉은사로 524：Nominatim 37.51283,127.05726
+  路線：routing.openstreetmap.de/routed-foot，飯店→POSCO사거리→테헤란로87길→北門，1,328m，約 18 分（老人步速抓 20–22 分）
+  附近景點：OSM Overpass 2026-10-29（node/way id 寫在 PRE 每筆最後）
+-->
+<header><a href="./#plan">← 回行程</a><h1>🍎 爸爸去 COEX 開會<br>走路路線</h1><div class="sub">10/30（五）· 飯店 → COEX 北門 → 2 樓 209A</div></header>
+<div class="big"><div class="t">09:20 出發</div><b>走路約 20 分鐘（1.3 公里），09:40 左右到北門</b><div>10:00 開會。進門先到 1 樓報到櫃檯印名牌（約 10 分），再上 2 樓。</div></div>
+<div id="mapw"><div id="map"></div><div class="mb"><button id="bRoute">🗺️ 全路線</button><button id="bMe">📍 我在哪</button></div></div>
+<div class="ok">🧭 地圖上 <b>藍線</b> 就是路線；🐻／🍎 是自己和家人的位置。全程平路、都是人行道，要過 <b>1 次大馬路（테헤란로）</b>，有紅綠燈。</div>
+<h2>👣 一步一步走</h2>
+<div id="steps"></div>
+<h2>🏢 進了 COEX 以後</h2>
+<div class="step"><div class="i">🚪</div><div><b>從「北門 North Gate（북문）」進去</b>北門在 봉은사로（奉恩寺路）這一面，對面就是奉恩寺。</div></div>
+<div class="step"><div class="i">🪪</div><div><b>1 樓：報到櫃檯 Registration</b>在 1 樓展覽大廳前廳（Exhibition concourse foyer）。用手機給它掃信箱裡的 QR code，自助機印名牌。<br><span class="m">週五 07:30–17:30 開</span><div class="lm">來源：APLAR 寄給爸爸的信 ✅</div></div></div>
+<div class="step"><div class="i">⬆️</div><div><b>2 樓：Conference Room (North) 會議室 209A</b>搭電扶梯／電梯上 2 樓，找「Conference Room North 컨퍼런스룸(북)」、「201–203 ASEM Ballroom」的指標，209A 在 ASEM Ballroom 旁邊的小會議室區。<div class="lm">✅ COEX 官網：209A 在 2F Conference Room (North)<br>⚠️ 爸爸的場次在 209A：來自之前的大會通知，APLAR 公開議程沒寫房間 → <b>請看名牌背面／大會 App／現場看板再確認一次</b>。</div></div></div>
+<div class="warn">⏰ 時間：妳說 10:00 開會；網站之前記的是「10:30–12:00 肌炎 SIG（2F 209A）」。09:40 到一定來得及，兩個都趕得上。</div>
+<h2>📋 給計程車司機／問路用（點一下複製）</h2>
+<div class="copyb" data-copy="코엑스 북문"><div class="l">要去：COEX 北門</div><div class="k">코엑스 북문</div><div class="a">서울 강남구 영동대로 513</div><span class="c">📋 複製</span></div>
+<div class="copyb" data-copy="코엑스 컨퍼런스룸(북) 209A호"><div class="l">會議室（問工作人員）</div><div class="k">컨퍼런스룸(북) 2층 209A호</div><div class="a">Conference Room (North) 2F · Room 209A</div><span class="c">📋 複製</span></div>
+<div class="nav"><a href="https://map.naver.com/p/search/%EC%BD%94%EC%97%91%EC%8A%A4%20%EB%B6%81%EB%AC%B8" target="_blank">🧭 Naver 導航</a><a class="ap" href="https://maps.apple.com/?daddr=37.513685,127.058424&dirflg=w" target="_blank">🍎 Apple 地圖</a></div>
+<h2>🏨 回飯店</h2>
+<div class="copyb" data-copy="서울 강남구 삼성로 431"><div class="l">飯店地址（給司機看、點一下複製）</div><div class="k">이비스 스타일 앰배서더 서울 강남</div><div class="a">서울 강남구 삼성로 431</div><span class="c">📋 複製</span></div>
+<div class="step"><div class="i">↩️</div><div><b>走回飯店：同一條路倒著走（約 20 分）</b>① 北門出來，沿 봉은사로 往<strong>右（西）</strong>走約 190m → ② 左轉往南，Oakwood 大樓在左手邊，走約 240m → ③ 右轉往西走約 250m 到 삼성로 → ④ 左轉往南到 POSCO 사거리，過 테헤란로 → ⑤ 直走約 300m 到飯店。<div class="lm">地圖按「🗺️ 全路線」看藍線；累了就搭計程車，給司機看上面的飯店地址（約 5 分鐘）。</div></div></div>
+<div class="nav"><a href="https://map.naver.com/p/search/%EC%9D%B4%EB%B9%84%EC%8A%A4%20%EC%8A%A4%ED%83%80%EC%9D%BC%20%EC%95%B0%EB%B0%B0%EC%84%9C%EB%8D%94%20%EC%84%9C%EC%9A%B8%20%EA%B0%95%EB%82%A8" target="_blank">🧭 Naver 回飯店</a><a class="ap" href="https://maps.apple.com/?daddr=37.50511,127.057067&dirflg=w" target="_blank">🍎 Apple 回飯店</a></div>
+<div class="warn">☔ 下雨備案：飯店官網說最近的是 2 號線 삼성역（三成站）4 號出口（往 POSCO 大樓方向約 500m），三成站地下跟 COEX 相連；但地下商場很大容易迷路，爸媽<b>建議走上面這條地面路線或直接搭計程車</b>（給司機看「코엑스 북문」）。</div>
+<div class="src">資料來源：<a href="https://aplarcongress.com/venue/" target="_blank">APLAR 2026 場地</a>・<a href="https://aplarcongress.com/program/" target="_blank">APLAR 議程</a>・<a href="https://www.coex.co.kr/en/meeting-room/conference-room-north-asem-ballroom/" target="_blank">COEX 官網 Conference Room (North)</a>・APLAR 給爸爸的報到信・路線 OSRM（OpenStreetMap）・地圖 © OpenStreetMap。</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="family.js"></script><script src="nearby.js"></script>
+<script>
+const HOTEL=[37.50511,127.057067],GATE=[37.513685,127.058424];
+const ROUTE=[[37.505312,127.056959],[37.5054,127.05722],[37.505558,127.057132],[37.505756,127.057023],[37.506318,127.056743],[37.506476,127.056567],[37.506533,127.056426],[37.506563,127.056532],[37.506618,127.056715],[37.506723,127.056661],[37.50694,127.056536],[37.507059,127.056472],[37.507104,127.056606],[37.507517,127.056395],[37.507778,127.056241],[37.508459,127.055837],[37.508502,127.055945],[37.50853,127.05592],[37.508537,127.055892],[37.509373,127.055456],[37.509632,127.056196],[37.509838,127.05687],[37.509995,127.057377],[37.510191,127.057986],[37.510215,127.057973],[37.510256,127.058101],[37.510969,127.057711],[37.511483,127.05743],[37.511773,127.057272],[37.512194,127.057042],[37.512523,127.056863],[37.512917,127.056642],[37.513031,127.056868],[37.513164,127.056873],[37.513245,127.057077],[37.513345,127.057728],[37.513399,127.057975],[37.513465,127.058161],[37.513512,127.058282],[37.513536,127.058363],[37.513561,127.058462],[37.513685,127.058424]];
+// [lat,lng,圖示,標題,說明,分鐘,地標]
+const STEPS=[
+[37.50511,127.057067,"🏨","走出飯店，往北走","出門後往<strong>北</strong>（POSCO 大樓方向）走到大路口。","約 5 分 · 300m","🏢 大玻璃大樓「POSCO 센터」會在左前方"],
+[37.507778,127.056241,"🚦","POSCO 사거리：過大馬路 테헤란로","在 POSCO 十字路口等綠燈，走斑馬線<strong>往北</strong>過 테헤란로（很寬的大馬路）。","約 2 分","🪧 路口牌子：포스코사거리"],
+[37.509373,127.055456,"➡️","繼續直走約 100m，右轉往東","過馬路後沿 삼성로 再直走一小段，在第一條小路<strong>右轉</strong>，往東走約 250m。","約 4 分 · 350m","🏬 前方就是 COEX 一帶的大樓"],
+[37.510256,127.058101,"⬆️","左轉往北（테헤란로87길）","走到底<strong>左轉往北</strong>，Oakwood 大樓（오크우드 프리미어）在右手邊，直走約 240m 到 봉은사로（奉恩寺路）。","約 4 分 · 240m","🏨 오크우드 프리미어 코엑스센터 在右邊"],
+[37.512917,127.056642,"➡️","右轉，沿 봉은사로 往東","到大路 봉은사로 <strong>右轉往東</strong>走約 190m。對面（左邊）是奉恩寺；右邊是 InterContinental 파르나스 飯店。","約 3 分 · 190m","🛕 馬路對面看到奉恩寺 = 走對了"],
+[37.513685,127.058424,"🚪","到了！COEX 北門 North Gate","右手邊就是 COEX 北門（북문），公車站叫「봉은사.코엑스북문」。進去先到 1 樓報到。","09:40 左右","🚏 公車站牌：봉은사.코엑스북문"]];
+document.getElementById('steps').innerHTML=STEPS.map((s,i)=>`<div class="step"><div class="n">${i+1}</div><div><div class="i">${s[2]}</div><b>${s[3]}</b>${s[4]}<div class="m">${s[5]}</div><div class="lm">${s[6]}</div></div></div>`).join('');
+const map=L.map('map',{zoomControl:false});
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
+L.polyline(ROUTE,{color:'#fff',weight:11,opacity:.9}).addTo(map);const line=L.polyline(ROUTE,{color:'#2f6fd6',weight:7}).addTo(map);
+L.marker(HOTEL,{icon:L.divIcon({className:'',html:'<div class="pin">🏨</div>',iconSize:[44,44],iconAnchor:[22,22]})}).addTo(map).bindTooltip('飯店 이비스',{permanent:true,direction:'bottom',offset:[0,18],className:'lbl'});
+L.marker(GATE,{icon:L.divIcon({className:'',html:'<div class="pin" style="background:#d6332a">🚪</div>',iconSize:[44,44],iconAnchor:[22,22]})}).addTo(map).bindTooltip('COEX 北門 → 1F 報到 → 2F 209A',{permanent:true,direction:'top',offset:[0,-20],className:'lbl'});
+STEPS.slice(1,5).forEach((s,i)=>L.marker([s[0],s[1]],{icon:L.divIcon({className:'',html:`<div class="cp">${i+2}</div>`,iconSize:[30,30],iconAnchor:[15,15]})}).addTo(map));
+const fitR=()=>map.fitBounds(line.getBounds(),{padding:[50,50]});fitR();document.getElementById('bRoute').onclick=fitR;
+let me=null,mm=null;if(navigator.geolocation)navigator.geolocation.watchPosition(p=>{me=[p.coords.latitude,p.coords.longitude];if(!mm)mm=L.marker(me,{icon:L.divIcon({className:'',html:'<div class="me">📍</div>',iconSize:[36,36],iconAnchor:[18,30]}),zIndexOffset:800}).addTo(map);else mm.setLatLng(me)},()=>{},{enableHighAccuracy:true});
+document.getElementById('bMe').onclick=()=>{if(me)map.setView(me,17);else alert('還沒定位到，請允許位置權限')};
+document.querySelectorAll('[data-copy]').forEach(el=>el.onclick=()=>{const t=el.dataset.copy,c=el.querySelector('.c');(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>{c.textContent='✅ 已複製'}).catch(()=>prompt('複製',t))});
+// 附近景點（OSM Overpass 2026-10-29 查證座標）
+const PRE=[
+[37.515172,127.056997,"🛕","奉恩寺","봉은사","新羅 794 年創建的千年古寺，就在 COEX 正對面，被高樓包圍的寺廟。","朝鮮時代曾是禪宗總本山；「板殿」的匾額是大書法家金正喜過世前三天寫的最後作品。","OSM way 74010857"],
+[37.515501,127.056191,"🗿","奉恩寺 彌勒大佛","봉은사 미륵대불","23 公尺高的石造彌勒佛立像，1996 年完成。","韓國最高的戶外彌勒立像之一，站在 COEX 這邊抬頭就看得到。","OSM node 3453489899"],
+[37.512277,127.060715,"🕺","江南 Style 騎馬舞雕像","강남스타일 말춤 조형물","PSY〈江南 Style〉騎馬舞的兩隻大手銅像，在 COEX 東側。","站在手中間會自動播放〈江南 Style〉！","OSM node 5889967085"],
+[37.510061,127.060162,"📚","星空圖書館","별마당도서관","COEX 商場中間挑高 13 公尺的大書牆，免費開放。","書架上大約有 5 萬本書和雜誌，可以隨便拿下來看。","OSM way 837196099"],
+[37.51035,127.061047,"🏙️","韓國貿易中心 Trade Tower","트레이드타워","55 層、228 公尺的韓國貿易協會大樓，1988 年完工。","旁邊的 ASEM Tower 是為了 2000 年在 COEX 舉辦的亞歐高峰會（ASEM）蓋的，COEX 2 樓的 ASEM Ballroom 也因此得名。","Wikipedia: Trade Tower"],
+[37.505789,127.056095,"🖼️","POSCO 美術館","포스코미술관","POSCO 大樓裡的免費美術館，就在飯店北邊。","POSCO 大樓大廳有白南準的大型錄影裝置藝術〈TV 깔때기〉。","OSM node 368725561"],
+[37.508984,127.048942,"👑","宣陵・靖陵（世界遺產）","선릉과 정릉","朝鮮成宗、貞顯王后與中宗的王陵，2009 年列入世界文化遺產「朝鮮王陵」。","江南高樓中間一大片松林；2 號線「宣陵站」就是以它命名。","OSM relation 5493161"],
+[37.507756,127.05328,"⛩️","靖陵 紅箭門","정릉 홍살문","進入王陵神聖區域的紅色大門。","上面一根根尖尖的紅木是辟邪用的。","OSM node 2477254479"]];
+FamilyMap.init(map);Nearby.init(map,{pre:PRE});
+const w=document.getElementById('mapw');w.appendChild(document.querySelector('.fam-bar'));w.appendChild(document.getElementById('nbBtn'));
+</script></body></html>

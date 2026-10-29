@@ -73,7 +73,7 @@
 <div class="hotel">🏨 飯店：Ibis Styles Ambassador Seoul Gangnam<br><span class="ko">서울 강남구 삼성로 431</span> <button class="copy" data-c="서울 강남구 삼성로 431">複製地址</button></div>
 <button class="copy" id="clr" style="margin-top:4px">🧹 清除足跡</button></div></div>
 <div id="story"></div>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script src="family.js"></script><script src="nearby.js"></script>
 <script>
 // coords verified vs OSM Nominatim 2026-10-29
 const S=[
@@ -333,4 +333,6 @@ window.addEventListener('deviceorientationabsolute',onOri);window.addEventListen
 document.getElementById('clr').onclick=()=>{if(confirm('清除足跡和打勾紀錄？')){trail=[];done=[];localStorage.gbTrail='[]';localStorage.gbDone='[]';seen=[];localStorage.gbSeen='[]';tl.setLatLngs([]);render()}};
 document.querySelectorAll('.day').forEach(b=>b.onclick=()=>{setFollow(false);const d=b.dataset.d,pts=d==='am'?S.slice(0,10):d==='pm'?S.slice(9):S;map.fitBounds(L.latLngBounds(pts.map(x=>[x[0],x[1]])),{padding:[50,50]})});
 render();startWatch();setTimeout(()=>{if(!gotFix)startB.style.display='block'},4000);
+
+try{FamilyMap.init(map);Nearby.init(map,{pre:[]});}catch(e){console.error(e)}
 </script></body></html>
