@@ -45,7 +45,7 @@
 .itip{background:rgba(255,254,249,.9);border:0;box-shadow:none;font:600 11px var(--sans);padding:1px 5px;color:var(--ink)}.itip:before{display:none}.lowz .itip{display:none}
 .layers{position:fixed;top:calc(40px + env(safe-area-inset-top));left:8px;right:8px;z-index:600;display:flex;gap:5px;overflow-x:auto}
 .lchip{flex:none;border:1px solid var(--line);border-radius:99px;padding:4px 9px;font-size:12px;background:rgba(255,254,249,.75);color:var(--muted)}.lchip.on{background:var(--copper);color:#fff;border-color:var(--copper)}
-</style></head><body>
+.leaflet-tooltip.itip{pointer-events:auto;cursor:pointer}.ipin{cursor:pointer}</style></head><body>
 <div id="map"></div>
 <div class="top"><a class="home" href="./">← 行程</a><div id="chip">📡 定位中…</div></div>
 <div class="layers"><button class="lchip on" data-l="route">主要路線</button><button class="lchip on" data-l="p">🏯 宮殿與門</button><button class="lchip on" data-l="s">🏮 西村景點</button><button class="lchip on" data-l="r">🍲 備案餐廳</button></div>
@@ -170,7 +170,8 @@ el.innerHTML=`<button class="x" onclick="document.getElementById('story').classL
 <div class="acts"><button class="copy" data-c="${ko}">📋 複製韓文</button><a href="https://map.naver.com/p/search/${encodeURIComponent(ko)}" target="_blank">Naver 地圖 ↗</a></div>`;el.scrollTop=0;el.classList.add('show')}
 const TAGS={p:'🏯 宮殿與門',s:'🏮 西村景點',r:'🍲 備案餐廳'};
 INFO.forEach(f=>{L.marker([f[0],f[1]],{icon:L.divIcon({className:'',html:`<div class="ipin ${f[5]}">${f[2]}</div>`,iconSize:[26,26],iconAnchor:[13,13]})})
-.bindTooltip(f[3].replace('≈',''),{permanent:true,direction:'bottom',offset:[0,10],className:'itip'}).on('click',()=>showCard(TAGS[f[5]],f[3].replace('≈',''),f[4],f[6])).addTo(LAYERS[f[5]])});
+.bindTooltip(f[3].replace('≈',''),{permanent:true,interactive:true,direction:'bottom',offset:[0,10],className:'itip'}).on('click',()=>showCard(TAGS[f[5]],f[3].replace('≈',''),f[4],f[6])).addTo(LAYERS[f[5]]);
+const _m=LAYERS[f[5]].getLayers().slice(-1)[0];const _t=_m.getTooltip();if(_t)_t.on('click',()=>showCard(TAGS[f[5]],f[3].replace('≈',''),f[4],f[6]))});
 function zoomCls(){document.getElementById('map').classList.toggle('lowz',map.getZoom()<17)}map.on('zoomend',zoomCls);zoomCls();
 document.querySelectorAll('.lchip').forEach(b=>b.onclick=()=>{const g=LAYERS[b.dataset.l];if(map.hasLayer(g)){map.removeLayer(g);b.classList.remove('on')}else{map.addLayer(g);b.classList.add('on')}});
 L.polyline(R,{color:'#fff',weight:9,opacity:.9}).addTo(LAYERS.route);L.polyline(R,{color:'#c56f45',weight:5,dashArray:'10 8'}).addTo(LAYERS.route);
