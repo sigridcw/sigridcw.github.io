@@ -37,6 +37,10 @@
 .bear{position:absolute;inset:0;display:grid;place-items:center;font-size:38px;filter:drop-shadow(0 3px 3px rgba(0,0,0,.35))}.bear span{animation:bounce .7s ease-in-out infinite}
 @keyframes bounce{50%{transform:translateY(-7px)}}
 .leaflet-popup-content{font-family:var(--sans);font-size:14px}.leaflet-popup-content h3{font-family:var(--serif);margin:0 0 4px}.pop a{color:var(--copper)}
+#story{position:fixed;left:0;right:0;bottom:0;z-index:900;max-height:78dvh;overflow:auto;background:var(--white);border-radius:24px 24px 0 0;box-shadow:0 -10px 40px rgba(21,43,45,.3);padding:14px 18px calc(18px + env(safe-area-inset-bottom));font-size:17px;line-height:1.65;transform:translateY(110%);transition:transform .3s}
+#story.show{transform:none}#story h2{font-family:var(--serif);font-size:24px;margin:4px 0 0}#story h4{margin:16px 0 4px;color:var(--copper);font-size:17px}#story p{margin:0}
+#story .x{position:sticky;top:0;float:right;border:0;border-radius:50%;width:40px;height:40px;font-size:20px;background:var(--copper-soft)}
+#story .acts{margin-top:12px;display:flex;gap:10px;align-items:center}#story .acts a{color:var(--copper);font-size:16px}
 </style></head><body>
 <div id="map"></div>
 <div class="top"><a class="home" href="./">← 行程</a><div id="chip">📡 定位中…</div></div>
@@ -47,6 +51,7 @@
 <div id="more"><div id="list"></div>
 <div class="hotel">🏨 飯店：Ibis Styles Ambassador Seoul Gangnam<br><span class="ko">서울 강남구 삼성로 431</span> <button class="copy" data-c="서울 강남구 삼성로 431">複製地址</button></div>
 <button class="copy" id="clr" style="margin-top:4px">🧹 清除足跡</button></div></div>
+<div id="story"></div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 // coords verified vs OSM Nominatim 2026-10-29
@@ -62,6 +67,52 @@ const S=[
 [37.57876,126.97407,"迎秋門（西側出口）","경복궁 영추문","從西門出去最近土俗村。⚠ 沒開的話改從光化門那側出去，沿宮牆往西走。"],
 [37.57768,126.97153,"土俗村蔘雞湯","토속촌삼계탕","서울 종로구 자하문로5길 5・每天 10:00–22:00 不休息。景福宮站2號出口走約200m，GS25 左邊小巷。"]];
 const R=[[37.5763,126.9737],[37.57645,126.9744],[37.57657,126.97497],[37.5767,126.9760],[37.57695,126.9769],[37.5777,126.9769],[37.57854,126.97699],[37.5791,126.9770],[37.5792,126.9764],[37.57975,126.9764],[37.57975,126.97597],[37.57975,126.9764],[37.57953,126.97702],[37.5803,126.9770],[37.5815,126.9770],[37.58238,126.97705],[37.5821,126.9780],[37.58083,126.97904],[37.5821,126.9780],[37.58238,126.97705],[37.5820,126.9762],[37.5808,126.9752],[37.5795,126.9745],[37.57876,126.9743],[37.57876,126.97407],[37.5787,126.9728],[37.5778,126.9722],[37.57768,126.97153]];
+const ST=[
+["景福宮是朝鮮王朝第一座、也是最大的正宮，今天我們就從這裡開始！",
+"1395年朝鮮開國君主太祖李成桂遷都漢陽後建造景福宮。宮名由開國功臣鄭道傳取自《詩經・大雅・既醉》：「既醉以酒，既飽以德，君子萬年，介爾景福」，意思是祝君王萬年享大福。1592年壬辰倭亂時宮殿全部燒毀，荒廢了將近270年。1867年高宗的父親興宣大院君才把它重建起來，規模達數百棟建築。日本殖民時期大部分建築被拆除，1990年代起韓國政府展開長期復原工程，到今天仍在進行中。",
+"可以問爸媽：「景福」兩個字是不是很像我們過年說的「福氣」？其實真的是祝福語！還有，大院君為了重建景福宮，發行了貶值的「當百錢」並加重稅收，搞得民怨沸騰——蓋皇宮真的很燒錢。",
+"出口一上來就是宮殿範圍，抬頭看北岳山——景福宮是背山面水的風水寶地。今年10/29–11/15免費開放，人會比較多。"],
+["收藏朝鮮王室與大韓帝國文物的國家博物館，門前銀杏一片金黃。",
+"國立古宮博物館前身是1992年開館的宮中遺物展示館，2005年改名並遷到現在這棟大樓（原本是國立中央博物館的建築）。館內收藏約4萬多件王室遺物，包括國王的御座、御寶（國璽）、王室服飾、儀仗與科學儀器。還有大韓帝國時期高宗、純宗坐過的御車，是韓國最早的汽車之一。",
+"給爸媽看「日月五峰圖」屏風：國王坐在哪裡，背後就擺這幅畫，象徵太陽、月亮與五座山守護君王。館內還有朝鮮時代的自擊漏（自動報時的水鐘），是世宗大王時期的發明，比很多西方鐘錶還早。",
+"門前銀杏樹拍全家福🍂；如果時間夠，地下一樓的科學文化室和王的御車很值得看（免費入場）。"],
+["景福宮的第二道正門，穿過它就正式進入宮殿中心。",
+"興禮門位於光化門與勤政門之間，最早建於1395年，原名弘禮門，後來為了避清朝乾隆皇帝（弘曆）的名諱改為興禮門。1916年日本為了蓋朝鮮總督府大樓，把興禮門和周圍的迴廊拆掉。1995年總督府大樓被拆除後，興禮門在2001年按原樣復原。門前流過的小溪叫禁川，上面的石橋是永濟橋。",
+"跟爸媽說：連宮門名字都要「避皇帝的名字」，跟中國古代避諱一樣！再看永濟橋兩邊石欄上的石獸（天祿），據說是在守護宮殿、驅除邪氣，表情有點可愛，可以比誰先找到吐舌頭的那隻。",
+"永濟橋上的石獸、從門洞望進去勤政門的層層屋頂（超好拍的構圖）。"],
+["景福宮的正殿，國王舉行登基大典、接見使臣、百官朝會的地方，韓國國寶第223號。",
+"現在的勤政殿是1867年大院君重建的，是韓國現存最大的木造建築之一。「勤政」出自鄭道傳的說法：天下之事，勤則治、不勤則廢。殿前廣場叫朝廷，兩側各有一排「品階石」，從正一品到正九品，文官站東邊、武官站西邊，按官位排隊。殿建在兩層石台（月臺）上，欄杆有十二生肖與四神的石雕。",
+"考考爸媽：為什麼地上石板凹凸不平？這種石頭叫「薄石」，故意不磨平——可以防止陽光反射刺眼、下雨時防滑排水，還讓官員走路得慢慢走、顯得莊重。進殿看天花板，有兩條金色「七爪龍」：中國皇帝用五爪龍，朝鮮用七爪龍是高宗時期的特殊設計，至今仍有討論。國王寶座後面就是「日月五峰圖」。",
+"品階石（找「正一品」站一下拍照）、天花板的七爪龍、寶座與日月五峰圖、月臺欄杆的生肖石雕（找爸媽的生肖！）。"],
+["建在人工池上的大型宴會樓閣，國寶第224號，景福宮最美倒影就在這裡。",
+"慶會樓最早建於1412年太宗時期，用來招待外國使臣、舉辦國家宴會。現在的建築是1867年重建的，二樓可以容納上百人。整座樓由48根石柱撐起，外圍是方柱、內側是圓柱，象徵「天圓地方」。池裡有兩座小島，挖池的土堆成了後面的峨嵋山。",
+"跟爸媽說：慶會樓以前印在韓國舊版一萬元紙鈔背面（1979–2007年版本），是國家門面！據說重建時從池裡挖出兩條青銅龍，是用來鎮火災的——因為木造宮殿最怕火。",
+"從池子東南角拍樓閣倒影＋楓葉🍁，秋天最美；數數看一樓的48根石柱。"],
+["國王的寢殿（康寧殿）與王后的寢殿（交泰殿），是王室生活起居的地方。",
+"康寧殿名字取自《書經》五福中的「康寧」，是國王睡覺和處理日常公務的地方；後方的交泰殿是王后的正寢，「交泰」取自《易經》泰卦，象徵天地陰陽調和。現在的建築是1990年代依史料重建的，因為原建築在1917年昌德宮大火後被日本拆去昌德宮重建用了。交泰殿後方是用慶會樓挖池土堆成的花園「峨嵋山」。",
+"最好玩的冷知識：這兩座殿的屋頂沒有中間那條「正脊（龍脊）」！傳說國王就是龍，龍睡覺的地方屋頂不能再壓一條龍。帶爸媽仔細看屋頂中間——真的是平滑圓弧。峨嵋山後面有四座紅磚煙囪，刻著十長生、鳳凰、蝙蝠等吉祥圖案，其實是地暖（溫突）的排煙口，是寶物第811號。",
+"抬頭看沒有龍脊的屋頂、交泰殿後面峨嵋山的花磚煙囪。"],
+["池中央的六角小亭配上紅色木橋，景福宮秋色最美的地方🍁🍁。",
+"香遠亭是高宗在1873年左右建乾清宮時一起蓋的。「香遠」取自北宋周敦頤《愛蓮說》的「香遠益清」——蓮花香氣飄得越遠越清新，池裡夏天真的會種荷花。連接小島的木橋叫醉香橋。北邊的乾清宮是高宗和明成皇后住的地方。",
+"兩個故事：1887年，韓國第一盞電燈就在這附近的乾清宮點亮，發電用的就是香遠池的水，因為發電機很吵又常故障，當時人叫它「鬼火」或「乾大的燈」。另一個比較沉重：1895年，明成皇后（閔妃）就在乾清宮被日本浪人刺殺，史稱乙未事變。可以講給爸媽聽，美麗的地方也有悲傷的歷史。",
+"站在南邊岸邊拍香遠亭＋醉香橋＋楓葉倒影，旁邊北邊可以遠望乾清宮。"],
+["介紹韓國傳統生活文化的國家博物館，前庭有紅楓與復古街景。",
+"國立民俗博物館1945年開館，1993年搬進現在這棟建築（原本是國立中央博物館大樓，1975年完工）。建築外觀模仿了韓國有名的古建築：屋頂像法住寺捌相殿的五層木塔、石階像佛國寺的青雲橋白雲橋。館內三個常設展分別介紹韓國人的一年四季、一生禮俗與歷史生活。",
+"前庭有一條「追憶的街道」，重現1970–80年代的首爾街景，有老理髮店、漫畫店、照相館，爸媽應該會覺得很懷舊，可以問他們台灣那時候是不是也長這樣！門口還有一排傳統石像（守護村莊的長丞），表情很搞笑。",
+"前庭紅楓步道🍁、五層塔造型的建築、懷舊街景、長丞石像（免費入場）。"],
+["景福宮的西門，從這裡出去就到西村，走幾分鐘就是土俗村。",
+"景福宮有四座城門：南邊光化門、東邊建春門、北邊神武門、西邊迎秋門。按照五行，西方對應秋天，所以叫「迎秋」——迎接秋天；東門「建春」則對應春天。迎秋門以前是文武官員上朝出入的門。1926年因為電車路線被拆除，1975年重建，但一直沒開放，直到2018年才重新對一般民眾開放。",
+"跟爸媽說：我們正好在秋天走迎秋門出宮，名字完全應景🍁！而且這道門關了將近半世紀，現在才能走，算是很幸運。",
+"出門前回頭看一下城門上的匾額「迎秋門」。⚠ 若沒開放，請改從光化門出去，沿宮牆往西走。"],
+["首爾最有名的蔘雞湯老店之一，全熟熱湯，爸媽最愛。",
+"土俗村從1983年營業至今，在西村的傳統韓屋群中佔了好幾棟韓屋，是排隊名店。招牌蔘雞湯用未滿50天的童子雞，肚子裡塞糯米、紅棗、栗子、大蒜、人蔘，加上用堅果和穀物熬的濃稠白湯。地址：서울 종로구 자하문로5길 5，每天10:00–22:00不休息。",
+"已故韓國總統盧武鉉據說是這裡的常客，所以這家店名氣更大。韓國人有「以熱治熱」的習慣，三伏天最熱的時候吃蔘雞湯補身體；我們秋天吃剛好暖胃。附的小杯人蔘酒可以倒進湯裡或直接喝（爸媽可以喝喝看）。",
+"招牌蔘雞湯（全熟）；先把雞肉沾鹽胡椒，最後把糯米飯和湯拌在一起吃。可以從景福宮站2號出口走約200m，GS25左邊小巷。"]];
+let seen=JSON.parse(localStorage.gbSeen||'[]');
+function showStory(i){const s=S[i],t=ST[i],el=document.getElementById('story');
+el.innerHTML=`<button class="x" onclick="document.getElementById('story').classList.remove('show')">✕</button><div class="ko">第 ${i} 站 ${s[5]?'🍁':'🐻'}</div><h2>${s[2]}</h2><div class="ko" style="font-size:16px">${s[3]}</div>
+<h4>💬 一句話介紹</h4><p>${t[0]}</p><h4>📜 歷史背景</h4><p>${t[1]}</p><h4>😆 好玩故事（講給爸媽聽）</h4><p>${t[2]}</p><h4>👀 必看重點</h4><p>${t[3]}</p>
+<div class="acts"><button class="copy" data-c="${s[3]}">📋 複製韓文</button><a href="https://map.naver.com/p/search/${encodeURIComponent(s[3])}" target="_blank">Naver 地圖 ↗</a></div>`;el.scrollTop=0;el.classList.add('show')}
 const map=L.map('map',{zoomControl:false}).setView([37.5785,126.9755],17);
 L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:20,subdomains:'abcd',attribution:'© OpenStreetMap © CARTO'}).addTo(map);
 L.polyline(R,{color:'#fff',weight:9,opacity:.9}).addTo(map);L.polyline(R,{color:'#c56f45',weight:5,dashArray:'10 8'}).addTo(map);
@@ -70,11 +121,11 @@ const dist=(a,b,c,d)=>{const r=6371e3,p=Math.PI/180,x=Math.sin((c-a)*p/2)**2+Mat
 const brg=(a,b,c,d)=>{const p=Math.PI/180,y=Math.sin((d-b)*p)*Math.cos(c*p),x=Math.cos(a*p)*Math.sin(c*p)-Math.sin(a*p)*Math.cos(c*p)*Math.cos((d-b)*p);return(Math.atan2(y,x)/p+360)%360};
 const fm=m=>m<1000?Math.round(m)+' m':(m/1000).toFixed(1)+' km';
 function pinIcon(i){const c=done.includes(i)?'done':i===next?'nx':'';return L.divIcon({className:'',html:`<div class="pin ${c}">${done.includes(i)?'✓':i}</div>`,iconSize:[30,30],iconAnchor:[15,15]})}
-S.forEach((s,i)=>{mk[i]=L.marker([s[0],s[1]],{icon:pinIcon(i)}).addTo(map).bindPopup(`<div class="pop"><h3>${i}. ${s[2]}</h3><div class="ko">${s[3]}</div><p>${s[4]}</p><button class="copy" data-c="${s[3]}">📋 複製韓文</button> <a href="https://map.naver.com/p/search/${encodeURIComponent(s[3])}" target="_blank">Naver 地圖 ↗</a></div>`);
+S.forEach((s,i)=>{mk[i]=L.marker([s[0],s[1]],{icon:pinIcon(i)}).addTo(map).on('click',()=>showStory(i));
 if(s[5])L.marker([s[0]+.00022,s[1]+.00028],{icon:L.divIcon({className:'',html:'<div class="leaf">🍁</div>',iconSize:[24,24]}),interactive:false}).addTo(map)});
 // next stop: nearest stop to me => all before it done; if within 40m of it, it's done too
 function computeNext(){if(me){let n=0,bd=1e9;S.forEach((s,i)=>{const d=dist(me[0],me[1],s[0],s[1]);if(d<bd){bd=d;n=i}});
-for(let i=0;i<n;i++)if(!done.includes(i))done.push(i);if(bd<40&&!done.includes(n))done.push(n);localStorage.gbDone=JSON.stringify(done)}
+for(let i=0;i<n;i++)if(!done.includes(i))done.push(i);if(bd<40&&!done.includes(n))done.push(n);if(bd<40&&!seen.includes(n)){seen.push(n);localStorage.gbSeen=JSON.stringify(seen);showStory(n)}localStorage.gbDone=JSON.stringify(done)}
 next=S.findIndex((s,i)=>!done.includes(i));}
 function render(){computeNext();S.forEach((s,i)=>mk[i].setIcon(pinIcon(i)));
 document.getElementById('list').innerHTML=S.map((s,i)=>`<div class="card ${done.includes(i)?'done':''} ${i===next?'nx':''}" data-i="${i}"><div class="num">${done.includes(i)?'✓':i}</div><div><b>${s[2]}${s[5]?' 🍁':''}</b><div class="ko">${s[3]}</div><div class="st">${s[4]}</div></div><div class="d">${me?fm(dist(me[0],me[1],s[0],s[1])):''}</div><button class="copy" data-c="${s[3]}">📋</button></div>`).join('');
@@ -83,7 +134,7 @@ if(next<0){nt.innerHTML='<b>🎉 全部走完！</b><div class="ko">好好吃蔘
 const s=S[next];nt.innerHTML=`<div class="ko">下一站 ${next} ・點我看全部 ▲</div><b>${s[2]}</b><div class="ko">${s[3]}</div>`;
 if(me){nd.textContent=fm(dist(me[0],me[1],s[0],s[1]));const b=brg(me[0],me[1],s[0],s[1]);ar.style.transform=`rotate(${b-(heading??0)}deg)`;ar.title=heading==null?'箭頭以地圖北方為準':'箭頭以手機方向為準'}else nd.textContent=''}
 document.addEventListener('click',e=>{const c=e.target.closest('.copy[data-c]');if(c){e.stopPropagation();const t=c.dataset.c;const fb=()=>{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove()};navigator.clipboard?navigator.clipboard.writeText(t).catch(fb):fb();const o=c.textContent;c.textContent='✅';setTimeout(()=>c.textContent=o,1000);return}
-const k=e.target.closest('.card');if(k){const i=+k.dataset.i;setFollow(false);document.getElementById('sheet').classList.remove('open');map.flyTo([S[i][0],S[i][1]],18);mk[i].openPopup()}});
+const k=e.target.closest('.card');if(k){const i=+k.dataset.i;setFollow(false);document.getElementById('sheet').classList.remove('open');map.flyTo([S[i][0],S[i][1]],18);showStory(i)}});
 document.getElementById('bar').onclick=()=>document.getElementById('sheet').classList.toggle('open');
 let trail=JSON.parse(localStorage.gbTrail||'[]');const tl=L.polyline(trail,{color:'#789681',weight:6,opacity:.9}).addTo(map);
 const bear=L.marker([0,0],{icon:L.divIcon({className:'',html:'<div class="bearw"><div class="cone" id="cone"></div><div class="bear"><span id="b">🐻</span></div></div>',iconSize:[60,60],iconAnchor:[30,30]}),zIndexOffset:1000});
@@ -107,6 +158,6 @@ document.getElementById('fit').onclick=()=>{setFollow(false);map.fitBounds(L.lat
 function onOri(e){let h=e.webkitCompassHeading??(e.absolute&&e.alpha!=null?360-e.alpha:null);if(h==null)return;heading=h;const c=document.getElementById('cone');if(c){c.style.display='block';c.style.transform=`rotate(${h}deg)`}render()}
 document.getElementById('compass').onclick=async()=>{try{if(window.DeviceOrientationEvent&&DeviceOrientationEvent.requestPermission){const r=await DeviceOrientationEvent.requestPermission();if(r!=='granted'){alert('未允許指南針');return}}
 window.addEventListener('deviceorientationabsolute',onOri);window.addEventListener('deviceorientation',onOri);document.getElementById('compass').style.background='var(--copper-soft)'}catch(x){alert('此裝置不支援指南針')}};
-document.getElementById('clr').onclick=()=>{if(confirm('清除足跡和打勾紀錄？')){trail=[];done=[];localStorage.gbTrail='[]';localStorage.gbDone='[]';tl.setLatLngs([]);render()}};
+document.getElementById('clr').onclick=()=>{if(confirm('清除足跡和打勾紀錄？')){trail=[];done=[];localStorage.gbTrail='[]';localStorage.gbDone='[]';seen=[];localStorage.gbSeen='[]';tl.setLatLngs([]);render()}};
 render();startWatch();setTimeout(()=>{if(!gotFix)startB.style.display='block'},4000);
 </script></body></html>
