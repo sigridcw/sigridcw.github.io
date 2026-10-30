@@ -18,7 +18,7 @@ const NB={layer:null,on:true,shown:{},init(map,opt){opt=opt||{};this.map=map;con
   b.onclick=()=>{this.on=!this.on;b.classList.toggle('on',this.on);this.on?this.layer.addTo(map):map.removeLayer(this.layer);if(this.on)this.live(true)};
   (opt.pre||[]).forEach(p=>this.add(p[0],p[1],p[2],p[3],{ko:p[4],one:p[5],fun:p[6],src:p[7]||'實地資料已查證'},false));
   const z=()=>document.getElementById('map').classList.toggle('nbz',map.getZoom()<16);map.on('zoomend',z);z();
-  if(navigator.geolocation)navigator.geolocation.watchPosition(p=>{this.me=[p.coords.latitude,p.coords.longitude];this.live(false)},()=>{},{enableHighAccuracy:false,maximumAge:60000,timeout:30000});
+  if(navigator.geolocation)navigator.geolocation.watchPosition(p=>{this.me=[p.coords.latitude,p.coords.longitude];this.live(false)},()=>{},{enableHighAccuracy:true,maximumAge:10000,timeout:30000});
   map.on('moveend',()=>{clearTimeout(this.mt);this.mt=setTimeout(()=>{if(map.getZoom()>=16)this.live(false,map.getCenter())},1500)})},
 key(la,ln){return 'nb_'+la.toFixed(3)+'_'+ln.toFixed(3)},
 add(la,ln,ic,zh,d,live){const k=zh+Math.round(la*2e3)+Math.round(ln*2e3);if(this.shown[k])return;this.shown[k]=1;

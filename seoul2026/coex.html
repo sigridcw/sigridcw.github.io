@@ -25,7 +25,8 @@ h2{font-family:var(--serif);font-size:24px;margin:22px 16px 6px}
 .pin{width:44px;height:44px;border-radius:50%;background:var(--copper);color:#fff;border:3px solid #fff;display:grid;place-items:center;font-size:22px;box-shadow:0 3px 8px rgba(0,0,0,.35)}
 .cp{width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;border:2px solid #fff;display:grid;place-items:center;font:700 15px var(--mono)}
 .lbl{background:rgba(16,39,44,.88);color:#fff;border:0;font:700 13px var(--sans);border-radius:8px;padding:2px 7px}.lbl:before{display:none}
-.me{font-size:36px;filter:drop-shadow(0 3px 3px rgba(0,0,0,.35))}
+.dot{width:22px;height:22px;border-radius:50%;background:#2f6fd6;border:4px solid #fff;box-shadow:0 0 0 2px #2f6fd6,0 2px 6px rgba(0,0,0,.4)}
+#gchip{position:absolute;top:62px;left:10px;z-index:640;background:#fffef9;border-radius:99px;padding:4px 10px;font-size:14px;box-shadow:var(--shadow)}#gchip.ok{background:#dfe9df}#gchip.bad{background:#f2dcd6;color:#a84f40}
 </style></head><body>
 <!--
   座標來源（2026-10-29 查證；不准用估計座標）
@@ -37,13 +38,13 @@ h2{font-family:var(--serif);font-size:24px;margin:22px 16px 6px}
      「爸爸在 209A」來自之前網站記錄的大會通知；APLAR 公開議程（aplarcongress.com/program）沒有列房間 → 標示「請看名牌/大會 App 再確認」。
   POSCO 사거리：OSRM 삼성로 snapped 37.507778,127.056241；POSCO센터 OSM way 466291216（37.505713,127.055902）
   Oakwood Premier COEX：OSM way 74056398（37.510986,127.058106）；그랜드 인터컨티넨탈 파르나스 봉은사로 524：Nominatim 37.51283,127.05726
-  路線：routing.openstreetmap.de/routed-foot，飯店→POSCO사거리→테헤란로87길→北門，1,328m，約 18 分（老人步速抓 20–22 分）
+  路線（2026-10-30 重抓）：routing.openstreetmap.de/routed-foot 完整幾何（alternative 經 POSCO사거리），1,295m；轉彎點=OSRM maneuver 座標。舊版第 2 站圖釘放在 삼성로92길 路口（比真正過 테헤란로 的斑馬線北 140m）、文字寫 87길（路線實際走 81길/83길）→ 已修正。
   附近景點：OSM Overpass 2026-10-29（node/way id 寫在 PRE 每筆最後）
 -->
 <header><a href="./#plan">← 回行程</a><h1>🍎 爸爸去 COEX 開會<br>走路路線</h1><div class="sub">10/30（五）· 飯店 → COEX 北門 → 2 樓 209A</div></header>
 <div class="big"><div class="t">09:20 出發</div><b>走路約 20 分鐘（1.3 公里），09:40 左右到北門</b><div>10:00 開會。進門先到 1 樓報到櫃檯印名牌（約 10 分），再上 2 樓。</div></div>
-<div id="mapw"><div id="map"></div><div class="mb"><button id="bRoute">🗺️ 全路線</button><button id="bMe">📍 我在哪</button><a id="histA" href="history.html" style="border-radius:24px;min-height:46px;padding:0 14px;font:700 16px var(--sans);background:#c56f45;color:#fff;display:flex;align-items:center;text-decoration:none;box-shadow:var(--shadow)">📜 每天走過的路</a></div></div>
-<div class="ok">🧭 地圖上 <b>藍線</b> 就是路線；🐻／🍎 是自己和家人的位置。全程平路、都是人行道，要過 <b>1 次大馬路（테헤란로）</b>，有紅綠燈。</div>
+<div id="mapw"><div id="map"></div><div id="gchip">📡 定位中…</div><div class="mb"><button id="bRoute">🗺️ 全路線</button><button id="bMe">📍 跟著我</button><a id="histA" href="history.html" style="border-radius:24px;min-height:46px;padding:0 14px;font:700 16px var(--sans);background:#c56f45;color:#fff;display:flex;align-items:center;text-decoration:none;box-shadow:var(--shadow)">📜 每天走過的路</a></div></div>
+<div class="ok">🧭 地圖上 <b>藍線</b> 就是路線（OpenStreetMap 真實步行路線）；<b>藍色圓點＋淺藍圈</b>＝你現在的 GPS 位置（圈越大越不準）；🐻／🍎 是家人分享的位置。全程平路、都是人行道，要過 <b>1 次大馬路（테헤란로）</b>，有紅綠燈。</div>
 <h2>👣 一步一步走</h2>
 <div id="steps"></div>
 <h2>🏢 進了 COEX 以後</h2>
@@ -57,7 +58,7 @@ h2{font-family:var(--serif);font-size:24px;margin:22px 16px 6px}
 <div class="nav"><a href="https://map.naver.com/p/search/%EC%BD%94%EC%97%91%EC%8A%A4%20%EB%B6%81%EB%AC%B8" target="_blank">🧭 Naver 導航</a><a class="ap" href="https://maps.apple.com/?daddr=37.513685,127.058424&dirflg=w" target="_blank">🍎 Apple 地圖</a></div>
 <h2>🏨 回飯店</h2>
 <div class="copyb" data-copy="서울 강남구 삼성로 431"><div class="l">飯店地址（給司機看、點一下複製）</div><div class="k">이비스 스타일 앰배서더 서울 강남</div><div class="a">서울 강남구 삼성로 431</div><span class="c">📋 複製</span></div>
-<div class="step"><div class="i">↩️</div><div><b>走回飯店：同一條路倒著走（約 20 分）</b>① 北門出來，沿 봉은사로 往<strong>右（西）</strong>走約 190m → ② 左轉往南，Oakwood 大樓在左手邊，走約 240m → ③ 右轉往西走約 250m 到 삼성로 → ④ 左轉往南到 POSCO 사거리，過 테헤란로 → ⑤ 直走約 300m 到飯店。<div class="lm">地圖按「🗺️ 全路線」看藍線；累了就搭計程車，給司機看上面的飯店地址（約 5 分鐘）。</div></div></div>
+<div class="step"><div class="i">↩️</div><div><b>走回飯店：同一條路倒著走（約 20 分）</b>① 北門出來，沿 봉은사로 往<strong>西</strong>走約 190m → ② 左轉 봉은사로86길、右轉 삼성로108길 → ③ 左轉往南走 봉은사로84길／테헤란로83길／테헤란로81길 約 500m → ④ 右轉 삼성로92길 到 삼성로，左轉往南到 POSCO 사거리過 테헤란로 → ⑤ 直走約 170m 到飯店。<div class="lm">地圖按「🗺️ 全路線」看藍線；累了就搭計程車，給司機看上面的飯店地址（約 5 分鐘）。</div></div></div>
 <div class="nav"><a href="https://map.naver.com/p/search/%EC%9D%B4%EB%B9%84%EC%8A%A4%20%EC%8A%A4%ED%83%80%EC%9D%BC%20%EC%95%B0%EB%B0%B0%EC%84%9C%EB%8D%94%20%EC%84%9C%EC%9A%B8%20%EA%B0%95%EB%82%A8" target="_blank">🧭 Naver 回飯店</a><a class="ap" href="https://maps.apple.com/?daddr=37.50511,127.057067&dirflg=w" target="_blank">🍎 Apple 回飯店</a></div>
 <div class="warn">☔ 下雨備案：飯店官網說最近的是 2 號線 삼성역（三成站）4 號出口（往 POSCO 大樓方向約 500m），三成站地下跟 COEX 相連；但地下商場很大容易迷路，爸媽<b>建議走上面這條地面路線或直接搭計程車</b>（給司機看「코엑스 북문」）。</div>
 <div class="src">資料來源：<a href="https://aplarcongress.com/venue/" target="_blank">APLAR 2026 場地</a>・<a href="https://aplarcongress.com/program/" target="_blank">APLAR 議程</a>・<a href="https://www.coex.co.kr/en/meeting-room/conference-room-north-asem-ballroom/" target="_blank">COEX 官網 Conference Room (North)</a>・APLAR 給爸爸的報到信・路線 OSRM（OpenStreetMap）・地圖 © OpenStreetMap。</div>
@@ -65,25 +66,36 @@ h2{font-family:var(--serif);font-size:24px;margin:22px 16px 6px}
 <script src="family.js"></script><script src="nearby.js"></script><script src="tracks.js"></script>
 <script>
 const HOTEL=[37.50511,127.057067],GATE=[37.513685,127.058424];
-const ROUTE=[[37.505312,127.056959],[37.5054,127.05722],[37.505558,127.057132],[37.505756,127.057023],[37.506318,127.056743],[37.506476,127.056567],[37.506533,127.056426],[37.506563,127.056532],[37.506618,127.056715],[37.506723,127.056661],[37.50694,127.056536],[37.507059,127.056472],[37.507104,127.056606],[37.507517,127.056395],[37.507778,127.056241],[37.508459,127.055837],[37.508502,127.055945],[37.50853,127.05592],[37.508537,127.055892],[37.509373,127.055456],[37.509632,127.056196],[37.509838,127.05687],[37.509995,127.057377],[37.510191,127.057986],[37.510215,127.057973],[37.510256,127.058101],[37.510969,127.057711],[37.511483,127.05743],[37.511773,127.057272],[37.512194,127.057042],[37.512523,127.056863],[37.512917,127.056642],[37.513031,127.056868],[37.513164,127.056873],[37.513245,127.057077],[37.513345,127.057728],[37.513399,127.057975],[37.513465,127.058161],[37.513512,127.058282],[37.513536,127.058363],[37.513561,127.058462],[37.513685,127.058424]];
+const ROUTE=[[37.505312,127.056959],[37.5054,127.05722],[37.505558,127.057132],[37.505756,127.057023],[37.506318,127.056743],[37.506476,127.056567],[37.506533,127.056426],[37.506563,127.056532],[37.506618,127.056715],[37.506723,127.056661],[37.50694,127.056536],[37.507059,127.056472],[37.507104,127.056606],[37.507517,127.056395],[37.507778,127.057195],[37.508254,127.056947],[37.508787,127.056654],[37.509632,127.056196],[37.509838,127.05687],[37.509861,127.056859],[37.511142,127.056346],[37.512216,127.055922],[37.512523,127.056863],[37.512917,127.056642],[37.513031,127.056868],[37.513164,127.056873],[37.513245,127.057077],[37.513345,127.057728],[37.513399,127.057975],[37.513465,127.058161],[37.513512,127.058282],[37.513536,127.058363],[37.513561,127.058462],[37.513685,127.058424]];
 // [lat,lng,圖示,標題,說明,分鐘,地標]
 const STEPS=[
-[37.50511,127.057067,"🏨","走出飯店，往北走","出門後往<strong>北</strong>（POSCO 大樓方向）走到大路口。","約 5 分 · 300m","🏢 大玻璃大樓「POSCO 센터」會在左前方"],
-[37.507778,127.056241,"🚦","POSCO 사거리：過大馬路 테헤란로","在 POSCO 十字路口等綠燈，走斑馬線<strong>往北</strong>過 테헤란로（很寬的大馬路）。","約 2 分","🪧 路口牌子：포스코사거리"],
-[37.509373,127.055456,"➡️","繼續直走約 100m，右轉往東","過馬路後沿 삼성로 再直走一小段，在第一條小路<strong>右轉</strong>，往東走約 250m。","約 4 分 · 350m","🏬 前方就是 COEX 一帶的大樓"],
-[37.510256,127.058101,"⬆️","左轉往北（테헤란로87길）","走到底<strong>左轉往北</strong>，Oakwood 大樓（오크우드 프리미어）在右手邊，直走約 240m 到 봉은사로（奉恩寺路）。","約 4 分 · 240m","🏨 오크우드 프리미어 코엑스센터 在右邊"],
-[37.512917,127.056642,"➡️","右轉，沿 봉은사로 往東","到大路 봉은사로 <strong>右轉往東</strong>走約 190m。對面（左邊）是奉恩寺；右邊是 InterContinental 파르나스 飯店。","約 3 分 · 190m","🛕 馬路對面看到奉恩寺 = 走對了"],
-[37.513685,127.058424,"🚪","到了！COEX 北門 North Gate","右手邊就是 COEX 北門（북문），公車站叫「봉은사.코엑스북문」。進去先到 1 樓報到。","09:40 左右","🚏 公車站牌：봉은사.코엑스북문"]];
+[37.50511,127.057067,"🏨","走出飯店，沿 삼성로 往北","出門往<strong>北</strong>走約 170m 到大十字路口「POSCO 사거리」。POSCO 大樓（玻璃大樓）在馬路對面的左前方；想休息可以先過去 POSCO 大廳坐一下。","約 3 分 · 170m","🏢 左前方的大玻璃樓 = 포스코센터"],
+[37.506618,127.056715,"🚦","POSCO 사거리：過大馬路 테헤란로","等綠燈，沿 삼성로 這一側走斑馬線<strong>往北</strong>過 테헤란로（很寬的大馬路），過去後繼續往北約 100m。","約 2 分","🪧 路口牌子：포스코사거리"],
+[37.507517,127.056395,"➡️","右轉進小路 삼성로92길","在第一條小路<strong>右轉往東</strong>，走約 80m。","約 1 分 · 80m","🪧 路牌：삼성로92길"],
+[37.507778,127.057195,"⬆️","左轉往北：테헤란로81길","<strong>左轉往北</strong>直走約 220m。這條路上就有晚上要吃的「한방정통삼계탕」（右手邊）。","約 3 分 · 220m","🍲 招牌：한방정통삼계탕"],
+[37.509632,127.056196,"↗️","右轉一下再左轉：테헤란로83길","往東走 60m，<strong>左轉往北</strong>，沿 테헤란로83길 → 봉은사로84길 直走約 280m。","約 4 分 · 340m","🪧 路牌：테헤란로83길"],
+[37.512216,127.055922,"↪️","右轉再左轉，接到 봉은사로","右轉 삼성로108길 走 90m，左轉 봉은사로86길 走 50m，就到大馬路 봉은사로。","約 2 分 · 140m","🛕 馬路對面看得到奉恩寺"],
+[37.512917,127.056642,"➡️","右轉，沿 봉은사로 往東","<strong>右轉往東</strong>沿 봉은사로 人行道走約 190m（不用過 봉은사로）。","約 3 分 · 190m","🏨 右邊是 InterContinental 파르나스"],
+[37.513685,127.058424,"🚪","到了！COEX 北門 North Gate","右手邊就是 COEX 北門（북문），公車站叫「봉은사.코엑스북문」。","共約 1.3 公里・20 分","🚏 公車站牌：봉은사.코엑스북문"]];
 document.getElementById('steps').innerHTML=STEPS.map((s,i)=>`<div class="step"><div class="n">${i+1}</div><div><div class="i">${s[2]}</div><b>${s[3]}</b>${s[4]}<div class="m">${s[5]}</div><div class="lm">${s[6]}</div></div></div>`).join('');
 const map=L.map('map',{zoomControl:false});
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
 L.polyline(ROUTE,{color:'#fff',weight:11,opacity:.9}).addTo(map);const line=L.polyline(ROUTE,{color:'#2f6fd6',weight:7}).addTo(map);
 L.marker(HOTEL,{icon:L.divIcon({className:'',html:'<div class="pin">🏨</div>',iconSize:[44,44],iconAnchor:[22,22]})}).addTo(map).bindTooltip('飯店 이비스',{permanent:true,direction:'bottom',offset:[0,18],className:'lbl'});
 L.marker(GATE,{icon:L.divIcon({className:'',html:'<div class="pin" style="background:#d6332a">🚪</div>',iconSize:[44,44],iconAnchor:[22,22]})}).addTo(map).bindTooltip('COEX 北門 → 1F 報到 → 2F 209A',{permanent:true,direction:'top',offset:[0,-20],className:'lbl'});
-STEPS.slice(1,5).forEach((s,i)=>L.marker([s[0],s[1]],{icon:L.divIcon({className:'',html:`<div class="cp">${i+2}</div>`,iconSize:[30,30],iconAnchor:[15,15]})}).addTo(map));
+STEPS.slice(1,-1).forEach((s,i)=>L.marker([s[0],s[1]],{icon:L.divIcon({className:'',html:`<div class="cp">${i+2}</div>`,iconSize:[30,30],iconAnchor:[15,15]})}).addTo(map));
 const fitR=()=>map.fitBounds(line.getBounds(),{padding:[50,50]});fitR();document.getElementById('bRoute').onclick=fitR;
-let me=null,mm=null;if(navigator.geolocation)navigator.geolocation.watchPosition(p=>{me=[p.coords.latitude,p.coords.longitude];if(!mm)mm=L.marker(me,{icon:L.divIcon({className:'',html:'<div class="me">📍</div>',iconSize:[36,36],iconAnchor:[18,30]}),zIndexOffset:800}).addTo(map);else mm.setLatLng(me)},()=>{},{enableHighAccuracy:true});
-document.getElementById('bMe').onclick=()=>{if(me)map.setView(me,17);else alert('還沒定位到，請允許位置權限')};
+let me=null,mm=null,mc=null,follow=false,gotFix=false;const chip=document.getElementById('gchip');
+function onPos(p){me=[p.coords.latitude,p.coords.longitude];const a=Math.round(p.coords.accuracy);
+ if(!mm){mm=L.marker(me,{icon:L.divIcon({className:'',html:'<div class="dot"></div>',iconSize:[22,22],iconAnchor:[11,11]}),zIndexOffset:1000}).addTo(map);mc=L.circle(me,{radius:a,color:'#2f6fd6',weight:1,fillOpacity:.12}).addTo(map)}
+ else{mm.setLatLng(me);mc.setLatLng(me).setRadius(a)}
+ chip.textContent=a>50?`⚠️ 定位不準 ±${a}m（到空曠處、開 Wi-Fi）`:`✅ 已定位 ±${a}m`;chip.className=a>50?'bad':'ok';
+ if(!gotFix){gotFix=true}if(follow)map.panTo(me)}
+function onErr(e){chip.className='bad';chip.textContent=e.code===1?'🚫 未允許定位（設定›隱私›定位服務›Safari 網站）':'📡 定位中…'}
+if(navigator.geolocation)navigator.geolocation.watchPosition(onPos,onErr,{enableHighAccuracy:true,maximumAge:0,timeout:15000});
+const bMe=document.getElementById('bMe');function setF(v){follow=v;bMe.style.background=v?'#f3dfd1':''}
+map.on('dragstart',()=>setF(false));
+bMe.onclick=()=>{if(!me){alert('還沒定位到，請允許位置權限');return}setF(!follow);if(follow)map.setView(me,18)};
 document.querySelectorAll('[data-copy]').forEach(el=>el.onclick=()=>{const t=el.dataset.copy,c=el.querySelector('.c');(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>{c.textContent='✅ 已複製'}).catch(()=>prompt('複製',t))});
 // 附近景點（OSM Overpass 2026-10-29 查證座標）
 const PRE=[

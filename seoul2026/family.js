@@ -55,7 +55,7 @@ setup(thenShare){const dlg=document.getElementById('famDlg'),bx=dlg.querySelecto
   dlg.classList.add('show')},
 setShare(on){this.sharing=on;localStorage.setItem('fam_share',on?'1':'0');const b=document.getElementById('famTog');
   b.textContent=on?`${this.emoji()} 分享中：開`:'📡 分享：關';b.className=on?'on':'off';
-  if(on){if(this.wid==null&&navigator.geolocation)this.wid=navigator.geolocation.watchPosition(p=>{this.pos=[p.coords.latitude,p.coords.longitude,Math.round(p.coords.accuracy)];this.send(false)},()=>{},{enableHighAccuracy:true,maximumAge:5000,timeout:20000})}
+  if(on){if(this.wid==null&&navigator.geolocation)this.wid=navigator.geolocation.watchPosition(p=>{this.pos=[p.coords.latitude,p.coords.longitude,Math.round(p.coords.accuracy)];this.selfFix();this.send(false)},()=>{},{enableHighAccuracy:true,maximumAge:0,timeout:20000})}
   else{if(this.wid!=null)navigator.geolocation.clearWatch(this.wid);this.wid=null;this.publish({id:this.id,off:1})}},
 send(force){if(!this.sharing||!this.pos)return;const now=Date.now(),l=this.last;
   if(!force&&l&&now-l.t<15000&&Math.hypot((l.p[0]-this.pos[0])*111e3,(l.p[1]-this.pos[1])*88e3)<25&&now-l.t<60000)return;
@@ -63,7 +63,9 @@ send(force){if(!this.sharing||!this.pos)return;const now=Date.now(),l=this.last;
   this.publish({id:this.id,n:this.name(),e:this.emoji(),la:+this.pos[0].toFixed(6),ln:+this.pos[1].toFixed(6),a:this.pos[2],t:Math.round(now/1000)})},
 publish(o){fetch(RELAY+this.room,{method:'POST',body:JSON.stringify(o)}).catch(()=>{})},
 sub(){try{const es=new EventSource(RELAY+this.room+'/sse?since=2h');es.onmessage=ev=>{try{const m=JSON.parse(ev.data);if(m.event&&m.event!=='message')return;const o=JSON.parse(m.message);this.onMsg(o)}catch(e){}};this.es=es}catch(e){}},
-onMsg(o){if(!o||!o.id)return;if(o.off){const m=this.members[o.id];if(m){m.off=1;this.redraw()}return}if(typeof o.la!=='number')return;
+// 自己的標記：每次 GPS 一更新就直接畫（不等網路回傳，避免延遲 8–60 秒的舊位置）
+selfFix(){if(!this.id||!this.pos)return;this.members[this.id]={id:this.id,n:this.name(),e:this.emoji(),la:this.pos[0],ln:this.pos[1],a:this.pos[2],t:Date.now()/1000,local:1};this.redraw()},
+onMsg(o){if(!o||!o.id)return;if(o.id===this.id&&this.pos&&!o.off)return;if(o.off){const m=this.members[o.id];if(m){m.off=1;this.redraw()}return}if(typeof o.la!=='number')return;
   const cur=this.members[o.id];if(cur&&cur.t>o.t)return;this.members[o.id]=o;this.redraw()},
 ago(t){const m=Math.max(0,Math.round((Date.now()/1000-t)/60));return m<1?'剛剛':m<60?m+' 分鐘前':Math.round(m/60)+' 小時前'},
 redraw(){for(const id in this.members){const o=this.members[id];const old=(Date.now()/1000-o.t)>600||o.off;
