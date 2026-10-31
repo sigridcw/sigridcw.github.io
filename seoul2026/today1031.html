@@ -139,14 +139,15 @@ S.forEach((s,i)=>{mk[i]=L.marker([s[0],s[1]],{icon:pinIcon(i)}).addTo(LAYERS.rou
 // done ONLY when live GPS (accuracy<=60m) actually reached the stop; no tap/time/order inference
 function rad(i){return /🚇|石村湖|🍁|超市|晚餐/.test(S[i][2])?120:70}
 function phase(){const k=new Date(Date.now()+9*36e5),hm=k.getUTCHours()*60+k.getUTCMinutes();return hm>=16*60+30?1:0}
-function computeNext(){if(me&&acc<=60){let ch=0;S.forEach((s,i)=>{if(!done.includes(i)&&dist(me[0],me[1],s[0],s[1])<=rad(i)){done.push(i);ch=1;if(!seen.includes(i)){seen.push(i);localStorage.t31Seen2=JSON.stringify(seen);showStory(i)}}});if(ch)localStorage.t31Done2=JSON.stringify(done)}
-next=S.findIndex((s,i)=>!done.includes(i));}
+function computeNext(){if(me&&!bad&&acc<=60){let ch=0;S.forEach((s,i)=>{if(!done.includes(i)&&dist(me[0],me[1],s[0],s[1])<=rad(i)){done.push(i);ch=1;if(!seen.includes(i)){seen.push(i);localStorage.t31Seen2=JSON.stringify(seen);showStory(i)}}});if(ch)localStorage.t31Done2=JSON.stringify(done)}
+const fur=done.length?Math.max(...done)+1:0,k=new Date(Date.now()+9*36e5),hm=k.getUTCHours()*60+k.getUTCMinutes();let ti=0;TT.forEach((t,i)=>{if(hm>=t)ti=i});const st=Math.max(fur,ti);next=S.findIndex((s,i)=>i>=st&&!done.includes(i));}
+const TT=[585,600,630,645,675,705,830,1050,1110];
 function render(){computeNext();nearI=-1;if(me){let bd=60;S.forEach((s,i)=>{const d=dist(me[0],me[1],s[0],s[1]);if(d<bd){bd=d;nearI=i}})}const nb=document.getElementById('near');if(nearI>=0){const v=SIGN[S[nearI][3]];nb.innerHTML=`就在附近！找招牌：<big>${v?v[0]:S[nearI][3]}</big>`;nb.style.display='block'}else nb.style.display='none';document.querySelectorAll('.dist[data-la]').forEach(x=>x.textContent=distTxt(+x.dataset.la,+x.dataset.ln));S.forEach((s,i)=>mk[i].setIcon(pinIcon(i)));
 document.getElementById('list').innerHTML=S.map((s,i)=>`<div class="card ${done.includes(i)?'done':''} ${i===next?'nx':''}" data-i="${i}"><div class="num">${done.includes(i)?'✓':i+1}</div><div><b>${s[2]}</b><div class="ko">${s[3]}</div><div class="st">${s[4]}</div></div><div class="d">${me?fm(dist(me[0],me[1],s[0],s[1])):''}</div>${navBtns(s[3],s[0],s[1])}<button class="copy" data-c="${s[3]}">📋</button></div>`).join('');
 const nt=document.getElementById('nt'),nd=document.getElementById('nd'),ar=document.getElementById('arrow');
 if(next<0){nt.innerHTML='<b>🎉 全部走完！</b><div class="ko">晚上搭 2 號線回三成，回飯店打包 🧳</div>';nd.textContent='';ar.style.transform='';return}
 const s=S[next];nt.innerHTML=`<div class="ko">下一站 ${next+1} ・點我看全部 ▲</div><b>${s[2]}</b><div class="ko">${s[3]}</div>`;
-if(me){nd.textContent=fm(dist(me[0],me[1],s[0],s[1]));const b=brg(me[0],me[1],s[0],s[1]);ar.style.transform=`rotate(${b-(heading??0)}deg)`;ar.title=heading==null?'箭頭以地圖北方為準':'箭頭以手機方向為準'}else nd.textContent=''}
+if(me&&!bad){nd.textContent=fm(dist(me[0],me[1],s[0],s[1]));const b=brg(me[0],me[1],s[0],s[1]);ar.style.transform=`rotate(${b-(heading??0)}deg)`;ar.title=heading==null?'箭頭以地圖北方為準':'箭頭以手機方向為準'}else nd.textContent='—'}
 document.addEventListener('click',e=>{const c=e.target.closest('.copy[data-c]');if(c){e.stopPropagation();const t=c.dataset.c;const fb=()=>{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove()};navigator.clipboard?navigator.clipboard.writeText(t).catch(fb):fb();const o=c.textContent;c.textContent='✅';setTimeout(()=>c.textContent=o,1000);return}
 const k=e.target.closest('a')?null:e.target.closest('.card');if(k){const i=+k.dataset.i;setFollow(false);document.getElementById('sheet').classList.remove('open');map.flyTo([S[i][0],S[i][1]],18);showStory(i)}});
 const sheet=document.getElementById('sheet'),shx=document.getElementById('shx'),storyEl=document.getElementById('story');
@@ -165,7 +166,10 @@ const circ=L.circle([0,0],{radius:1,color:'#c56f45',weight:1,fillOpacity:.12});
 function setFollow(v){follow=v;document.getElementById('follow').classList.toggle('on',v)}
 map.on('dragstart',()=>setFollow(false));
 const chip=document.getElementById('chip'),startB=document.getElementById('start');let lastLng=null,gotFix=false;
-function onPos(p){const la=p.coords.latitude,ln=p.coords.longitude;me=[la,ln];acc=p.coords.accuracy;
+let lastGood=null,bad=false;
+function onPos(p){const la=p.coords.latitude,ln=p.coords.longitude,a=p.coords.accuracy;
+if(a>100||(lastGood&&a>30&&Math.hypot((lastGood.p[0]-la)*111,(lastGood.p[1]-ln)*88)/Math.max((Date.now()-lastGood.t)/36e5,1/3600)>150)){bad=true;chip.className='bad';chip.textContent=`⚠️ 定位不準（±${Math.round(a)}m），在地下或室內請到地面等 20 秒`;if(me){bear.setOpacity(.4);bear.bindTooltip('上次準確位置',{permanent:true,direction:'top'})}render();return}
+bad=false;bear.setOpacity(1);bear.unbindTooltip();lastGood={p:[la,ln],t:Date.now()};me=[la,ln];acc=a;
 chip.className='ok';chip.textContent=`✅ 已定位 ±${Math.round(acc)}m`;startB.style.display='none';
 if(!map.hasLayer(bear)){bear.addTo(map);circ.addTo(map)}bear.setLatLng(me);circ.setLatLng(me).setRadius(acc);
 const b=document.getElementById('b');if(b&&lastLng!=null&&Math.abs(ln-lastLng)>2e-6)b.style.display='inline-block',b.parentElement.style.transform=ln<lastLng?'scaleX(-1)':'';lastLng=ln;
