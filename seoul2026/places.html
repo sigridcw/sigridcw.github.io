@@ -1,0 +1,45 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>這幾天走過的地方・首爾 2026</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+body{margin:0;font-family:system-ui,"PingFang TC","Noto Sans TC",sans-serif;background:#f6f3ec;color:#10272c}
+header{padding:14px 16px}h1{margin:0;font-size:24px}a{color:#c56f45}
+#map{height:62vh;min-height:380px}
+.tg{display:flex;flex-wrap:wrap;gap:8px;padding:10px 16px}
+.tg button{font-size:17px;font-weight:700;padding:10px 14px;border-radius:14px;border:3px solid;background:#fff;cursor:pointer}
+.tg button.off{opacity:.35}
+.lbl{background:#fff;border:3px solid;border-radius:12px;font-size:15px;font-weight:700;padding:3px 8px;white-space:nowrap;box-shadow:0 1px 4px #0003}
+.lbl:before{display:none}
+.day{margin:12px 16px;padding:14px 16px;background:#fffef9;border-radius:16px;border-left:8px solid}
+.day h2{margin:0 0 6px;font-size:20px}.day ol{margin:0;padding-left:24px;font-size:17px;line-height:1.7}
+.note{margin:12px 16px;color:#6c7d7d;font-size:14px}
+</style></head><body>
+<header><a href="index.html">← 回行程首頁</a><h1>🗺️ 這幾天走過的地方</h1><div style="color:#6c7d7d">10/28–11/1 每天一種顏色，點上方按鈕可只看某一天。</div></header>
+<div class="tg" id="tg"></div>
+<div id="map"></div>
+<div id="list"></div>
+<div class="note">📍 地點座標來自網站各天地圖（today1030、today1031、gyeongbok）與 OpenStreetMap（Nominatim）。線是依照實際去過的地點順序連起來的，<b>不是 GPS 真實足跡</b>：GPS 足跡只存在各自手機裡，雲端只保留到爸爸 10/30 上午飯店→COEX 的一小段，可在 <a href="history.html">history.html</a>（用家人連結打開）查看。仁川機場與台灣的段落不畫在地圖上。</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const H=[37.50511,127.057067,"飯店（이비스 스타일 앰배서더 서울 강남）"];
+const D=[
+["10/28（三）","#c56f45",[H,[37.516154,127.019629,"新沙站 8 號出口（신사역）"],[37.520627,127.023175,"新沙林蔭道（가로수길）"],[37.51952,127.022527,"晚餐・東綠（동녘）"],H]],
+["10/29（四）","#2f6f4f",[H,[37.511873,127.059111,"COEX 爸爸報到（코엑스）"],[37.5763,126.9737,"景福宮站 5 號出口（경복궁역）"],[37.57657,126.97497,"國立古宮博物館（국립고궁박물관）"],[37.57854,126.97699,"景福宮 勤政殿（근정전）"],[37.58238,126.97705,"香遠亭（향원정）"],[37.57876,126.97407,"迎秋門（영추문）"],[37.576553,126.97149,"午餐・體府洞宴會之家（체부동잔치집）"],[37.5866,126.9817,"首爾第二好吃的店（서울서둘째로잘하는집）"],[37.576837,126.986196,"安國站（안국역）"],[37.54616,127.0431,"晚餐・奶奶的食譜（할머니의 레시피）"],[37.504761,127.050462,"宣陵站（선릉역）"],H]],
+["10/30（五）","#3b6fb6",[H,[37.495467,127.063416,"午餐・山月手撕麵疙瘩（산월수제비）銀馬商場"],[37.496982,127.05327,"樂天百貨江南店（롯데백화점 강남점）"],[37.50475,127.05735,"巴黎貝甜 大峙POSCO店（파리바게뜨）"],H,[37.509168,127.056253,"晚餐・韓方正統蔘雞湯（한방정통삼계탕）"]]],
+["10/31（六）","#8a4fb0",[H,[37.5128,127.053,"三成中央站（삼성중앙역）"],[37.5113,127.1124,"松坡渡口站（송파나루역）"],[37.509612,127.107181,"石村湖東湖（석촌호수 동호）"],[37.510566,127.101662,"三田渡碑（삼전도비）"],[37.51007,127.10044,"魔幻島觀景（매직아일랜드）"],[37.508612,127.086287,"午餐・紅豆罐（팥단지）"],[37.508972,127.085007,"蠶室新村傳統市場（잠실새마을전통시장）"],[37.5049,127.0875,"三田站（삼전역）"],H,[37.51105,127.11105,"松坡渡口站 2 號出口（송파나루역）"],[37.512768,127.110847,"晚餐・蟹站住（게섯거라）"],[37.511499,127.098239,"樂天超市蠶室店（롯데마트 제타플렉스 잠실점）"],[37.512745,127.09734,"蠶室站（잠실역）"],[37.5086,127.0628,"三成站（삼성역）"],H]]
+];
+const map=L.map('map');L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
+const G=D.map(([d,c,p])=>{const g=L.layerGroup();L.polyline(p.map(x=>[x[0],x[1]]),{color:c,weight:8,opacity:.85}).addTo(g);
+ let n=0;p.forEach((x,i)=>{if(x===H&&i>0)return;n++;L.circleMarker([x[0],x[1]],{radius:9,color:c,fillColor:'#fff',fillOpacity:1,weight:4}).addTo(g)
+ .bindTooltip(`${x===H?'🏨':n}．${x[2]}`,{permanent:true,direction:'right',className:'lbl',offset:[8,0]}).getTooltip();});
+ return g.addTo(map)});
+document.querySelectorAll('.leaflet-tooltip').forEach(()=>{});
+const all=L.latLngBounds(D.flatMap(x=>x[2].map(p=>[p[0],p[1]])));map.fitBounds(all,{padding:[20,20]});
+const tg=document.getElementById('tg');
+D.forEach(([d,c],i)=>{const b=document.createElement('button');b.textContent=d;b.style.borderColor=c;b.style.color=c;
+ b.onclick=()=>{b.classList.toggle('off');b.classList.contains('off')?map.removeLayer(G[i]):G[i].addTo(map);const on=D.filter((_,j)=>map.hasLayer(G[j]));if(on.length)map.fitBounds(L.latLngBounds(on.flatMap(x=>x[2].map(p=>[p[0],p[1]]))),{padding:[20,20]})};tg.appendChild(b)});
+// label border colors
+map.on('layeradd',col);function col(){D.forEach(([d,c],i)=>G[i].eachLayer(l=>{const t=l.getTooltip&&l.getTooltip();if(t&&t.getElement())t.getElement().style.borderColor=c}))}col();
+document.getElementById('list').innerHTML=D.map(([d,c,p])=>{let n=0;return `<div class="day" style="border-color:${c}"><h2 style="color:${c}">${d}</h2><ol>${p.filter((x,i)=>!(x===H&&i>0)).map(x=>`<li>${x[2]}</li>`).join('')}</ol></div>`}).join('')+
+`<div class="day" style="border-color:#6c7d7d"><h2>11/1（日）回台中</h2><ol><li>飯店早餐、退房</li><li>ezTravel 送機到 仁川機場第一航廈（인천국제공항 제1여객터미널）</li><li>管制區 Jamba Juice（잠바주스）、CU 便利商店、免稅區</li><li>德威航空 TW669 14:25 → 16:30 台中清泉崗</li></ol></div>`;
+</script></body></html>
